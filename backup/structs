@@ -1,0 +1,43 @@
+
+createDimension
+{
+	dimensions:[
+		{
+			label:,
+			fieldef:,
+			description:,
+			tags
+
+		},
+		{
+			label:,
+			fieldef:,
+			description:,
+			tags
+
+		}
+	],
+	customProperty:
+
+}
+
+createMeasure
+{
+	measures:[
+		{
+			label
+			description
+			expression
+			tags
+		},
+		{
+			label
+			description
+			expression
+			tags
+		}
+	],
+	customProperty:
+}
+
+listAll

@@ -6,6 +6,8 @@ var config = {
 	host: 'sense22.112adams.local'
 };
 
+var hypercube = require('./setCubeDims');
+
 //  Set our request defaults, ignore unauthorized cert warnings as default QS certs are self-signed.
 //  Export the certificates from your Qlik Sense installation and refer to them
 var r = request.defaults({
@@ -45,160 +47,23 @@ var meas = {
    		}
 };
 
-var table = {
-			qInfo: {
-				qId: "MetricTable",
-				qType: "Table"
-			},
-			qHyperCubeDef: {
-				qDimensions: [
-					{
-						qLibraryId: "",
-						qNullSuppression: false,
-						qDef: {
-							qGrouping: "N",
-							qFieldDefs: [
-								"ID"
-							],
-							qFieldLabels: [
-								""
-							]
-						}
-					},
-					{
-						qLibraryId: "",
-						qNullSuppression: false,
-						qDef: {
-							qGrouping: "N",
-							qFieldDefs: [
-								"MetricType"
-							],
-							qFieldLabels: [
-								""
-							]
-						}
-					},
-					{
-						qLibraryId: "",
-						qNullSuppression: false,
-						qDef: {
-							qGrouping: "N",
-							qFieldDefs: [
-								"MetricName"
-							],
-							qFieldLabels: [
-								""
-							]
-						}
-					},
-					{
-						qLibraryId: "",
-						qNullSuppression: false,
-						qDef: {
-							qGrouping: "N",
-							qFieldDefs: [
-								"MetricSubject"
-							],
-							qFieldLabels: [
-								""
-							]
-						}
-					},
-					{
-						qLibraryId: "",
-						qNullSuppression: false,
-						qDef: {
-							qGrouping: "N",
-							qFieldDefs: [
-								"MetricTags"
-							],
-							qFieldLabels: [
-								""
-							]
-						}
-					},
-					{
-						qLibraryId: "",
-						qNullSuppression: false,
-						qDef: {
-							qGrouping: "N",
-							qFieldDefs: [
-								"MetricDescription"
-							],
-							qFieldLabels: [
-								""
-							]
-						}
-					},
-					{
-						qLibraryId: "",
-						qNullSuppression: false,
-						qDef: {
-							qGrouping: "N",
-							qFieldDefs: [
-								"MetricFormula"
-							],
-							qFieldLabels: [
-								""
-							]
-						}
-					}
-				],
-				qMeasures: [],
-				qInitialDataFetch: [
-					{
-						qTop: 0,
-						qHeight: 50,
-						qLeft: 0,
-						qWidth: 7
-					} /*,
-					{
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-			        },
-			        {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            } */
-				]
-			}
-		};
+var dims = {
+	dims: [
+		{
+			fieldname: "ID",
+			label:"ID"
+		},
+		{
+			fieldname: "MetricFormula",
+			label: "MetricFormula"
+		}
+	]
+};
+
+var table = new hypercube(dims);
 
 
+console.log("hypercubedef: " + table);
 
 var layout;
 var cube;
@@ -309,13 +174,6 @@ r.post(
   					console.log($.hyperc)
   					console.log($.iFetch);
   					return $.obj.getHyperCubeData('/qHyperCubeDef',$.iFetch);
-  						/*[
-  						{
-  							qtop: 0,
-  							qleft: 0,
-  							qheight: 5,
-  							qwidth:1
-  						}]); */
   				})
   				.then(function(data) 
   				{
@@ -325,8 +183,8 @@ r.post(
   					return $.obj.getLayout();
   				})
   				.then(function(layout){
-  					//console.log('layout');
-  					//console.log(layout);
+  					console.log('layout');
+  					console.log(layout);
   					return $.hyperc = layout.qHyperCube;
   				})
   				.then(function(hyperc)
@@ -336,13 +194,13 @@ r.post(
   				})
   				.then(function(pages)
   				{
-  					//console.log('pages');
+  					console.log('pages');
   					//console.log($.pages);
-  					return $.qmatrix = pages.qMatrix;
+  					return $.qmatrix = pages[0].qMatrix;
   				})
   				.then(function(matrix)
   				{
-  					//console.log('qmatrix');
+  					console.log(matrix);
   					return 'hello world';
   				})
   				.catch(function(error) {

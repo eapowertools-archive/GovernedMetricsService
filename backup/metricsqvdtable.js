@@ -144,56 +144,14 @@ var table = {
 						}
 					}
 				],
-				qMeasures: [],
+				//qMeasures: [],
 				qInitialDataFetch: [
 					{
 						qTop: 0,
 						qHeight: 50,
 						qLeft: 0,
 						qWidth: 7
-					} /*,
-					{
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-			        },
-			        {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            },
-		            {
-			            qTop: 0,
-			            qLeft: 0,
-			            qHeight: 0,
-			            qWidth: 0
-		            } */
+					}
 				]
 			}
 		};
@@ -309,13 +267,6 @@ r.post(
   					console.log($.hyperc)
   					console.log($.iFetch);
   					return $.obj.getHyperCubeData('/qHyperCubeDef',$.iFetch);
-  						/*[
-  						{
-  							qtop: 0,
-  							qleft: 0,
-  							qheight: 5,
-  							qwidth:1
-  						}]); */
   				})
   				.then(function(data) 
   				{
