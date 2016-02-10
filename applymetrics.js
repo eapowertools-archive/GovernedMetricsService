@@ -9,7 +9,36 @@ var config = require('./config');
 
 var applyMetrics = 
 {	
-	applyMetrics: function(cookies, appId, data, callback)
+	getSubjectAreas: function(data, index, callback)
+	{
+		console.log("Starting subjectarea processing");
+		//this method gets the unique MetricSubject values
+		//from the hypercube
+		var flags = [];
+		var subjectAreas = [];
+		var l = data.length;
+		var i;
+
+		for(i=0;i<l;i++)
+		{
+			var item = data[i];
+//			console.log(item);
+			if(flags[item[index].qText]) continue;
+			flags[item[index].qText] = true;
+			subjectAreas.push(item[index].qText);
+		}
+
+		if(subjectAreas.length > 0)
+		{
+			console.log('calling back subjectareas');
+			callback(null,subjectAreas);
+		}
+		else
+		{
+			callback('Error: No subject areas returned from hypercube');
+		}
+	},
+	applyMetrics: function(cookies, appId, data, subjectArea, callback)
 	{
 		var qConfig2 = {
 			host: config.hostname,
@@ -48,9 +77,8 @@ var applyMetrics =
 		{
 			data.forEach(function(item, index)
 			{
-				if(index==1)
+				if(item[3].qText==subjectArea)
 				{
-					var myItem;
 					applyMetrics.popMeas(item, function(error, result)
 					{
 						if(error)
@@ -59,15 +87,27 @@ var applyMetrics =
 						}
 						else
 						{
-							app.createMeasure(result)
-							.then(function()
+							if(item[2].qText=='dimension')
 							{
-								return app.doSave();
-							});
+								app.createDimension(result)
+								.then(function()
+								{
+									//do nothing
+								});
+							}
+							else
+							{
+								app.createMeasure(result)
+								.then(function()
+								{
+									//do nothing
+								});								
+							}
 						}
-					});
+					});					
 				}
 			});
+			return app.saveObjects();
 		})
 		.then(function()
 		{
@@ -80,28 +120,68 @@ var applyMetrics =
 	},
 	popMeas: function(data, callback)
 	{
-		var meas = {
-			qInfo: {
-		        qId: "",
-		        qType: data[1].qText.toLowerCase()
-		      },
-		    qMeasure: {
-		        qLabel: data[2].qText,
-		        qDef: data[6].qText,
-		        qGrouping: "N",
-		        qExpressions: [],
-		        qActiveExpression: 0
-		      },
-		    qMetaDef: {
-		        title: data[2].qText,
-		        description: data[2].qText,
-		        qSize: -1,
-		        sourceObject: "",
-		        draftObject: "",
-		        tags: [data[5].qText]
-		   		}
-		};
-		callback(null,meas);
+		var tags = []
+		var tagString = data[4].qText.split(";");
+		tagString.forEach(function(tagValue)
+		{
+			tags.push(tagValue);
+		});
+
+		tags.push("MasterItem");
+		tags.push(data[3].qText);
+
+//		console.log("creating " + data[2].qText);
+		if(data[1].qText.toLowerCase()=='dimension')
+		{
+			console.log('Creating dimension: ' + data[2].qText);
+			var dim = {
+				qInfo: {
+					qId:"",
+					qType: data[1].qText.toLowerCase()
+				},
+				qDim: {
+					qGrouping: "N",
+					qFieldDefs: [data[6].qText],
+					title: data[2].qText,
+					qFieldLabels: [data[6].qText]
+				},
+				qMetaDef: {
+					title: data[2].qText,
+			        description: data[5].qText,
+			        qSize: -1,
+			        sourceObject: "",
+			        draftObject: "",
+			        tags: tags
+				}
+			};
+			callback(null,dim);
+		}
+		else
+		{
+			console.log('Creating measure: ' + data[2].qText);			
+			var meas = {
+				qInfo: {
+			        qId: "",
+			        qType: data[1].qText.toLowerCase()
+			    },
+			    qMeasure: {
+			        qLabel: data[2].qText,
+			        qDef: data[6].qText,
+			        qGrouping: "N",
+			        qExpressions: [],
+			        qActiveExpression: 0
+			    },
+			    qMetaDef: {
+			        title: data[2].qText,
+			        description: data[5].qText,
+			        qSize: -1,
+			        sourceObject: "",
+			        draftObject: "",
+			        tags: tags
+			   	}
+			};
+			callback(null,meas);
+		}
 	}
 };
 

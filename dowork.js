@@ -9,9 +9,7 @@ var hypercube = require('./setCubeDims');
 var getdoc = require('./getdocid');
 var gethypercube = require('./getmetricshypercube');
 var applyMetrics = require('./applymetrics');
-var request = require('request');
-//var certificates = require('./utils/certificates');
-
+var qrsInteract = require('./qrsinteractions.js');
 
 var doWork = {
 	getDoc: function(body, callback)
@@ -28,9 +26,6 @@ var doWork = {
 					'x-qlik-xrfkey' : 'abcdefghijklmnop',
 					'Cookie': cookies[0]
 				}
-				//cert: fs.readFileSync(config.certificates.server),
-				//key: fs.readFileSync(config.certificates.server_key),
-				//ca: fs.readFileSync(config.certificates.root)
 			};
 			getdoc.getDocId(cookies, body, function(error, result)
 			{
@@ -56,7 +51,6 @@ var doWork = {
 		  cert: fs.readFileSync(config.certificates.server),
 		  key: fs.readFileSync(config.certificates.server_key),
 		  ca: fs.readFileSync(config.certificates.root),
-		  //pfx: fs.readFileSync(__dirname + '\\client.pfx'),
 		  passphrase: 'secret'
 		});
 
@@ -114,12 +108,8 @@ var doWork = {
 					'x-qlik-xrfkey' : 'abcdefghijklmnop',
 					'Cookie': cookies[0]
 				}
-				//cert: fs.readFileSync(config.certificates.server),
-				//key: fs.readFileSync(config.certificates.server_key),
-				//ca: fs.readFileSync(config.certificates.root)
 			};
 
-			var apps = body.appNames;
 			var y = {};
 			qsocks.Connect(qConfig)
 			.then(function(global)
@@ -140,47 +130,70 @@ var doWork = {
 					else
 					{
 						console.log('matrix acquired');
-						console.log(matrix);
+						//console.log(matrix);
 						console.log('i make it to the matrix');
 						y.matrix = matrix;
-						for (var i = 0;i<apps.length;i++)
+						//get subject area list
+						console.log('getting subject areas');
+						applyMetrics.getSubjectAreas(y.matrix, 3, function(error, subjectAreas)
 						{
-							console.log('app to be gotten: ' + apps[i]);
-							getdoc.getDocId(cookies, apps[i], function(error,doc)
+							if(error)
 							{
-								console.log('yippee!');
-								if(error)
+								console.log(error);
+							}
+							else
+							{
+								subjectAreas.forEach(function(subjectArea)
 								{
-									console.log(error);
-								}
-								else
-								{
-									console.log('do apply metrics');
-									applyMetrics.applyMetrics(cookies, doc.docId, y.matrix, function(error, result)
+									console.log(subjectArea);
+									var val = subjectArea;
+									var path = "https://sense22.112adams.local/sdkheader/qrs/app?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
+									path += config.customPropName + "' and customProperties.value eq '" + val + "'";
+									console.log("QRS Path: " + path);
+									qrsInteract.get(path, function(error, result)
 									{
 										if(error)
 										{
 											console.log(error);
 										}
+										else if(result.length < 1)
+										{
+											//do nothing
+										}
 										else
 										{
-											console.log('results from applying metrics');
-											console.log(result);
-											callback(null,result);										
+
+											result.forEach(function(item)
+											{
+												console.log('do apply metrics on subjectarea ' + val);
+												applyMetrics.applyMetrics(cookies, item.id, y.matrix, val, function(error, result)
+												{
+													if(error)
+													{
+														console.log(error);
+													}
+													else
+													{
+														console.log('results from applying metrics');
+														console.log(result);
+														callback(null,result);										
+													}
+												});
+											});
 										}
+									
 									});
-								}
-							})
-							.then(function()
-							{
-								console.log('yippee kai yay');				
-							});
-						}
-						//callback(null,'Its working');
-					}			
-				});			
+								});
+							}
+						});
+					}
+				});
+			})
+			.then(function()
+			{
+				console.log('yippee kai yay');				
 			});
 		});
-	}
+	}			
 };
 module.exports = doWork;

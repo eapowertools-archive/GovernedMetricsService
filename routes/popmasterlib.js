@@ -35,20 +35,6 @@ router.route('/')
 		response.status(200).json(result);
 	});
 
-
-//All Routes accept two properties in a json object
-/*
-	{
-		AppNames : [], is an array of the name of apps on the server.  If supplied empty, all apps will be included except the Metrics Library App.
-		CustomProperties : 
-		{
-			name : "string", name of customproperty to evaluate
-			values : [] is an array of custom property values to apply metrics to apps matching one or more of these values.
-		}
-	}
-
-*/
-
 function isEmpty(obj){
 	for(var prop in obj){
 		if(obj.hasOwnProperty(prop))
@@ -109,6 +95,18 @@ router.route('/getmetricstable')
 	});
 
 router.route('/all')
+
+	//all accepts two properties in a json object
+	/*
+	{
+		appNames : [], is an array of the name of apps on the server.  If supplied empty, all apps will be included except the Metrics Library App.
+		customProperties : 
+		{
+			name : "string", name of customproperty to evaluate
+			values : [] is an array of custom property values to apply metrics to apps matching one or more of these values.
+		}
+	}
+	*/
 	.post(function(request, response)
 	{
 		worker.addAll(request.body,function(error,result)

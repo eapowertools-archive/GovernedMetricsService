@@ -25,7 +25,8 @@ var config = extend(true, {
 	},
 	routePath: routePath,
 	publicPath: publicPath,
-	appName: 'Metrics Libary'
+	appName: 'Metrics Libary',
+	customPropName: 'subjectarea'
 });
 
 module.exports = config;
