@@ -12,7 +12,7 @@ var config = extend(true, {
 	port: 8590,
 	enginePort: 4747,
 	hostname: 'sense22.112adams.local',
-	//virtualProxy: 'sdkheader',
+	virtualProxy: 'sdkheader',
 	//headerName: 'hdr-sense-sdkheader',
 	userDirectory: 'sense22',
 	userId: 'administrator',

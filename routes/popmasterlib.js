@@ -94,7 +94,7 @@ router.route('/getmetricstable')
 		});
 	});
 
-router.route('/all')
+router.route('/add/all')
 
 	//all accepts two properties in a json object
 	/*
@@ -109,7 +109,7 @@ router.route('/all')
 	*/
 	.post(function(request, response)
 	{
-		worker.addAll(request.body,function(error,result)
+		worker.addAll(function(error,result)
 		{
 			if(error)
 			{
@@ -122,6 +122,22 @@ router.route('/all')
 		});			
 		
 	});
+
+router.route('/delete/all')
+	.post(parseUrlencoded, function(request,response){
+		worker.deleteAll(request.body,function(error, result)
+		{
+			if(error)
+			{
+				response.status(400).json(error);
+			}
+			else
+			{
+				response.status(200).json(result)
+			}
+		});
+	});
+
 
 router.route('/dims')
 	.post(function(request, response)
