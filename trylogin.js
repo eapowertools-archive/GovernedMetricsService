@@ -3,25 +3,26 @@
 var login = require('./login');
 var killSession = require('./killsession');
 
-login.login(function(error, result)
+login.login()
+.then(function(cookies)
 {
-	if(error)
-	{
-		console.log(error);
-	}
-	else
+	console.log('successful login');
+	console.log(cookies);
+	return cookies;
+})
+.then(function(cookies)
+{
+	killSession.logout(cookies)
+	.then(function(result)
 	{
 		console.log(result);
-		killSession.logout(result, function(error, message)
-		{
-			if(error)
-			{
-				console.log('Error: ' + error);
-			}
-			else
-			{
-				console.log(message);
-			}
-		});
-	}
+	})
+	.catch(function(error)
+	{
+		console.log(error);
+	});
+})
+.catch(function(error)
+{
+	console.log(error);
 });

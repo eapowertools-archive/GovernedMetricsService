@@ -1,7 +1,5 @@
 var qsocks = require('qsocks');
 var fs = require('fs');
-var request = require('request');
-var promise = require('bluebird');
 var path = require('path')
 var Promise = require('bluebird')
 var config = require('./config');
@@ -9,87 +7,89 @@ var config = require('./config');
 
 var applyMetrics = 
 {	
-	getSubjectAreas: function(data, index, callback)
+	getSubjectAreas: function(data, index)
 	{
-		console.log("Starting subjectarea processing");
-		//this method gets the unique MetricSubject values
-		//from the hypercube
-		var flags = [];
-		var subjectAreas = [];
-		var l = data.length;
-		var i;
+		return new Promise(function(resolve, reject)
+		{
+			console.log("Starting subjectarea processing");
+			//this method gets the unique MetricSubject values
+			//from the hypercube
+			var flags = [];
+			var subjectAreas = [];
+			var l = data.length;
+			var i;
 
-		for(i=0;i<l;i++)
-		{
-			var item = data[i];
-//			console.log(item);
-			if(flags[item[index].qText]) continue;
-			flags[item[index].qText] = true;
-			subjectAreas.push(item[index].qText);
-		}
-
-		if(subjectAreas.length > 0)
-		{
-			console.log('calling back subjectareas');
-			callback(null,subjectAreas);
-		}
-		else
-		{
-			callback('Error: No subject areas returned from hypercube');
-		}
-	},
-	applyMetrics: function(cookies, appId, data, subjectArea, callback)
-	{
-		var qConfig2 = {
-			host: config.hostname,
-			origin: 'https://' + config.hostname,
-			isSecure: true,
-			rejectUnauthorized: false,
-			headers: {
-				'Content-Type' : 'application/json',
-				'x-qlik-xrfkey' : 'abcdefghijklmnop',
-				'Cookie': cookies[0]
-			},
-			//cert: fs.readFileSync(config.certificates.server),
-			//key: fs.readFileSync(config.certificates.server_key),
-			//ca: fs.readFileSync(config.certificates.root),
-			appname: appId
-		};
-
-		console.log('Hello World');
-		console.log('app to add metrics to: ' + appId);
-		var stuff = {};
-		stuff.appId = appId;
-		stuff.sourceData = data;
-		
-		qsocks.Connect(qConfig2)
-		.then(function(global)
-		{
-			console.log('all good at global');
-			return global;
-		})
-		.then(function(global)
-		{
-			return global.openDoc(qConfig2.appname, '', '', '', true);
-			
-		})
-		.then(function(app)
-		{
-			data.forEach(function(item, index)
+			for(i=0;i<l;i++)
 			{
-				if(item[3].qText==subjectArea)
+				var item = data[i];
+				if(flags[item[index].qText]) continue;
+				flags[item[index].qText] = true;
+				subjectAreas.push(item[index].qText);
+			}
+
+			if(subjectAreas.length > 0)
+			{
+				console.log('calling back subjectareas');
+				resolve(subjectAreas);
+			}
+			else
+			{
+				reject('Error: No subject areas returned from hypercube');
+			}			
+		});
+	},
+	applyMetrics: function(cookies, appId, data, subjectArea)
+	{
+		return new Promise(function(resolve, reject)
+		{
+			console.log('Applying metrics');
+			console.log(cookies);
+			var qConfig2 =
+			{
+				host: config.hostname,
+				origin: 'https://' + config.hostname,
+				isSecure: true,
+				rejectUnauthorized: false,
+				headers: {
+					'Content-Type' : 'application/json',
+					'x-qlik-xrfkey' : 'abcdefghijklmnop',
+					'Cookie': cookies[0]
+				},
+				appname: appId
+			};
+
+			console.log('app to add metrics to: ' + appId);
+			var stuff = {};
+			stuff.appId = appId;
+			stuff.sourceData = data;
+			
+			qsocks.Connect(qConfig2)
+			.then(function(global)
+			{
+
+				return stuff.global = global;
+			})
+			.then(function(global)
+			{
+				return global.openDoc(qConfig2.appname, '', '', '', true);
+				
+			})
+			.then(function(app)
+			{
+				return stuff.app = app;
+			})
+			.then(function(app)
+			{
+				data.forEach(function(item, index)
 				{
-					applyMetrics.popMeas(item, function(error, result)
+					if(item[3].qText==subjectArea)
 					{
-						if(error)
+						applyMetrics.popMeas(item)
+						.then(function(q)
 						{
-							callback(error);
-						}
-						else
-						{
-							if(item[2].qText=='dimension')
+							if(q.qInfo.qType=='dimension')
 							{
-								app.createDimension(result)
+								app.createDimension(q)
 								.then(function()
 								{
 									//do nothing
@@ -97,114 +97,98 @@ var applyMetrics =
 							}
 							else
 							{
-								app.createMeasure(result)
+								app.createMeasure(q)
 								.then(function()
 								{
 									//do nothing
 								});								
 							}
-						}
-					});					
-				}
+						});
+					}
+				});
+			})
+			.then(function()
+			{
+				stuff.app.saveObjects()
+				.then(function()
+				{
+					stuff.global.connection.ws.terminate();
+					resolve('Apply Metrics complete');					
+				});
+			})
+			.catch(function(error)
+			{
+				reject(error);
 			});
-			return app.saveObjects();
 		})
-		.then(function()
-		{
-			callback(null,'measure created');
-		})
-		.catch(function(error)
-		{
-			callback(error);
-		});
 	},
-	popMeas: function(data, callback)
+	popMeas: function(data)
 	{
-		var tags = []
-		var tagString = data[4].qText.split(";");
-		tagString.forEach(function(tagValue)
+		return new Promise(function(resolve)
 		{
-			tags.push(tagValue);
+			var tags = []
+			var tagString = data[4].qText.split(";");
+			tagString.forEach(function(tagValue)
+			{
+				tags.push(tagValue);
+			});
+
+			tags.push("MasterItem");
+			tags.push(data[3].qText);
+
+			if(data[1].qText.toLowerCase()=='dimension')
+			{
+	//			console.log('Creating dimension: ' + data[2].qText);
+				var dim = {
+					qInfo: {
+						qId: data[3].qText.toLowerCase() + '_' + data[0].qText,
+						qType: data[1].qText.toLowerCase()
+					},
+					qDim: {
+						qGrouping: "N",
+						qFieldDefs: [data[6].qText],
+						title: data[2].qText,
+						qFieldLabels: [data[6].qText]
+					},
+					qMetaDef: {
+						title: data[2].qText,
+				        description: data[5].qText,
+				        qSize: -1,
+				        sourceObject: "",
+				        draftObject: "",
+				        tags: tags
+					}
+				};
+				resolve(dim);
+			}
+			else
+			{
+	//			console.log('Creating measure: ' + data[2].qText);			
+				var meas = {
+					qInfo: {
+				        qId: data[3].qText.toLowerCase() + '_' + data[0].qText,
+				        qType: data[1].qText.toLowerCase()
+				    },
+				    qMeasure: {
+				        qLabel: data[2].qText,
+				        qDef: data[6].qText,
+				        qGrouping: "N",
+				        qExpressions: [],
+				        qActiveExpression: 0
+				    },
+				    qMetaDef: {
+				        title: data[2].qText,
+				        description: data[5].qText,
+				        qSize: -1,
+				        sourceObject: "",
+				        draftObject: "",
+				        tags: tags
+				   	}
+				};
+				resolve(meas);
+			}
 		});
-
-		tags.push("MasterItem");
-		tags.push(data[3].qText);
-
-//		console.log("creating " + data[2].qText);
-		if(data[1].qText.toLowerCase()=='dimension')
-		{
-			console.log('Creating dimension: ' + data[2].qText);
-			var dim = {
-				qInfo: {
-					qId:"",
-					qType: data[1].qText.toLowerCase()
-				},
-				qDim: {
-					qGrouping: "N",
-					qFieldDefs: [data[6].qText],
-					title: data[2].qText,
-					qFieldLabels: [data[6].qText]
-				},
-				qMetaDef: {
-					title: data[2].qText,
-			        description: data[5].qText,
-			        qSize: -1,
-			        sourceObject: "",
-			        draftObject: "",
-			        tags: tags
-				}
-			};
-			callback(null,dim);
-		}
-		else
-		{
-			console.log('Creating measure: ' + data[2].qText);			
-			var meas = {
-				qInfo: {
-			        qId: "",
-			        qType: data[1].qText.toLowerCase()
-			    },
-			    qMeasure: {
-			        qLabel: data[2].qText,
-			        qDef: data[6].qText,
-			        qGrouping: "N",
-			        qExpressions: [],
-			        qActiveExpression: 0
-			    },
-			    qMetaDef: {
-			        title: data[2].qText,
-			        description: data[5].qText,
-			        qSize: -1,
-			        sourceObject: "",
-			        draftObject: "",
-			        tags: tags
-			   	}
-			};
-			callback(null,meas);
-		}
 	}
 };
 
 module.exports= applyMetrics;
-
-/*
-						qInfo: {
-					        qId: '',
-					        qType: 'measure'
-					      },
-					    qMeasure: {
-					        qLabel: 'foo',
-					        qDef: '=sum(foo)' //,
-					        //qGrouping: "N",
-					        //qExpressions: [],
-					        //qActiveExpression: 0
-					      },
-					    qMetaDef: {
-					        title: 'foo',
-					        description: 'some foo',
-					        qSize: -1,
-					        sourceObject: '',
-					        draftObject: '',
-					        tags: ['foo']
-					   		}
-*/

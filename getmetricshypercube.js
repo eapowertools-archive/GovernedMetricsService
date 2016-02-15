@@ -1,7 +1,6 @@
 var qsocks = require('qsocks');
 var fs = require('fs');
 var request = require('request');
-var promise = require('bluebird');
 var path = require('path')
 var Promise = require('bluebird')
 var config = require('./config');
@@ -11,40 +10,34 @@ var getdoc = require('./getdocid');
 
 var getMetricsHyperCube = 
 {
-	getMetricsTable: function(cookies, callback)
+	getMetricsTable: function(cookies)
 	{
-		var cube = hypercube.setCubeDefault();
-		var x = {};
-		var qConfig = {
-			host: config.hostname,
-			origin: 'https://' + config.hostname,
-			isSecure: true,
-			rejectUnauthorized: false,
-			headers: {
-				'Content-Type' : 'application/json',
-				'x-qlik-xrfkey' : 'abcdefghijklmnop',
-				'Cookie': cookies[0]
-			},
-			//cert: fs.readFileSync(config.certificates.server),
-			//key: fs.readFileSync(config.certificates.server_key),
-			//ca: fs.readFileSync(config.certificates.root),
-		};
-
-		qsocks.Connect(qConfig)
-		.then(function(global)
+		return new Promise(function(resolve, reject)
 		{
-			console.log(global);
-			return x.global = global;
-		})
-		.then(function()
-		{
-			getdoc.getDocId(cookies, 'Metrics Library', function(error,doc)
-			{
-				if(error)
-				{
-					callback(error);
+			console.log('running getmetricshypercube.getMetricsTable');
+			var cube = hypercube.setCubeDefault();
+			var x = {};
+			var qConfig = {
+				host: config.hostname,
+				origin: 'https://' + config.hostname,
+				isSecure: true,
+				rejectUnauthorized: false,
+				headers: {
+					'Content-Type' : 'application/json',
+					'x-qlik-xrfkey' : 'abcdefghijklmnop',
+					'Cookie': cookies[0]
 				}
-				else
+			};
+
+			qsocks.Connect(qConfig)
+			.then(function(global)
+			{
+				return x.global = global;
+			})
+			.then(function()
+			{
+				getdoc.getDocId(cookies, 'Metrics Library')
+				.then(function(doc)
 				{
 					console.log(doc.docId);
 					x.global.openDoc(doc.docId, '', '', '', false)
@@ -85,11 +78,7 @@ var getMetricsHyperCube =
 					{
 						console.log('got some props');
 						x.hyperc = x.props.qHyperCubeDef;
-						//console.log(x.hyperc);
 						x.iFetch = x.hyperc.qInitialDataFetch;
-						//console.log('hyper');
-						//console.log(x.hyperc);
-						//console.log(x.iFetch);
 						return x.obj.getHyperCubeData('/qHyperCubeDef', x.iFetch);
 					})
 					.then(function(data)
@@ -98,9 +87,15 @@ var getMetricsHyperCube =
 					})
 					.then(function()
 					{
-						callback(null, x.data);
+						x.global.connection.ws.terminate();
+						resolve(x.data);
 					});
-				}
+				});
+			})
+			.catch(function(error)
+			{
+				console.log(error);
+				reject(error);
 			});
 		});
 	}

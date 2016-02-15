@@ -14,13 +14,103 @@ var login = require('./login');
 var deleteMetrics = require('./deletemetrics');
 
 var doWork = {
-	getDoc: function(body, cookies, callback)
+	getDoc: function(body, cookies)
 	{
-		if(!cookies)
+		return new Promise(function(resolve, reject)
 		{
-			console.log('I need a cookie');
-			doWork.login(function(error, cookies)
+			if(!cookies)
 			{
+				console.log('I need a cookie');
+				login.login()
+				.then(function(cookies)
+				{
+					var qConfig = {
+						host: config.hostname,
+						origin: 'https://' + config.hostname,
+						isSecure: true,
+						rejectUnauthorized: false,
+						headers: {
+							'Content-Type' : 'application/json',
+							'x-qlik-xrfkey' : 'abcdefghijklmnop',
+							'Cookie': cookies[0]
+						}
+					};
+					getdoc.getDocId(cookies, body)
+					.then(function(doc)
+					{
+						terminate(cookies)
+						.then(function(message)
+						{
+							console.log(message);
+							resolve(doc);
+						});
+					})
+					.catch(function(error)
+					{
+						terminate(cookies)
+						.then(function(message)
+						{
+							console.log(message);
+							reject(error);
+						});
+					});
+				});			
+			}
+			else
+			{
+				console.log('I have a cookie already');
+				getdoc.getDocId(cookies, body)
+				.then(function(doc)
+				{
+					resolve(doc);					
+				})
+				.catch(function(error)
+				{
+					reject(error);
+				});
+			}
+		});
+	},
+	deleteAll: function(appname)
+	{
+		return new Promise(function(resolve, reject)
+		{
+			var message;
+			var x = {};
+			login.login()
+			.then(function(cookies)
+			{
+				x.cookies = cookies;
+				getdoc.getDocId(x.cookies, appname.appName)
+				.then(function(doc)
+				{
+					deleteMetrics.deleteAllMasterItems(x.cookies, doc.docId)
+					.then(function(result)
+					{
+						var res = 
+						{
+							result: result,
+							cookies: x.cookies
+						};
+						resolve(res);
+					});
+				});
+			})
+			.catch(function(error)
+			{
+				reject(error);
+			});
+		});
+	},
+	addAll: function()
+	{
+		var x = {};
+		return new Promise(function(resolve, reject)
+		{
+			login.login()
+			.then(function(cookies)
+			{
+				x.cookies = cookies;
 				var qConfig = {
 					host: config.hostname,
 					origin: 'https://' + config.hostname,
@@ -32,108 +122,17 @@ var doWork = {
 						'Cookie': cookies[0]
 					}
 				};
-				getdoc.getDocId(cookies, body, function(error, result)
+				var y = {};
+				qsocks.Connect(qConfig)
+				.then(function(global)
 				{
-					if(error)
-					{
-						callback(error);
-					}
-					else
-					{
-						callback(null,result);					
-					}
-				});
-			});			
-		}
-		else
-		{
-			console.log('I have a cookie already');
-			getdoc.getDocId(cookies, body, function(error, result)
-			{
-				if(error)
+					return y.global = global;
+				})
+				.then(function()
 				{
-					callback(error);
-				}
-				else
-				{
-					callback(null,result);					
-				}
-			});
-		}
-	},
-	deleteAll: function(appname, callback)
-	{
-		var message;
-		var x = {};
-		login.login(function(error, cookies)
-		{
-			x.cookies = cookies;
-			doWork.getDoc(appname.appName, x.cookies, function(error, doc)
-			{
-				console.log('error:' + doc.docId);
-				deleteMetrics.deleteAllMasterItems(x.cookies, doc.docId, function(error,response)
-				{
-					if(error)
-					{
-						console.log(error)
-					}
-					else
-					{
-						console.log('complete');
-						console.log('terminating session');
-						terminate(x.cookies, function(error,response)
-						{
-							if(error)
-							{
-								console.log(error);
-							}
-							else
-							{
-								console.log(response);
-								callback(null, response);
-							}
-						});
-					}
-
-				});
-			});
-		});
-	},
-	addAll: function(callback)
-	{
-		//login to Qlik Sense using ticketing
-		login.login(function(error, cookies)
-		{
-			var qConfig = {
-				host: config.hostname,
-				origin: 'https://' + config.hostname,
-				isSecure: true,
-				rejectUnauthorized: false,
-				headers: {
-					'Content-Type' : 'application/json',
-					'x-qlik-xrfkey' : 'abcdefghijklmnop',
-					'Cookie': cookies[0]
-				}
-			};
-
-			var y = {};
-			qsocks.Connect(qConfig)
-			.then(function(global)
-			{
-				return y.global = global;
-			})
-			.then(function()
-			{
-				console.log('opening metrics library file');
-				gethypercube.getMetricsTable(cookies, function(error,matrix)
-				{
-					if(error)
-					{
-						console.log('What the eff is going on here?');
-						console.log('error: ' + error);
-						callback(error);
-					}
-					else
+					console.log('opening metrics library file');
+					gethypercube.getMetricsTable(x.cookies)
+					.then(function(matrix)
 					{
 						console.log('matrix acquired');
 						//console.log(matrix);
@@ -141,94 +140,68 @@ var doWork = {
 						y.matrix = matrix;
 						//get subject area list
 						console.log('getting subject areas');
-						applyMetrics.getSubjectAreas(y.matrix, 3, function(error, subjectAreas)
+						applyMetrics.getSubjectAreas(y.matrix, 3)
+						.then(function(subjectAreas)
 						{
-							if(error)
+							subjectAreas.forEach(function(subjectArea)
 							{
-								console.log(error);
-							}
-							else
-							{
-								subjectAreas.forEach(function(subjectArea)
+								console.log(subjectArea);
+								var val = subjectArea;
+								var path = "https://" + config.hostname + "/" + config.virtualProxy + "/qrs/app"
+								path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
+								path += config.customPropName + "' and customProperties.value eq '" + val + "'";
+								console.log("QRS Path: " + path);
+								//add cookies here and use the same session
+								qrsInteract.get(path)
+								.then(function(result)
 								{
-									console.log(subjectArea);
-									var val = subjectArea;
-									var path = "https://" + config.hostname + "/" + config.virtualProxy + "/qrs/app"
-									path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
-									path += config.customPropName + "' and customProperties.value eq '" + val + "'";
-									console.log("QRS Path: " + path);
-									//add cookies here and use the same session
-									qrsInteract.get(path, function(error, result)
+									if(result.length < 1)
 									{
-										if(error)
-										{
-											console.log(error);
-										}
-										else if(result.length < 1)
-										{
-											//do nothing
-										}
-										else
-										{
-
-											result.forEach(function(item)
-											{
-												console.log('do apply metrics on subjectarea ' + val);
-												applyMetrics.applyMetrics(cookies, item.id, y.matrix, val, function(error, result)
-												{
-													if(error)
-													{
-														console.log('I hit an error with applying metrics')
-														console.log(error);
-														//return error;
-													}
-													else
-													{
-														console.log('results from applying metrics');
-														console.log(result);
-														//return result;
-														//callback(null,result);										
-													}
-												});
-											});
-											console.log('finished looping through results');
-										}
-									
-									});
-								});
-								console.log('do I make it to killsession?');
-								killSession.logout(cookies[0],function(error, result)
-								{
-									if(error)
-									{
-										callback(error);
+										//do nothing
 									}
 									else
 									{
-										callback(result);
+										result.forEach(function(item)
+										{
+											console.log('do apply metrics on subjectarea ' + val);
+											applyMetrics.applyMetrics(x.cookies, item.id, y.matrix, val)
+											.then(function(result)
+											{
+												console.log('results from applying metrics');
+												console.log(result);
+												//return result;
+												//callback(null,result);										
+		
+											});
+										});
 									}
-								});		
-							}
+								});
+							});
 						});
-					}
+					});
 				});
+			})
+			.catch(function(error)
+			{
+				reject(error);
 			});
 		});
 	}			
 };
 
-function terminate(cookies, callback)
+function terminate(cookies)
 {
-	killSession.logout(cookies,function(error,answer)
+	return new Promise(function(resolve, reject)
 	{
-		if(error)
+		killSession.logout(cookies)
+		.then(function(message)
 		{
-			callback(error);
-		}
-		else
+			resolve(message);
+		})
+		.catch(function(error)
 		{
-			callback(null, answer);
-		}
+			reject(error)
+		});		
 	});
 };
 

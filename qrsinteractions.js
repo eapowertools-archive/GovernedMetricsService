@@ -1,11 +1,11 @@
 var config = require('./config');
 var request = require('request');
 var fs = require('fs');
+var Promise = require('bluebird');
 
 
 var qrsInteract = 
 {
-
 	defaults: request.defaults({
 		  rejectUnauthorized: false,
 		  host: config.hostname,
@@ -23,31 +23,30 @@ var qrsInteract =
 		  json: true
 		})
 	,
-	get: function(path, callback)
+	get: function(path)
 	{
-		var sCode;
-		var r = qrsInteract.defaults;
+		return new Promise(function(resolve, reject)
+		{
+			console.log('running QRSInteract.get');
+			var sCode;
+			var r = qrsInteract.defaults;
 
-		r.get(path)
-		.on('response', function(response, body)
-		{
-			sCode = response.statusCode;
-		})
-		.on('data', function(data)
-		{
-			console.log(sCode);
-			callback(null, JSON.parse(data));
-		});
-	},
-	post: function(path, bodyMessage, callback)
-	{
-		var sCode;
-		var r = qrsInteract.defaults;
-		r.post(path, { body: bodyMessage})
-		.on('response',function(response, body)
-		{
-			sCode = response.statusCode;
-			callback(null,'You are a star');
+			r.get(path)
+			.on('response', function(response, body)
+			{
+				sCode = response.statusCode;
+			})
+			.on('data', function(data)
+			{
+				if(sCode==200)
+				{
+					resolve(JSON.parse(data));
+				}
+				else
+				{
+					reject("Received error code: " + sCode);
+				}
+			});
 		});
 	}
 };

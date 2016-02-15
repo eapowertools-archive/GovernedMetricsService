@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
-
 var hypercube = require('../setCubeDims');
 var worker = require('../dowork');
 var getdoc = require('../getdocid');
 var gethypercube = require('../getmetricshypercube');
+var killsession = require('../killsession');
 
 router.use(function(req,res,next){
 	console.log('Something is happening.');
@@ -64,16 +64,15 @@ router.route('/login')
 router.route('/getdocid')
 	.get(function(request,response)
 	{
-		worker.getDoc("Metrics Library", function(error,result)
+		worker.getDoc("Metrics Library", null)
+		.then(function(result)
 		{
-			if(error)
-			{
-				response.status(400).json(error);
-			}
-			else
-			{
-				response.status(200).json(result);
-			}
+			response.status(200).json(result);
+
+		})
+		.catch(function()
+		{
+			response.status(400).json(error);
 		});
 	});
 
@@ -95,46 +94,30 @@ router.route('/getmetricstable')
 	});
 
 router.route('/add/all')
-
-	//all accepts two properties in a json object
-	/*
-	{
-		appNames : [], is an array of the name of apps on the server.  If supplied empty, all apps will be included except the Metrics Library App.
-		customProperties : 
-		{
-			name : "string", name of customproperty to evaluate
-			values : [] is an array of custom property values to apply metrics to apps matching one or more of these values.
-		}
-	}
-	*/
 	.post(function(request, response)
 	{
-		worker.addAll(function(error,result)
+		worker.addAll()
+		.then(function(result)
 		{
-			if(error)
+			killsession.logout(result.cookies)
+			.then(function(message)
 			{
-				response.status(400).json(error)
-			}
-			else
-			{
-				response.status(200).json(result);
-			}
+				response.status(200).json(result.result + '\n' + message);
+			});
 		});			
 		
 	});
 
 router.route('/delete/all')
 	.post(parseUrlencoded, function(request,response){
-		worker.deleteAll(request.body,function(error, result)
+		worker.deleteAll(request.body)
+		.then(function(result)
 		{
-			if(error)
+			killsession.logout(result.cookies)
+			.then(function(message)
 			{
-				response.status(400).json(error);
-			}
-			else
-			{
-				response.status(200).json(result)
-			}
+				response.status(200).json(result.result + '\n' + message);
+			});
 		});
 	});
 
