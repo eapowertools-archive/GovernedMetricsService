@@ -2,11 +2,11 @@ var express = require('express');
 var router = express.Router();
 var bodyParser = require('body-parser');
 var parseUrlencoded = bodyParser.urlencoded({extended: false});
-var hypercube = require('../setCubeDims');
-var worker = require('../dowork');
-var getdoc = require('../getdocid');
-var gethypercube = require('../getmetricshypercube');
-var killsession = require('../killsession');
+var hypercube = require('../lib/setCubeDims');
+var worker = require('../lib/dowork');
+var getdoc = require('../lib/getdocid');
+var gethypercube = require('../lib/getmetricshypercube');
+var killsession = require('../lib/killsession');
 
 router.use(function(req,res,next){
 	console.log('Something is happening.');
