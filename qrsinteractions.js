@@ -44,6 +44,7 @@ var qrsInteract =
 				}
 				else
 				{
+					console.log('Error at qrsinteractions during get');
 					reject("Received error code: " + sCode);
 				}
 			});

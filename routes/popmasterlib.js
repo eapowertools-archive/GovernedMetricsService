@@ -70,7 +70,7 @@ router.route('/getdocid')
 			response.status(200).json(result);
 
 		})
-		.catch(function()
+		.catch(function(error)
 		{
 			response.status(400).json(error);
 		});
@@ -104,6 +104,29 @@ router.route('/add/all')
 			{
 				response.status(200).json(result.result + '\n' + message);
 			});
+		})
+		.catch(function(error)
+		{
+			response.status(400).json(error);
+		});			
+		
+	});
+
+router.route('/update/all')
+	.post(function(request, response)
+	{
+		worker.updateAll()
+		.then(function(result)
+		{
+			killsession.logout(result.cookies)
+			.then(function(message)
+			{
+				response.status(200).json(result.result + '\n' + message);
+			});
+		})
+		.catch(function(error)
+		{
+			response.status(400).json(error);
 		});			
 		
 	});

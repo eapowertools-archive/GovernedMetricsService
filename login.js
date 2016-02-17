@@ -53,6 +53,7 @@ var login =
 				    console.log(cookies);
 				    if(error)
 				    {
+				    	console.log('Error at login during cookie get');
 				    	reject(error);
 				    }
 				    else

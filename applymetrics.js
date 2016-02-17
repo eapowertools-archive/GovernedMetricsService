@@ -66,11 +66,11 @@ var applyMetrics =
 			qsocks.Connect(qConfig2)
 			.then(function(global)
 			{
-
 				return stuff.global = global;
 			})
 			.then(function(global)
 			{
+				console.log(global)
 				return global.openDoc(qConfig2.appname, '', '', '', true);
 				
 			})
@@ -93,6 +93,10 @@ var applyMetrics =
 								.then(function()
 								{
 									//do nothing
+								})
+								.catch(function(error)
+								{
+									console.log('Error at applymetrics during createDimension');
 								});
 							}
 							else
@@ -101,7 +105,11 @@ var applyMetrics =
 								.then(function()
 								{
 									//do nothing
-								});								
+								})
+								.catch(function(error)
+								{
+									console.log('Error at applymetrics during createMeasure');
+								});																
 							}
 						});
 					}
@@ -112,12 +120,17 @@ var applyMetrics =
 				stuff.app.saveObjects()
 				.then(function()
 				{
-					stuff.global.connection.ws.terminate();
+					//stuff.global.connection.ws.terminate();
 					resolve('Apply Metrics complete');					
+				})
+				.catch(function(error)
+				{
+					console.log('Error at applymetrics during saveObjects');
 				});
 			})
 			.catch(function(error)
 			{
+				console.log('Error at applymetrics during app work');
 				reject(error);
 			});
 		})

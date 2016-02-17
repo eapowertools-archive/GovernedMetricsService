@@ -14,7 +14,7 @@ var getDocId =
 		return new Promise(function(resolve, reject)
 		{
 			console.log('running getdoc.getDocID');
-			console.log(cookies);
+			//console.log(cookies);
 			var qConfig2 = {
 				host: config.hostname,
 				origin: 'https://' + config.hostname,
@@ -26,16 +26,19 @@ var getDocId =
 					'Cookie': cookies[0]
 				}
 			};
-
+			console.log(qConfig2);
 			console.log("Getting the Doc named: " + appName);
 			var $ ={};
+
 			qsocks.Connect(qConfig2)
 			.then(function(global)
 			{
-				return $.global = global;
+				return global;
 			})
 			.then(function(global)
 			{
+				console.log('time to get the doclist');
+				console.log(global);
 				return global.getDocList();
 			})
 			.then(function(doclist)
@@ -48,20 +51,20 @@ var getDocId =
 						console.log(doc.qTitle + ":" + doc.qDocName);
 						console.log(doc.qDocId);
 						$.docId = doc.qDocId;
-						return doc;
+						resolve(doc.qDocId);
 					}
 				});
 				
 			})
-			.then(function(doc)
+			.then(function()
 			{
-				console.log('docId: ' + $.docId);
-				$.global.connection.ws.terminate();
-				resolve($);
+				//$.global.connection.ws.terminate();
 			})
 			.catch(function(error)
 			{
-				reject(error);
+				console.log('Error at getdocid.js');
+				console.log(error);
+				reject(new Error(error));
 			});
 		});
 	}

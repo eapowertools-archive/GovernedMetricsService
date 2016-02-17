@@ -6,11 +6,12 @@ var config = require('./config');
 
 var deleteMetrics = 
 {
-	deleteAllMasterItems : function(cookies, appId)
+	config : function(cookies, appId)
 	{
-		return new Promise(function(resolve, reject)
+		return new Promise(function(resolve)
 		{
-			var qConfig2 = {
+			var qConfig2 =
+			{
 				host: config.hostname,
 				origin: 'https://' + config.hostname,
 				isSecure: true,
@@ -22,82 +23,109 @@ var deleteMetrics =
 				},
 				appname: appId
 			};
-
+			resolve(qConfig2);
+		});
+	},
+	deleteAllMasterItems : function(cookies, appId)
+	{
+		return new Promise(function(resolve, reject)
+		{
 			console.log('Deleting all MasterItem dimensions and measures from app: ' + appId);
 			var stuff = {};
 			stuff.appId = appId;
-			
-			qsocks.Connect(qConfig2)
-			.then(function(global)
+			deleteMetrics.config(cookies,appId)
+			.then(function(config)
 			{
-				return global;
-			})
-			.then(function(global)
-			{
-				return global.openDoc(qConfig2.appname, '', '', '', true);
-			})
-			.then(function(app)
-			{
-				console.log('app opened');
-				return stuff.app = app;
-			})
-			.then(function(app)
-			{
-				return stuff.measureList = stuff.app.createSessionObject(deleteMetrics.measureListDef());
-			})
-			.then(function(obj)
-			{
-				return obj.getLayout();
-			})
-			.then(function(layout)
-			{
-				var items = layout.qMeasureList.qItems;
-				var mList = items.filter(filterMasterItems);
-
-				mList.forEach(function(measure)
+				qsocks.Connect(config)
+				.then(function(global)
 				{
-					//console.log(measure.qMeta.title + ':' + measure.qInfo.qId);
-					stuff.app.destroyMeasure(measure.qInfo.qId)
-					.then(function(success)
-					{
-						console.log(success);
-					});
-				}); 
-			})
-			.then(function()
-			{
-				return stuff.dimensionList = stuff.app.createSessionObject(deleteMetrics.dimensionListDef());
-			})
-			.then(function(obj)
-			{
-				return obj.getLayout();
-			})
-			.then(function(layout)
-			{
-				var items = layout.qDimensionList.qItems;
-				var dList = items.filter(filterMasterItems);
-
-				dList.forEach(function(dimension)
+					stuff.global = global;
+					return global;
+				})
+				.then(function(global)
 				{
-					//console.log(dimension.qMeta.title + ':' + dimension.qInfo.qId);
-					stuff.app.destroyDimension(dimension.qInfo.qId)
-					.then(function(success)
+					return global.openDoc(appId, '', '', '', true);
+				})
+				.then(function(app)
+				{
+					console.log('app opened');
+					return stuff.app = app;
+				})
+				.then(function(app)
+				{
+					return stuff.measureList = stuff.app.createSessionObject(deleteMetrics.measureListDef());
+				})
+				.then(function(obj)
+				{
+					return obj.getLayout();
+				})
+				.then(function(layout)
+				{
+					var items = layout.qMeasureList.qItems;
+					var mList = items.filter(filterMasterItems);
+
+					mList.forEach(function(measure)
 					{
-						console.log(success);
+						//console.log(measure.qMeta.title + ':' + measure.qInfo.qId);
+						stuff.app.destroyMeasure(measure.qInfo.qId)
+						.then(function(success)
+						{
+							console.log(success);
+						});
+					}); 
+				})
+				.then(function()
+				{
+					return stuff.dimensionList = stuff.app.createSessionObject(deleteMetrics.dimensionListDef());
+				})
+				.then(function(obj)
+				{
+					return obj.getLayout();
+				})
+				.then(function(layout)
+				{
+					var items = layout.qDimensionList.qItems;
+					var dList = items.filter(filterMasterItems);
+
+					dList.forEach(function(dimension)
+					{
+						//console.log(dimension.qMeta.title + ':' + dimension.qInfo.qId);
+						stuff.app.destroyDimension(dimension.qInfo.qId)
+						.then(function(success)
+						{
+							console.log(success);
+						});
+					});	
+				})
+				.then(function()
+				{
+					stuff.app.saveObjects()
+					.then(function()
+					{
+						console.log('all done');
+						var res = {
+							result: 'delete complete!'
+						};
+						stuff.global.connection.ws.terminate();
+						console.log('Engine connection terminated');
+						resolve(res);
+					})
+					.catch(function(error)
+					{
+						reject(new Error(error));
 					});
-				});	
-			})
-			.then(function()
-			{
-				stuff.app.saveObjects();
-				console.log('all done');
-				resolve('delete complete!');
+				})
+				.catch(function(error)
+				{
+					reject(new Error(error));
+				});
 			})
 			.catch(function(error)
 			{
-				reject(error);
+				console.log(error);
+				reject(new Error(error));
 			});
-		})
+		});
 	},
 	deleteAllMasterItemMeasures : function(cookies, appId, callback)
 	{

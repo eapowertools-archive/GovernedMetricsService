@@ -15,7 +15,7 @@ var config = extend(true, {
 	virtualProxy: 'sdkheader',
 	//headerName: 'hdr-sense-sdkheader',
 	userDirectory: 'sense22',
-	userId: 'administrator',
+	userId: 'qlikservice',
 	certificates: {
 		client: path.resolve(certPath, 'client.pem'),
 		client_key: path.resolve(certPath,'client_key.pem'),

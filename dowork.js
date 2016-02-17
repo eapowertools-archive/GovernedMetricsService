@@ -8,6 +8,7 @@ var hypercube = require('./setCubeDims');
 var getdoc = require('./getdocid');
 var gethypercube = require('./getmetricshypercube');
 var applyMetrics = require('./applymetrics');
+var updateMetrics = require('./updatemetrics');
 var qrsInteract = require('./qrsinteractions');
 var killSession = require('./killsession');
 var login = require('./login');
@@ -18,42 +19,39 @@ var doWork = {
 	{
 		return new Promise(function(resolve, reject)
 		{
+			var x={};
 			if(!cookies)
 			{
 				console.log('I need a cookie');
 				login.login()
 				.then(function(cookies)
 				{
-					var qConfig = {
-						host: config.hostname,
-						origin: 'https://' + config.hostname,
-						isSecure: true,
-						rejectUnauthorized: false,
-						headers: {
-							'Content-Type' : 'application/json',
-							'x-qlik-xrfkey' : 'abcdefghijklmnop',
-							'Cookie': cookies[0]
-						}
-					};
-					getdoc.getDocId(cookies, body)
+					return x.cookies = cookies;
+				})
+				.then(function()
+				{
+					getdoc.getDocId(x.cookies, body)
 					.then(function(doc)
 					{
-						terminate(cookies)
+						killSession.logout(x.cookies)
 						.then(function(message)
 						{
-							console.log(message);
 							resolve(doc);
+							console.log(message);
+						})
+						.catch(function(error)
+						{
+							reject(new Error(error));
 						});
 					})
 					.catch(function(error)
 					{
-						terminate(cookies)
-						.then(function(message)
-						{
-							console.log(message);
-							reject(error);
-						});
+						reject(new Error(error));
 					});
+				})
+				.catch(function(error)
+				{
+					reject(new Error(error));
 				});			
 			}
 			else
@@ -66,7 +64,7 @@ var doWork = {
 				})
 				.catch(function(error)
 				{
-					reject(error);
+					reject(new Error(error));
 				});
 			}
 		});
@@ -84,16 +82,111 @@ var doWork = {
 				getdoc.getDocId(x.cookies, appname.appName)
 				.then(function(doc)
 				{
-					deleteMetrics.deleteAllMasterItems(x.cookies, doc.docId)
+					deleteMetrics.deleteAllMasterItems(x.cookies, doc)
 					.then(function(result)
 					{
 						var res = 
 						{
-							result: result,
+							result: result.result,
 							cookies: x.cookies
 						};
+						//result.engine.connection.ws.terminate();
 						resolve(res);
 					});
+				});
+			})
+			.catch(function(error)
+			{
+				reject(new Error(error));
+			});
+		});
+	},
+	addAll: function()
+	{
+		return new Promise(function(resolve, reject)
+		{
+			var x = {};
+			login.login()
+			.then(function(cookies)
+			{
+				x.cookies = cookies;
+				var y = {};
+				console.log('opening metrics library file');
+				gethypercube.getMetricsTable(x.cookies)
+				.then(function(matrix)
+				{
+					console.log('matrix acquired');
+					//console.log(matrix);
+					console.log('i make it to the matrix');
+					y.matrix = matrix;
+					//get subject area list
+					console.log('getting subject areas');
+					applyMetrics.getSubjectAreas(y.matrix, 3)
+					.then(function(subjectAreas)
+					{
+						subjectAreas.forEach(function(subjectArea)
+						{
+							console.log(subjectArea);
+							var val = subjectArea;
+							var path = "https://" + config.hostname + "/" + config.virtualProxy + "/qrs/app"
+							path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
+							path += config.customPropName + "' and customProperties.value eq '" + val + "'";
+							console.log("QRS Path: " + path);
+							//add cookies here and use the same session
+							qrsInteract.get(path)
+							.then(function(result)
+							{
+								if(result.length < 1)
+								{
+									//do nothing
+								}
+								else
+								{
+									result.forEach(function(item, index)
+									{
+										console.log('do apply metrics on subjectarea ' + val);
+										applyMetrics.applyMetrics(x.cookies, item.id, y.matrix, val)
+										.then(function(outcome)
+										{
+											console.log('results from applying metrics');
+											console.log(outcome);
+											//return result;
+											//callback(null,result);
+											if(index == result.length -1)
+											{
+												var res = 
+												{
+													result: 'Metric Application Complete',
+													cookies: x.cookies
+												};
+												resolve(res);
+											}		
+										})
+										.catch(function(error)
+										{
+											console.log(error);
+										});
+										//console.log('index:' + index + ", length:" + result.length);
+									});
+								}
+							})
+							.catch(function(error)
+							{
+								console.log(error);
+								reject(new Error(error));
+							});
+						});
+					})
+					.catch(function(error)
+					{
+						console.log(error);
+						reject(new Error(error));
+					});
+				})
+				.catch(function(error)
+				{
+					console.log(error);
+					reject(new Error(error));
 				});
 			})
 			.catch(function(error)
@@ -102,93 +195,106 @@ var doWork = {
 			});
 		});
 	},
-	addAll: function()
+	updateAll: function()
 	{
-		var x = {};
 		return new Promise(function(resolve, reject)
 		{
+			var x = {};
 			login.login()
 			.then(function(cookies)
 			{
 				x.cookies = cookies;
-				var qConfig = {
-					host: config.hostname,
-					origin: 'https://' + config.hostname,
-					isSecure: true,
-					rejectUnauthorized: false,
-					headers: {
-						'Content-Type' : 'application/json',
-						'x-qlik-xrfkey' : 'abcdefghijklmnop',
-						'Cookie': cookies[0]
-					}
-				};
 				var y = {};
-				qsocks.Connect(qConfig)
-				.then(function(global)
+				console.log('opening metrics library file');
+				gethypercube.getMetricsTable(cookies)
+				.then(function(matrix)
 				{
-					return y.global = global;
-				})
-				.then(function()
-				{
-					console.log('opening metrics library file');
-					gethypercube.getMetricsTable(x.cookies)
-					.then(function(matrix)
+					console.log('matrix acquired');
+					//console.log(matrix);
+					console.log('i make it to the matrix');
+					y.matrix = matrix;
+					//get subject area list
+					console.log('getting subject areas');
+					updateMetrics.getSubjectAreas(y.matrix, 3)
+					.then(function(subjectAreas)
 					{
-						console.log('matrix acquired');
-						//console.log(matrix);
-						console.log('i make it to the matrix');
-						y.matrix = matrix;
-						//get subject area list
-						console.log('getting subject areas');
-						applyMetrics.getSubjectAreas(y.matrix, 3)
-						.then(function(subjectAreas)
+						subjectAreas.forEach(function(subjectArea)
 						{
-							subjectAreas.forEach(function(subjectArea)
+							console.log(subjectArea);
+							var val = subjectArea;
+							var path = "https://" + config.hostname + "/" + config.virtualProxy + "/qrs/app"
+							path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
+							path += config.customPropName + "' and customProperties.value eq '" + val + "'";
+							console.log("QRS Path: " + path);
+							//add cookies here and use the same session
+							qrsInteract.get(path)
+							.then(function(result)
 							{
-								console.log(subjectArea);
-								var val = subjectArea;
-								var path = "https://" + config.hostname + "/" + config.virtualProxy + "/qrs/app"
-								path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
-								path += config.customPropName + "' and customProperties.value eq '" + val + "'";
-								console.log("QRS Path: " + path);
-								//add cookies here and use the same session
-								qrsInteract.get(path)
-								.then(function(result)
+								if(result.length < 1)
 								{
-									if(result.length < 1)
+									//do nothing
+								}
+								else
+								{
+									result.forEach(function(item, index)
 									{
-										//do nothing
-									}
-									else
-									{
-										result.forEach(function(item)
+										console.log('do apply metrics on subjectarea ' + val);
+										//console.log(item.id);
+										updateMetrics.updateMetrics(x.cookies, item.id, y.matrix, val)
+										.then(function(outcome)
 										{
-											console.log('do apply metrics on subjectarea ' + val);
-											applyMetrics.applyMetrics(x.cookies, item.id, y.matrix, val)
-											.then(function(result)
+											console.log('results from applying metrics');
+											console.log(outcome);
+											//return result;
+											//callback(null,result);
+											if(index == result.length -1)
 											{
-												console.log('results from applying metrics');
-												console.log(result);
-												//return result;
-												//callback(null,result);										
-		
-											});
+												var res = 
+												{
+													result: 'Metric Application Complete',
+													cookies: x.cookies
+												};
+												resolve(res);
+											}		
+										})
+										.catch(function(error)
+										{
+											console.log(error);
+											reject(new Error(error));
 										});
-									}
-								});
+										//console.log('index:' + index + ", length:" + result.length);
+									});
+								}
+							})
+							.catch(function(error)
+							{
+								console.log(error);
+								reject(new Error(error));
 							});
 						});
+					})
+					.catch(function(error)
+					{
+						console.log(error);
+						reject(new Error(error));
 					});
+				})
+				.catch(function(error)
+				{
+					console.log(error);
+					reject(new Error(error));
 				});
 			})
 			.catch(function(error)
 			{
 				reject(error);
 			});
-		});
+		});		
 	}			
 };
 
+
+/*
 function terminate(cookies)
 {
 	return new Promise(function(resolve, reject)
@@ -203,6 +309,6 @@ function terminate(cookies)
 			reject(error)
 		});		
 	});
-};
+}; */
 
 module.exports = doWork;

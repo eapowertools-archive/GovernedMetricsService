@@ -16,7 +16,7 @@ var getMetricsHyperCube =
 		{
 			console.log('running getmetricshypercube.getMetricsTable');
 			var cube = hypercube.setCubeDefault();
-			var x = {};
+			
 			var qConfig = {
 				host: config.hostname,
 				origin: 'https://' + config.hostname,
@@ -26,35 +26,37 @@ var getMetricsHyperCube =
 					'Content-Type' : 'application/json',
 					'x-qlik-xrfkey' : 'abcdefghijklmnop',
 					'Cookie': cookies[0]
-				}
+				},
+				appname: null
 			};
-
-			qsocks.Connect(qConfig)
-			.then(function(global)
+			var x = {};
+			//get the docid for the metrics library first
+			getdoc.getDocId(cookies, 'Metrics Library')
+			.then(function(doc)
 			{
-				return x.global = global;
-			})
-			.then(function()
-			{
-				getdoc.getDocId(cookies, 'Metrics Library')
-				.then(function(doc)
+				console.log('Metrics Library AppId: ' + doc);
+				qConfig.appname = doc;
+				x.doc = doc;
+				qsocks.Connect(qConfig)
+				.then(function(global)
 				{
-					console.log(doc.docId);
-					x.global.openDoc(doc.docId, '', '', '', false)
+					return x.global = global;
+				})
+				.then(function(global)
+				{
+					console.log('global');
+					console.log(x.global);
+					x.global.openDoc(doc, '', '', '', false)
 					.then(function(app)
 					{
+						console.log('docOpened');
 						return x.app=app;
-					},
-					function(error)
-					{ 
-						console.log('rejected: ' + error);
 					})
 					.then(function(app)
 					{
 						console.log('hello world');
-						return x.app = app;
 					})
-					.then(function(app)
+					.then(function()
 					{
 						console.log('creating session object');
 						//console.log(cube);
@@ -87,15 +89,27 @@ var getMetricsHyperCube =
 					})
 					.then(function()
 					{
-						x.global.connection.ws.terminate();
+						//x.global.connection.ws.terminate();
 						resolve(x.data);
-					});
-				});
+					})
+					.catch(function(error)
+						{
+							console.log('Error at getmetricshypercube during data retrieval');
+							console.log(error);
+						});
+				})
+				.catch(function(error)
+				{
+					console.log('Error at getmetricshypercube during qsocks connection.');
+					console.log(error);
+					reject(new Error(error));
+				});		
 			})
 			.catch(function(error)
 			{
+				console.log('Error at getmetricshypercube during getDocId');
 				console.log(error);
-				reject(error);
+				reject(new Error(error));
 			});
 		});
 	}
