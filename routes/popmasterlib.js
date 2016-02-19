@@ -139,11 +139,26 @@ router.route('/delete/all')
 			killsession.logout(result.cookies)
 			.then(function(message)
 			{
-				response.status(200).json(result.result + '\n' + message);
+
+//				response.status(200).json(result.result + '\n' + message);
 			});
 		});
 	});
 
+router.route('/reload')
+	.post(function(request, response)
+	{
+		worker.reloadMetricsApp()
+		.then(function(result)
+		{
+			killsession.logout(result.cookies)
+			.then(function(message)
+			{
+				response.redirect(307, 'update/all');
+				//response.status(200).json(result.result + '\n' + message);
+			});
+		});
+	});
 
 router.route('/dims')
 	.post(function(request, response)
