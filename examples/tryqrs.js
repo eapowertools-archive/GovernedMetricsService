@@ -1,11 +1,22 @@
 //qrs test
 
-var qrsInteract = require('./qrsinteractions.js');
+var qrs = require('qrs');
+var config = require('./config');
 
-qrsInteract.get("https://sense22.112adams.local/sdkheader/qrs/app?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq 'subjectarea' and customProperties.value eq 'CallCenter'", function(error, result)
-{
-	result.forEach(function(item)
-	{
-		console.log(item.id);
-	});
+var qrsConfig = {
+	authentication: 'certificates',
+	host: 'sense22.112adams.local',
+	useSSL: true,
+	cert: config.certificates.client,
+	key: config.certificates.client_key,
+	root: config.certificates.root,
+	port: config.qrsPort,
+	headerKey: 'X-Qlik-User',
+	headerValue: 'UserDirectory:Internal;UserId:sa_repository'
+};
+
+var myQrs = new qrs(qrsConfig);
+
+myQrs.get('qrs/app',function(data){
+	console.log(data);
 });

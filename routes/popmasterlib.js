@@ -10,6 +10,8 @@ var killsession = require('../lib/killsession');
 
 router.use(function(req,res,next){
 	console.log('Something is happening.');
+	res.header("Access-Control-Allow-Origin","*");
+	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
 
@@ -64,7 +66,7 @@ router.route('/login')
 router.route('/getdocid')
 	.get(function(request,response)
 	{
-		worker.getDoc("Metrics Library", null)
+		worker.getDoc("Metrics Library Dupe", null)
 		.then(function(result)
 		{
 			response.status(200).json(result);
@@ -154,8 +156,8 @@ router.route('/reload')
 			killsession.logout(result.cookies)
 			.then(function(message)
 			{
-				response.redirect(307, 'update/all');
-				//response.status(200).json(result.result + '\n' + message);
+				//response.redirect(307, 'update/all');
+				response.status(200).json(result.result + '\n' + message);
 			});
 		});
 	});
