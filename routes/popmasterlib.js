@@ -7,27 +7,40 @@ var worker = require('../lib/dowork');
 var getdoc = require('../lib/getdocid');
 var gethypercube = require('../lib/getmetricshypercube');
 var killsession = require('../lib/killsession');
+var winston = require('winston');
+var config = require('../config/config');
+
+//set up logging
+var logger = new (winston.Logger)({
+	transports: [
+      new (winston.transports.Console)(),
+      new (winston.transports.File)({ filename: config.logFile})
+    ]
+});
+
+
 
 router.use(function(req,res,next){
-	console.log('Something is happening.');
 	res.header("Access-Control-Allow-Origin","*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
 	next();
 });
 
 router.route('/')
+	logger.info('default route called', {module: 'popmasterlib'});
 	.get(function(request,response){
 		var cube = hypercube.setCubeDefault();
 		worker.doWork(cube,function(error,result){
 			if(error)
 			{
+				logger.error('default route failure::' + error , {module: 'popmasterlib'});
 				response.status(400).json("Bad Request");
 			}
 			else
 			{
 				//for my reference so I can see how to send responses.
 				//response.status(200).json(result.connection.ws.url);
-
+				logger.info('default route success', {module: 'popmasterlib'});
 				response.status(200).json(result);
 			}
 		});
@@ -36,6 +49,123 @@ router.route('/')
 		var result = worker.doWork(hypercube.setCubeDims(request.body));
 		response.status(200).json(result);
 	});
+
+//for testing getDocId method
+router.route('/getdocid')
+	.get(function(request,response)
+	{
+		logger.info('GET getdocid for ' config.appName, {module: 'popmasterlib'});
+		worker.getDoc(config.appName)
+		.then(function(result)
+		{
+			logger.info('GET getdocid success::' + result, {module: 'popmasterlib'});
+			response.status(200).json(result);
+
+		})
+		.catch(function(error)
+		{
+			logger.error('GET getdocid route failure::' + error, {module: 'popmasterlib'});
+			response.status(400).json(error);
+		});
+	})
+	.post(function(request,response)
+	{
+		logger.info('POST getdocid for ' + request.body.appname, {module: 'popmasterlib'});
+		worker.getDoc(request.body.appname)
+		.then(function(result)
+		{
+			logger.info('POST getdocid success:: ' + result, {module: 'popmasterlib'});
+			response.status(200).json(result);
+
+		})
+		.catch(function(error)
+		{
+			logger.error('POST getdocid failure:: ' + error, {module: 'popmasterlib'});
+			response.status(400).json(error);
+		});
+	});
+
+router.route('/add/all')
+	.post(function(request, response)
+	{
+		logger.info('POST add/all', {module: 'popmasterlib'});
+		worker.addAll()
+		.then(function(result)
+		{
+			killsession.logout(result.cookies)
+			.then(function(message)
+			{
+				logger.info('POST add/all success::' + result.result, {module: 'popmasterlib'});
+				response.status(200).json(result.result + '\n' + message);
+			});
+		})
+		.catch(function(error)
+		{
+			logger.error('POST add/all failure::' + error, {module: 'popmasterlib'});
+			response.status(400).json(error);
+		});			
+		
+	});
+
+router.route('/update/all')
+	.post(function(request, response)
+	{
+		logger.info('POST update/all', {module: 'popmasterlib'});
+		worker.updateAll()
+		.then(function(result)
+		{
+			logger.info('POST update/all success::' + result.result, {module: 'popmasterlib'});
+			killsession.logout(result.cookies)
+			.then(function(message)
+			{
+				response.status(200).json(result.result + '\n' + message);
+			});
+		})
+		.catch(function(error)
+		{
+			logger.error('POST update/all failure::' + error, {module: 'popmasterlib'});
+			response.status(400).json(error);
+		});			
+		
+	});
+
+router.route('/delete/all')
+	.post(parseUrlencoded, function(request,response){
+		logger.info('POST delete/all for ' + request.body.appname, {module: 'popmasterlib'});
+		worker.deleteAll(request.body)
+		.then(function(result)
+		{
+			logger.info('POST delete/all success::' + result.result, {module: 'popmasterlib'});
+			killsession.logout(result.cookies)
+			.then(function(message)
+			{
+				response.status(200).json(result.result + '\n' + message);
+			});
+		});
+	});
+
+router.route('/reload')
+	.post(function(request, response)
+	{
+		logger.info('POST reload', {module: 'popmasterlib'});
+		worker.reloadMetricsApp()
+		.then(function(result)
+		{
+			killsession.logout(result.cookies)
+			.then(function(message)
+			{
+				logger.info('POST reload success::' + result.result, {module: 'popmasterlib'});
+				response.status(200).json(result.result + '\n' + message);
+			});
+		})
+		.catch(function(error)
+		{
+			logger.error('POST reload failure::' + error, {module: 'popmasterlib'});
+			response.status(400).json(error);
+		});			
+
+	});
+
 
 function isEmpty(obj){
 	for(var prop in obj){
@@ -46,132 +176,5 @@ function isEmpty(obj){
 	}
 	return true;
 };
-
-router.route('/login')
-	.get(function(request,response)
-	{
-		worker.login(function(error, result)
-		{
-			if(error)
-			{
-				response.status(400).json(error);
-			}
-			else
-			{
-				response.sendStatus(200);
-			}
-		});
-	})
-//for testing getDocId method
-router.route('/getdocid')
-	.get(function(request,response)
-	{
-		worker.getDoc("Metrics Library Dupe", null)
-		.then(function(result)
-		{
-			response.status(200).json(result);
-
-		})
-		.catch(function(error)
-		{
-			response.status(400).json(error);
-		});
-	});
-
-//for testing getMetricsTable method
-router.route('/getmetricstable')
-	.get(function(request,response)
-	{
-		gethypercube.getMetricsTable(function(error,result)
-		{
-			if(error)
-			{
-				response.status(400).json(error);
-			}
-			else
-			{
-				response.status(200).json(result);
-			}
-		});
-	});
-
-router.route('/add/all')
-	.post(function(request, response)
-	{
-		worker.addAll()
-		.then(function(result)
-		{
-			killsession.logout(result.cookies)
-			.then(function(message)
-			{
-				response.status(200).json(result.result + '\n' + message);
-			});
-		})
-		.catch(function(error)
-		{
-			response.status(400).json(error);
-		});			
-		
-	});
-
-router.route('/update/all')
-	.post(function(request, response)
-	{
-		worker.updateAll()
-		.then(function(result)
-		{
-			killsession.logout(result.cookies)
-			.then(function(message)
-			{
-				response.status(200).json(result.result + '\n' + message);
-			});
-		})
-		.catch(function(error)
-		{
-			response.status(400).json(error);
-		});			
-		
-	});
-
-router.route('/delete/all')
-	.post(parseUrlencoded, function(request,response){
-		worker.deleteAll(request.body)
-		.then(function(result)
-		{
-			killsession.logout(result.cookies)
-			.then(function(message)
-			{
-
-//				response.status(200).json(result.result + '\n' + message);
-			});
-		});
-	});
-
-router.route('/reload')
-	.post(function(request, response)
-	{
-		worker.reloadMetricsApp()
-		.then(function(result)
-		{
-			killsession.logout(result.cookies)
-			.then(function(message)
-			{
-				//response.redirect(307, 'update/all');
-				response.status(200).json(result.result + '\n' + message);
-			});
-		});
-	});
-
-router.route('/dims')
-	.post(function(request, response)
-	{
-		response.status(200).json(request.body);
-	});
-
-router.route('/measures')
-	.post(function(request, response)
-	{
-		response.status(200).json(request.body);
-	});
 
 module.exports = router;

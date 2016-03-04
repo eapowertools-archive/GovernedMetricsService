@@ -9,6 +9,9 @@ var certPath = 'C:/masterlib/certs';
 //var certPath = 'C:/ProgramData/Qlik/Sense/Repository/Exported Certificates/.Local Certificates';
 var routePath = path.join(__dirname, 'server/routes/');
 var publicPath = path.join(__dirname, 'public/');
+var logPath = path.join(__dirname,'log/');
+
+var logFile = logPath + 'masterlib.log';
 
 var config = extend(true, {
 	port: 8590,
@@ -27,8 +30,18 @@ var config = extend(true, {
 	},
 	routePath: routePath,
 	publicPath: publicPath,
+	logPath: logPath,
+	logFile: logStamp,
 	appName: 'Metrics Library',
-	customPropName: 'subjectarea'
+	customPropName: 'subjectarea',
+	taskName: 'Reload Metrics Library'
 });
+
+function convertDate() {
+  function pad(s) { return (s < 10) ? '0' + s : s; }
+  var d = new Date();
+  return [d.getUTCFullYear(), '-', pad(d.getUTCMonth()+1), '-', pad(d.getUTCDate())].join('');
+}
+
 
 module.exports = config;
