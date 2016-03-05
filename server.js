@@ -13,6 +13,7 @@ var config = require('./config/config');
 
 //set up logging
 var logger = new (winston.Logger)({
+	level: config.logLevel,
 	transports: [
       new (winston.transports.Console)(),
       new (winston.transports.File)({ filename: config.logFile})
@@ -30,7 +31,7 @@ var port = config.port || 8590;
 
 logger.info('Setting route',{module:'server'});
 
-var popmasterlib = require('./routes/popmasterlib');
+var popmasterlib = require('./routes/routes');
 
 
 //Register routes

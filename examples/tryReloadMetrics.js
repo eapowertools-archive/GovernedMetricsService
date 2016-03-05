@@ -1,15 +1,14 @@
 //tryReloadMetrics
 
-var reloadMetrics = require('./reloadmetrics');
-var login = require('./login');
+var reloadMetrics = require('../lib/reloadmetrics');
 
 
-login.login()
-.then(function(cookies)
-{
-	reloadMetrics.reloadMetrics(cookies, 'bf4ef0ac-4680-49eb-a9c4-7d888a0c822f')
+	reloadMetrics.reloadMetrics('HelloWorld')
 	.then(function(result)
 	{
 		console.log(result);
-	});
-});
+	})
+	.catch(function(error)
+		{
+			console.log(error);
+		});

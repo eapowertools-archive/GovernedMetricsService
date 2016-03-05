@@ -12,6 +12,7 @@ var config = require('../config/config');
 
 //set up logging
 var logger = new (winston.Logger)({
+	level: config.logLevel,
 	transports: [
       new (winston.transports.Console)(),
       new (winston.transports.File)({ filename: config.logFile})
@@ -27,8 +28,8 @@ router.use(function(req,res,next){
 });
 
 router.route('/')
-	logger.info('default route called', {module: 'popmasterlib'});
 	.get(function(request,response){
+		logger.info('default route called', {module: 'popmasterlib'});
 		var cube = hypercube.setCubeDefault();
 		worker.doWork(cube,function(error,result){
 			if(error)
@@ -54,7 +55,7 @@ router.route('/')
 router.route('/getdocid')
 	.get(function(request,response)
 	{
-		logger.info('GET getdocid for ' config.appName, {module: 'popmasterlib'});
+		logger.info('GET getdocid for '+  config.appName, {module: 'popmasterlib'});
 		worker.getDoc(config.appName)
 		.then(function(result)
 		{
@@ -151,19 +152,14 @@ router.route('/reload')
 		worker.reloadMetricsApp()
 		.then(function(result)
 		{
-			killsession.logout(result.cookies)
-			.then(function(message)
-			{
-				logger.info('POST reload success::' + result.result, {module: 'popmasterlib'});
-				response.status(200).json(result.result + '\n' + message);
-			});
+			logger.info('POST reload success::' + result.result, {module: 'popmasterlib'});
+			response.status(200).json(result.result);
 		})
 		.catch(function(error)
 		{
 			logger.error('POST reload failure::' + error, {module: 'popmasterlib'});
 			response.status(400).json(error);
 		});			
-
 	});
 
 

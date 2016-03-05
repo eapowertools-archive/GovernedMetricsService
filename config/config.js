@@ -4,12 +4,12 @@ var extend = require('extend');
 //For production
 
 
-var certPath = 'C:/masterlib/certs';
+var certPath = 'C:/masterlib/certs/masterlib';
 
 //var certPath = 'C:/ProgramData/Qlik/Sense/Repository/Exported Certificates/.Local Certificates';
 var routePath = path.join(__dirname, 'server/routes/');
 var publicPath = path.join(__dirname, 'public/');
-var logPath = path.join(__dirname,'log/');
+var logPath = path.join(__dirname,'/../log/');
 
 var logFile = logPath + 'masterlib.log';
 
@@ -17,9 +17,9 @@ var config = extend(true, {
 	port: 8590,
 	enginePort: 4747,
 	qrsPort: 4242,
-	hostname: 'sense22.112adams.local',
-	userDirectory: 'sense22',
-	userId: 'qlikservice',
+	hostname: 'masterlib.112adams.local',
+	userDirectory: 'masterlib',
+	userId: 'qvadmin',
 	repoAccount: 'UserDirectory=Internal;UserId=sa_repository',
 	certificates: {
 		client: path.resolve(certPath, 'client.pem'),
@@ -31,9 +31,10 @@ var config = extend(true, {
 	routePath: routePath,
 	publicPath: publicPath,
 	logPath: logPath,
-	logFile: logStamp,
+	logFile: logFile,
+	logLevel: 'info',
 	appName: 'Metrics Library',
-	customPropName: 'subjectarea',
+	customPropName: 'ManagedMasterItems',
 	taskName: 'Reload Metrics Library'
 });
 
