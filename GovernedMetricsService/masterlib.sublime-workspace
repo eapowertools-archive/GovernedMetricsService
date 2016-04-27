@@ -1,0 +1,591 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"Vir",
+				"VirtualProxyConfig	(customPropJSON.js)"
+			],
+			[
+				"User",
+				"UserSyncTask	(customPropJSON.js)"
+			],
+			[
+				"Str",
+				"Stream	(customPropJSON.js)"
+			],
+			[
+				"Sched",
+				"SchedulerService	(customPropJSON.js)"
+			],
+			[
+				"arra",
+				"arrayComplete"
+			],
+			[
+				"subject",
+				"subjectAreas"
+			],
+			[
+				"customP",
+				"customPropName"
+			],
+			[
+				"qrs",
+				"qrsinteractions	(dowork.js)"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "disaster recovery if central node fails\nQMC automation - frustrations around using QMC\nSecurity with respect to management \n\nIf a node goes down, transfer role to another node in a matter of seconds or promote another node to become another central node.\n\nreally its leg work to set up that process.\n\n",
+			"settings":
+			{
+				"buffer_size": 301,
+				"line_ending": "Windows",
+				"name": "disaster recovery if central node fails"
+			}
+		},
+		{
+			"file": "/C/proploader/customPropJSON.js",
+			"settings":
+			{
+				"buffer_size": 829,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/F/My Documents/_Git/qscustomproploader/api/resources/resources.json",
+			"settings":
+			{
+				"buffer_size": 1174,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/F/My Documents/_Git/qscustomproploader/server/server.js",
+			"settings":
+			{
+				"buffer_size": 0,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/proploader/simpleExpress.js",
+			"settings":
+			{
+				"buffer_size": 1142,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/Windows/System32/drivers/etc/hosts",
+			"settings":
+			{
+				"buffer_size": 1431,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "/C/proploader/propFile.csv",
+			"settings":
+			{
+				"buffer_size": 353,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "server.js",
+			"settings":
+			{
+				"buffer_size": 1021,
+				"line_ending": "Windows"
+			}
+		}
+	],
+	"build_system": "",
+	"build_system_choices":
+	[
+	],
+	"build_varint": "",
+	"command_palette":
+	{
+		"height": 288.0,
+		"last_filter": "",
+		"selected_items":
+		[
+			[
+				"pack",
+				"Package Control: Install Package"
+			],
+			[
+				"packa",
+				"Package Control: Discover Packages"
+			]
+		],
+		"width": 416.0
+	},
+	"console":
+	{
+		"height": 174.0,
+		"history":
+		[
+			"import urllib.request,os,hashlib; h = '2915d1851351e5ee549c20394736b442' + '8bc59f460fa1548d1514676163dafc88'; pf = 'Package Control.sublime-package'; ipp = sublime.installed_packages_path(); urllib.request.install_opener( urllib.request.build_opener( urllib.request.ProxyHandler()) ); by = urllib.request.urlopen( 'http://packagecontrol.io/' + pf.replace(' ', '%20')).read(); dh = hashlib.sha256(by).hexdigest(); print('Error validating download (got %s instead of %s), please try manual install' % (dh, h)) if dh != h else open(os.path.join( ipp, pf), 'wb' ).write(by)"
+		]
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"expanded_folders":
+	[
+		"/C/proploader",
+		"/C/proploader/upload"
+	],
+	"file_history":
+	[
+		"/C/masterlib/utils/startService.bat",
+		"/C/masterlib/utils/stopService.bat",
+		"/C/masterlib/utils/restartService.bat",
+		"/C/masterlib/server.js",
+		"/F/Downloads/single.js",
+		"/F/My Documents/_Whitepapers/Webinars2015/QlikSenseDeveloper/tutorial/air/theme.css",
+		"/F/Downloads/mytheme/mytheme/theme.css",
+		"/F/Downloads/mytheme/mytheme/theme.json",
+		"/F/Downloads/single-object-service.js",
+		"/C/masterlib/config/config.js",
+		"/F/Downloads/result",
+		"/F/My Documents/_Whitepapers/ADFS/Metadata/federationmetadata.xml",
+		"/C/Windows/System32/drivers/etc/hosts",
+		"/F/My Documents/Dropbox/Epic/QlikViewTicket/bin/Debug/registerthedll.bat",
+		"/F/My Documents/_Customers/ucsf/Authenticate.aspx",
+		"/C/masterlib/lib/reloadmetrics.js",
+		"/F/My Documents/Qlik/sfdcdata/Extracts/result",
+		"/F/My Documents/Qlik/sfdcdata/final/Marketo.txt",
+		"/F/Downloads/RandomWordlistGenerator-master/RandomWordlistGenerator-master/random-wordlist-generator.xml",
+		"/C/masterlib/utils/service.bat",
+		"/C/masterlib/lib/updatemetrics.js",
+		"/C/masterlib/lib/popmeasures.js",
+		"/C/masterlib/log/masterlib.log",
+		"/C/masterlib/lib/dowork.js",
+		"/C/masterlib/lib/deletemetrics.js",
+		"/C/masterlib/lib/getdocid.js",
+		"/C/masterlib/lib/getmetricshypercube.js",
+		"/C/masterlib/lib/killsession.js",
+		"/C/masterlib/lib/login.js",
+		"/C/masterlib/lib/qrsinteractions.js",
+		"/C/Users/jog/Desktop/federationmetadata.xml",
+		"/C/brackedemo/signin.html",
+		"/C/masterlib/routes/routes.js",
+		"/F/Downloads/AWSS3Rules",
+		"/C/Program Files/Qlik/Sense/ServiceDispatcher/services.conf",
+		"/C/Program Files/Qlik/Sense/ServiceDispatcher/Node/masterlib/config/config.js",
+		"/C/masterlib/examples/tryConfig.js",
+		"/C/masterlib/examples/tryReloadMetrics.js",
+		"/C/masterlib/examples/tryqrs2.js",
+		"/C/masterlib/examples/tryqrs2",
+		"/C/masterlib/examples/tryqrs.js",
+		"/C/masterlib/routes/popmasterlib.js",
+		"/C/masterlib/lib/setCubeDims.js",
+		"/C/brackedemo/index.html",
+		"/C/brackedemo/readme.md",
+		"/C/brackedemo/config/config.js",
+		"/C/brackedemo/contributors.html",
+		"/C/brackedemo/routes/router.js",
+		"/C/brackedemo/server.js",
+		"/C/brackedemo/lib/login.js",
+		"/F/My Documents/_Projects/Bracke/demo landing page/signin.aspx",
+		"/C/brackedemo/css/signin.css",
+		"/C/masterlib/lib/config.js",
+		"/F/My Documents/Dropbox/Docusign/sfdclogin.aspx",
+		"/F/My Documents/Dropbox/LDAPAuth/Ldapauth/ldapauth.js",
+		"/F/My Documents/Dropbox/LDAPAuth/Ldapauth/signin.html",
+		"/C/proploader/customPropJSON.js",
+		"/C/proploader/qrsinteractions.js",
+		"/C/proploader/tryqrs.js",
+		"/C/proploader/config.js",
+		"/C/proploader/index.html",
+		"/C/proploader/simpleExpress.js",
+		"/F/Downloads/rules.json"
+	],
+	"find":
+	{
+		"height": 39.0
+	},
+	"find_in_files":
+	{
+		"height": 93.0,
+		"where_history":
+		[
+			"C:\\masterlib\\lib"
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"an embed",
+			"MU2",
+			"15",
+			"operation aborted",
+			"RoleDescriptor",
+			"popmasterlib",
+			"Completed updating metrics on",
+			"updateMetrics",
+			"popMeas",
+			"filterMasterItems",
+			"doWork",
+			"reloadMetrics",
+			"applyMetrics",
+			"login",
+			"getDocId",
+			"btn-group",
+			"#loginoptions",
+			"btn",
+			"js",
+			"form",
+			"ClientID",
+			"button",
+			"SignIn"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"routes",
+			"popMeasures"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 7,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 301,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								301,
+								301
+							]
+						],
+						"settings":
+						{
+							"auto_name": "disaster recovery if central node fails",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 7,
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "/C/proploader/customPropJSON.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 829,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								630,
+								634
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 207.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 6,
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "/F/My Documents/_Git/qscustomproploader/api/resources/resources.json",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1174,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"auto_name": "",
+							"syntax": "Packages/JavaScript/JSON.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 5,
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "/F/My Documents/_Git/qscustomproploader/server/server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 0,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 4,
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/C/proploader/simpleExpress.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1142,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								426,
+								426
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": -0.0,
+						"translation.y": 276.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 3,
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "/C/Windows/System32/drivers/etc/hosts",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1431,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1431,
+								1391
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 276.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 2,
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "/C/proploader/propFile.csv",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 353,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 1,
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "server.js",
+					"semi_transient": false,
+					"settings":
+					{
+						"buffer_size": 1021,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								11,
+								11
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.sublime-syntax"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"stack_index": 0,
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 35.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.find_results":
+	{
+		"height": 0.0
+	},
+	"pinned_build_system": "",
+	"project": "masterlib.sublime-project",
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_symbol":
+	{
+		"height": 0.0,
+		"last_filter": "",
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"selected_group": 0,
+	"settings":
+	{
+	},
+	"show_minimap": true,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 212.0,
+	"status_bar_visible": true,
+	"template_settings":
+	{
+	}
+}
