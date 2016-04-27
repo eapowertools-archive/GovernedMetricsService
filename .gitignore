@@ -79,3 +79,9 @@ $RECYCLE.BIN/
 
 # Windows shortcuts
 *.lnk
+
+#Backup files
+GovernedMetricsService/backup/
+
+GovernedMetricsService/Set-MLAConfig.ps1
+MetricsLibraryEditor/ExternalMetrics.bat
