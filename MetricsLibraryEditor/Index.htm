@@ -1,12 +1,23 @@
 ﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" >
 <head>
+<head lang="en">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="leonardo-ui.css" type="text/css"/>
+    <link rel="stylesheet" href="style.css" type="text/css"/>
+    <link rel="stylesheet" href="prism.css" type="text/css"/>
+    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
+
+
+
     <title>Qlik Metric Library</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-      <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
     <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 	<script>
+
+
 
 	$(document).ready(function()
 	{
@@ -31,18 +42,16 @@
 				var row = data[i];
 				var tr = document.createElement("tr");
 
-				//for(var j = 0; j < row.length; j++)
-				//{
-					var td = document.createElement("td"); td.innerHTML = row.ID; tr.appendChild(td);
-                    var td = document.createElement("td"); td.innerHTML = row.MetricSubject; tr.appendChild(td);
-                    var td = document.createElement("td"); td.innerHTML = row.MetricType; tr.appendChild(td);
-                    var td = document.createElement("td"); td.innerHTML = row.MetricName; tr.appendChild(td);
-                    var td = document.createElement("td"); td.innerHTML = row.MetricFormula; tr.appendChild(td);
-                    var td = document.createElement("td"); td.innerHTML = row.MetricDescription; tr.appendChild(td);
-                    var td = document.createElement("td"); td.innerHTML = row.MetricOwner; tr.appendChild(td);
-                    var td = document.createElement("td"); td.innerHTML = row.MetricTags; tr.appendChild(td);
-                    //var td = document.createElement("td"); td.innerHTML = row[j]; tr.appendChild(td);
-				//}
+
+                       var td = document.createElement("td"); td.innerHTML = row.ID; tr.appendChild(td);
+                       var td = document.createElement("td"); td.innerHTML = row.MetricSubject; tr.appendChild(td);
+                       var td = document.createElement("td"); td.innerHTML = row.MetricType; tr.appendChild(td);
+                       var td = document.createElement("td"); td.innerHTML = row.MetricName; tr.appendChild(td);
+                       var td = document.createElement("td"); td.innerHTML = row.MetricFormula; tr.appendChild(td);
+                       var td = document.createElement("td"); td.innerHTML = row.MetricDescription; tr.appendChild(td);
+                       var td = document.createElement("td"); td.innerHTML = row.MetricOwner; tr.appendChild(td);
+                       var td = document.createElement("td"); td.innerHTML = row.MetricTags; tr.appendChild(td);
+
 				$('#tabledata').append(tr);
 			}
 		});
@@ -90,7 +99,7 @@
             $td.data('oldText', txt);
 
             // make input
-            var $input = $('<input type="text" class="editfield">');
+            var $input = $('<input type="text" class="lui-textarea">');
             $input.val(txt);
 
             // clean td and add the input
@@ -173,13 +182,24 @@
     {
         $.post("http://localhost:8590/masterlib/reload", function(result,strStatus,xhr)
             {
-                alert(xhr.status + "|" + strStatus+ "|" + result);
                 if(xhr.status==200)
                 {
+                     $('.lui-dialog__body:contains(please wait)').text('Reloading app was successful, now updating the master library.');
                      $.post("http://localhost:8590/masterlib/update/all", function(result,strStatus,xhr)
                      {
-                        alert('Completed updating metrics in apps');
+                        if(xhr.status==200)
+                {
+                        $('.lui-dialog__body:contains(Reloading app)').text('Reloading app was successful, now updating the master library. Completed updating metrics in apps.')
+                    }
+                    else
+                    {
+                        $('.lui-dialog__body:contains(Reloading app)').text('Reloading app was successful, now updating the master library. Could not update metrics in app.')
+                    }
                      });
+                }
+                else
+                {
+                     $('.lui-dialog__body:contains(please wait)').text('Reloading app failed.');
                 }
             });
 //        alert("Master Libraries Updating!...");
@@ -262,77 +282,10 @@
 </head>
 <body>
 <def>
-
-<style>
-    @font-face {
-    	font-family: 'QlikView Sans';
-    	src: url(/resource/font/#QlikViewSansRegular) format('svg');
-        font-weight: normal;
-	    font-style: normal;
-    }
-		
-    body
-    {
-		margin-left: 200px;
-		margin-top: 100px;
-		width: 960px;
-		height: 768px;
-       /* font-family: 'QlikView Sans'; */
-       /* font-size: 1.0em; */
-        background-image: url('/resource/qv');
-		background-size: 220px, 400px;
-        background-repeat:no-repeat, no-repeat;
-        background-position: 0px 0px, 700px 500px;
-		background-attachment: fixed, fixed;
-    }
-	    
-    #tableheader 
-    {
-        color: #FFFFFF;
-        background-color: #62AC1E;
-        line-height: 2;
-    }
-
-/*    td
-    {
-        font-family: 'Courier';
-        font-size: 12px;
-    } */
-	
-	#table-wrapper {
-  position:relative;
-}
-#table-scroll {
-  height:500px;
-  overflow:auto;  
-  margin-top:20px;
-  
-  margin: 0 auto;
-}
-#table-wrapper table {
-  width:100%;
-
-}
-/*#table-wrapper table * {
-  background:yellow;
-  color:black;
-}*/
-
-#table-wrapper table thead th .text {
-  position:absolute;   
-  top:-20px;
-  z-index:2;
-  height:20px;
-  width:35%;
-  border:1px solid red;
-
-}
-	
-</style>
 </def>
-
-    <h1 style='color: #5F6062; font-size: 23pt; font-weight: bold; font-family: Arial;'>Metric Library Editor</h1>
-
+<div id="header" class="frame">
+    <div id="header-text"><h1 style='color: #FFFFFF; font-size: 23pt; font-weight: bold; font-family: Arial;'>Metric Library Editor</h1></div>
+</div>
     <!--div id="table-wrapper" border="1px"-->
     <div id="table-scroll">
 	<table id="tabledata" class="table table-bordered table-striped" >
@@ -347,15 +300,73 @@
 			<td>MetricTags</td>
         </tr>
     </table>
-    </div>
+</div>
     <!--/div-->
+<div id="footer">
+  <div id="button-bar">
+    <button class="lui-button  lui-button--toolbar-inverse" onclick="adddata()">Add Metric</button>
+    <button class="lui-button" onclick="deletedata()">Delete Metric</button>
+    <button class="lui-button  lui-button--toolbar-inverse" onclick="updateMasterLib()" id="dialog">Update Master Libraries</button>
+<div class="dialog-content" style="display: none;" contenteditable="true">
+    <div class="lui-dialog  lui-dialog--inverse" style="width: 600px;">
+        <div class="lui-dialog__header">
+            <div class="lui-dialog__title">Status</div>
+        </div>
+        <div class="lui-dialog__body">
+            ... loading ... please wait.
+        </div>
+        <div class="lui-dialog__footer">
+            <button class="lui-button  lui-button--inverse  close-button">OK</button>
+        </div>
+    </div>
+</div>
 
-    <br>
-    <button class="btn btn-primary" onclick="adddata()">Add Metric</button>
-    <button class="btn btn-warning" onclick="deletedata()">Delete Metric</button>
-    <button class="btn btn-info" onclick="alert('For demo purposes only.  This editor provides an interface to create an edit metrics outside of Qlik that would subsequently be read in by other processes.')">About</button>
-    <button class="btn btn-success" onclick="updateMasterLib()">Update Master Libraries</button>    
+    <button class="lui-button  lui-button--toolbar-inverse" id="dialog">About</button>
+<div class="dialog-content" style="display: none;">
+    <div class="lui-dialog  lui-dialog--inverse" style="width: 600px;">
+        <div class="lui-dialog__header">
+            <div class="lui-dialog__title">Usage</div>
+        </div>
+        <div class="lui-dialog__body">
+            For demo purposes only.  This editor provides an interface to create an edit metrics outside of Qlik that would subsequently be read in by other processes.
+        </div>
+        <div class="lui-dialog__footer">
+            <button class="lui-button  lui-button--inverse  close-button">OK</button>
+        </div>
+    </div>
+</div>
 
+
+      
+</div>
+</div>
+
+
+<script>
+        var dialogTriggers = document.querySelectorAll( "#dialog" );
+    dialogTriggers = [].slice.apply( dialogTriggers ); // convert to array
+    dialogTriggers.forEach( function ( element ) {
+        element.addEventListener( "click", function() {
+            var dialog = leonardoui.dialog( {
+                content: element.nextElementSibling.innerHTML,
+                shadow: true,
+                closeOnEscape: true
+            } );
+            // Dialog was shown
+            var closeButton = dialog.element.querySelectorAll( ".close-button" )[0];
+            closeButton.focus();
+            closeButton.addEventListener( "click", function() {
+                dialog.close();
+            } );
+        } );
+    } );
+</script>
+
+
+
+<script src="js/leonardo-ui.js"></script>
+
+<script src="js/prism.js"></script>
 
 	
 </body>
