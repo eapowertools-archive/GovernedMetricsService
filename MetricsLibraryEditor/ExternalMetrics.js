@@ -18,8 +18,8 @@ app.configure(function () {
     app.use(express.bodyParser());
 	app.use(express.cookieParser('Test'));
 	app.use(express.session());
-    app.use(app.router);
-
+  app.use(app.router);
+  app.use(express.static('C:\\Program Files\\Qlik\\Sense\\ServiceDispatcher\\Node\\Metrics-Library-Editor\\public'));
 });
 
 app.get("/", function (req, res) {

@@ -1,0 +1,41 @@
+#header {
+   position:fixed;
+   left:0px;
+   top:0px;
+   height:50px;
+   width:100%;
+   background: #595959;
+}
+
+#header-text {
+  position: relative;
+  top: 10%;
+  left:30px;
+  transform: translateY(-50%);
+}
+
+#table {
+   position:fixed;
+   left:0px;
+   top:50px;
+   bottom:50px;
+   width: 100%;
+  overflow-y: scroll;
+  overflow-x: hidden;
+}
+
+#footer {
+   position:fixed;
+   left:0px;
+   bottom:0px;
+   height:50px;
+   width:100%;
+   background: #8C8C8C;
+}
+
+#button-bar {
+  position: relative;
+  top: 50%;
+  left:10px;
+  transform: translateY(-50%);
+}
