@@ -98,7 +98,7 @@ var updateMetrics =
 							//console.log(objId + ' : ' + index);
 							if(item[3].qText==subjectArea)
 							{
-								popMeas.popMeas(x.app, ownerId, item)
+								popMeas.popMeas(x.app, appId, ownerId, item)
 								.then(function(q)
 								{
 									logger.info('updateMetrics::' + q, {module: 'updateMetrics'});

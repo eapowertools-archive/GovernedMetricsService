@@ -87,7 +87,7 @@ var qrsInteract =
 			{
 				if(sCode==200 || sCode==201)
 				{
-					logger.info('post::Response from QRS::' + JSON.parse(data), {module: 'qrsinteraction'});
+					logger.info('post::Response from QRS::' + JSON.stringify(data), {module: 'qrsinteraction'});
 					resolve(JSON.parse(data));
 				}
 				else
@@ -95,6 +95,74 @@ var qrsInteract =
 					logger.error('post::Error at qrsinteractions during post::' + sCode+ '::' + data, {module: 'qrsinteraction'});
 					reject("Received error code: " + sCode + '::' + data);
 				}
+			});
+		});
+	},
+	put: function(path,body)
+	{
+		return new Promise(function(resolve, reject)
+		{
+			logger.info('put::running QRSInteract.put', {module: 'qrsinteraction'});
+			var sCode;
+			var r=qrsInteract.defaults;
+			logger.debug('put::json.stringify body: ' + JSON.stringify(body), {module: 'qrsinteraction'});
+			r({
+				url:path,
+				method: 'PUT',
+				body: body
+			})
+			.on('response', function(response, body)
+			{
+				sCode = response.statusCode;
+				if(sCode==204)
+				{
+					logger.info('put::Put successful ' + sCode, {module: 'qrsinteraction'});
+					resolve(sCode);
+				}
+				else
+				{
+					logger.error('put::returned status code ' + sCode, {module: 'qrsinteraction'});
+					reject(sCode)
+				}
+			})
+			.on('error', function(err)
+			{
+				logger.error('put::Error at qrsinteractions during put::' + err, {module: 'qrsinteraction'});
+			});
+		})
+	},
+	delete: function(path)
+	{
+		return new Promise(function(resolve, reject)
+		{
+			logger.debug('delete::running QRSInteract.delete', {module: 'qrsinteraction'});
+			logger.debug('delete::PATH to run::' + path, {module: 'qrsinteraction'});
+
+			var sCode;
+			var r = qrsInteract.defaults;
+
+			r({
+				url: path,
+				method: 'DELETE'
+			})
+			.on('response', function(response)
+			{
+				sCode = response.statusCode;
+				logger.info('delete::Response from QRS::' + sCode, {module: 'qrsinteraction'});
+					
+				if(sCode==204)
+				{
+					resolve(sCode);
+				}
+				else
+				{
+					logger.error('delete::Error at qrsinteractions during delete::' + sCode, {module: 'qrsinteraction'});
+					reject("Received error code: " + sCode);
+				}
+			})
+			.on('error', function(error)
+			{
+				logger.error(error , {module: 'qrsinteraction'});
 			});
 		});
 	}
