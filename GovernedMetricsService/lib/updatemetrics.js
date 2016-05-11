@@ -68,7 +68,7 @@ var updateMetrics =
 			resolve(qConfig2);
 		});
 	},
-	updateMetrics : function(cookies, appId, data, subjectArea)
+	updateMetrics : function(cookies, appId, ownerId, data, subjectArea)
 	{
 		return new Promise(function(resolve, reject)
 		{
@@ -98,7 +98,7 @@ var updateMetrics =
 							//console.log(objId + ' : ' + index);
 							if(item[3].qText==subjectArea)
 							{
-								popMeas.popMeas(x.app, item)
+								popMeas.popMeas(x.app, appId, ownerId, item)
 								.then(function(q)
 								{
 									logger.info('updateMetrics::' + q, {module: 'updateMetrics'});

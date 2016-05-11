@@ -118,7 +118,7 @@ var doWork = {
 									
 									logger.info('updateAll::current subjectarea::' + subjectArea, {module: 'doWork'});
 									var val = subjectArea;
-									var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app"
+									var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full"
 									path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
 									path += config.customPropName + "' and customProperties.value eq '" + val + "'";
 									logger.info('updateAll::qrsInteract.get::' + path, {module: 'doWork'});
@@ -149,8 +149,9 @@ var doWork = {
 											result.forEach(function(item, index, array)
 											{
 												resultItems++;
-												logger.info('updateAll::updateMetrics on ' + item.name, {module: 'doWork'});
-												updateMetrics.updateMetrics(x.cookies, item.id, y.matrix, val)
+												logger.info('updateAll::updateMetrics on ' + item.name + ', currently owned by ' + 
+														item.owner.userDirectory + '\\' + item.owner.userId, {module: 'doWork'});
+												updateMetrics.updateMetrics(x.cookies, item.id, item.owner.id, y.matrix, val)
 												.then(function(outcome)
 												{
 													logger.info('updateAll::' + outcome.result + '::' + item.name, {module: 'doWork'});	

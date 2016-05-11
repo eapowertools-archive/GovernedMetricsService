@@ -1,6 +1,7 @@
 var Promise = require('Bluebird');
 var winston = require('winston');
 var config = require('../config/config');
+var qrsCO = require('./qrsChangeOwner');
 
 //set up logging
 var logger = new (winston.Logger)({
@@ -13,7 +14,7 @@ var logger = new (winston.Logger)({
 
 var popMeasures =
 {
-	popMeas: function(app, data)
+	popMeas: function(app, appId, ownerId, data)
 	{
 		return new Promise(function(resolve)
 		{
@@ -52,7 +53,15 @@ var popMeasures =
 								.then(function()
 								{
 									logger.info('popMeas::Created Dimension ' + data[2].qtext, {module: 'popMeasures'});
-									resolve('Created Dimension: ' + data[2].qtext);
+									qrsCO.changeOwner(appId, objId,ownerId)
+									.then(function()
+									{
+										resolve('Created Dimension: ' + data[2].qtext);
+									})
+									.catch(function(error)
+									{
+										reject(error);
+									});									
 								})
 								.catch(function(error)
 								{
@@ -82,7 +91,15 @@ var popMeasures =
 							.then(function()
 							{
 								logger.info('popMeas::Updated Dimension ' + data[2].qText, {module: 'popMeasures'});
-								resolve('Updated Dimension: ' + data[2].qText);
+								qrsCO.changeOwner(appId, objId,ownerId)
+								.then(function()
+								{
+									resolve('Updated Dimension: ' + data[2].qText);
+								})
+								.catch(function(error)
+								{
+									reject(error);
+								});
 							})
 							.catch(function(error)
 							{
@@ -124,7 +141,15 @@ var popMeasures =
 								.then(function()
 								{
 									logger.info('popMeas::Created Measure ' + data[2].qText, {module: 'popMeasures'});
-									resolve('Created Measure: ' + data[2].qText);
+									qrsCO.changeOwner(appId, objId,ownerId)
+									.then(function()
+									{
+										resolve('Created Measure: ' + data[2].qText);
+									})
+									.catch(function(error)
+									{
+										reject(error);
+									});
 								})
 								.catch(function(error)
 								{
@@ -155,7 +180,15 @@ var popMeasures =
 							.then(function()
 							{
 								logger.info('popMeas::Updated Measure ' + data[2].qText, {module: 'popMeasures'});
-								resolve('Updated Measure: ' + data[2].qText);
+								qrsCO.changeOwner(appId, objId,ownerId)
+								.then(function()
+								{
+									resolve('Updated Measure: ' + data[2].qText);
+								})
+								.catch(function(error)
+								{
+									reject(error);
+								});
 							})
 							.catch(function(error)
 							{
