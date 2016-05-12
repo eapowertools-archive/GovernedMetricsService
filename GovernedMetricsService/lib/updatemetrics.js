@@ -39,7 +39,7 @@ var updateMetrics =
 
 			if(subjectAreas.length > 0)
 			{
-				logger.info('Returning getSubjectAreas', {module: 'updateMetrics'});
+				logger.debug('Returning getSubjectAreas', {module: 'updateMetrics'});
 				resolve(subjectAreas);
 			}
 			else
@@ -81,7 +81,6 @@ var updateMetrics =
 			updateMetrics.config(appId)
 			.then(function(qConfig)
 			{
-				logger.info('updateMetrics::in application::' + appId, {module: 'updateMetrics'});
 				qsocks.Connect(qConfig)
 				.then(function(global)
 				{
@@ -90,7 +89,7 @@ var updateMetrics =
 					global.openDoc(appId,'','','',true)
 					.then(function(app)
 					{
-						logger.info('updateMetrics::' + appId + ' opened without data', {module: 'updateMetrics'});
+						logger.debug('updateMetrics::' + appId + ' opened without data', {module: 'updateMetrics'});
 						x.app = app;
 						console.log('data length: ' + data.length);
 						var dataCount = 0;
@@ -105,7 +104,6 @@ var updateMetrics =
 								popMeas.popMeas(x.app, appId, ownerId, item)
 								.then(function(q)
 								{
-									logger.info('updateMetrics::' + q, {module: 'updateMetrics'});
 									logger.debug('updateMetrics::' + objId + ' complete', {module: 'updateMetrics'});
 									//add logging that the item has been udpated.	
 								})

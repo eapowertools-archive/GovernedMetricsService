@@ -21,11 +21,11 @@ var getDocId =
 			logger.info('getDocId::running getdoc.getDocId', {module: 'getdocid'});
 			var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app"
 			path += "?xrfkey=ABCDEFG123456789&filter=name eq '" + appName + "'";
-			logger.info('getDocId::qrsInteract::' + path, {module: 'getdocid'});
+			logger.debug('getDocId::qrsInteract::' + path, {module: 'getdocid'});
 			qrsInteract.get(path)
 			.then(function(result)
 			{
-				logger.info('getDocId::qrsInteract::' + appName + ' id:' + result[0].id, {module: 'getdocid'});
+				logger.debug('getDocId::qrsInteract::' + appName + ' id:' + result[0].id, {module: 'getdocid'});
 				resolve(result[0].id);
 			})
 			.catch(function(error)

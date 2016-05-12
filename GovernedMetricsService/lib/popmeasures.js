@@ -32,15 +32,15 @@ var popMeasures =
 			var boolPublishedApp = popMeasures.isAppPublished(app);
 			if(boolPublishedApp)
 			{
-				logger.info('popMeas::App is published.', {module: 'popMeasures'});
+				logger.info('popMeas::App ' + appId + ' is published.', {module: 'popMeasures'});
 			}
 			else
 			{
-				logger.info('popMeas::App is not published.', {module: 'popMeasures'});				
+				logger.info('popMeas::App ' + appId + ' is not published.', {module: 'popMeasures'});				
 			}
 
 			var objId = data[3].qText.toLowerCase() + '_' + data[0].qText;
-			logger.info('popMeas::Calling popMeas for ' + objId, {module: 'popMeasures'});
+			logger.debug('popMeas::Calling popMeas for ' + objId, {module: 'popMeasures'});
 			
 			
 			if(data[1].qText.toLowerCase()=='dimension')
@@ -64,7 +64,7 @@ var popMeasures =
 									ready.publish()
 									.then(function()
 									{
-										logger.info('popMeas::Created Dimension ' + data[2].qtext, {module: 'popMeasures'});
+										logger.debug('popMeas::Created Dimension ' + data[2].qtext, {module: 'popMeasures'});
 										popMeasures.changeOwner(appId,objId,ownerId)
 										.then(function(result)
 										{
@@ -126,7 +126,7 @@ var popMeasures =
 								result.publish()
 								.then(function()
 								{
-									logger.info('popMeas::Updated Dimension ' + data[2].qText, {module: 'popMeasures'});
+									logger.debug('popMeas::Updated Dimension ' + data[2].qText, {module: 'popMeasures'});
 									popMeasures.changeOwner(appId,objId,ownerId)
 									.then(function(result)
 									{
@@ -196,7 +196,7 @@ var popMeasures =
 									ready.publish()
 									.then(function()
 									{
-										logger.info('popMeas::Created Measure ' + data[2].qText, {module: 'popMeasures'});
+										logger.debug('popMeas::Created Measure ' + data[2].qText, {module: 'popMeasures'});
 										popMeasures.changeOwner(appId,objId,ownerId)
 										.then(function(result)
 										{
@@ -256,7 +256,7 @@ var popMeasures =
 								result.publish()
 								.then(function()
 								{
-									logger.info('popMeas::Updated Measure ' + data[2].qText, {module: 'popMeasures'});
+									logger.debug('popMeas::Updated Measure ' + data[2].qText, {module: 'popMeasures'});
 									qrsCO.changeOwner(appId, objId,ownerId)
 									.then(function()
 									{

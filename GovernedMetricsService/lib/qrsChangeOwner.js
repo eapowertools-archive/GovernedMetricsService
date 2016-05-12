@@ -27,7 +27,7 @@ var changeOwner =
             qrsInteract.post(postPath)
             .then(function(result)
             {
-                logger.info('qrsChangeOwner:: Selection on app.object ' + objectId + ' created.  ' + JSON.stringify(result), {module: 'qrsChangeOwner'});
+                logger.debug('qrsChangeOwner:: Selection on app.object ' + objectId + ' created.  ' + JSON.stringify(result), {module: 'qrsChangeOwner'});
                 x.id = result.id;
                 var body =
                 {
@@ -49,14 +49,14 @@ var changeOwner =
                 .then(function()
                 {
                     //added the value
-                    logger.info('qrsChangeOwner::Changed ownership of ' + objectId + ' to user ' + ownerId, {module: 'qrsChangeOwner'});
+                    logger.debug('qrsChangeOwner::Changed ownership of ' + objectId + ' to user ' + ownerId, {module: 'qrsChangeOwner'});
                     var deletePath =  "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection/" + x.id;
                     deletePath += "/?xrfkey=ABCDEFG123456789";
                     logger.debug(x.id, {module: 'qrsChangeOwner'});
                     qrsInteract.delete(deletePath)
                     .then(function(result)
                     {
-                        logger.info('qrsChangeOwner::Deleting selection for ownership change.' + result, {module: 'qrsChangeOwner'});
+                        logger.debug('qrsChangeOwner::Deleting selection for ownership change.' + result, {module: 'qrsChangeOwner'});
                         resolve();
                     })
                     .catch(function(error)

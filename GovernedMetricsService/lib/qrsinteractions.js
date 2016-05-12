@@ -36,7 +36,7 @@ var qrsInteract =
 	{
 		return new Promise(function(resolve, reject)
 		{
-			logger.info('get::running QRSInteract.get', {module: 'qrsinteraction'});
+			logger.debug('get::running QRSInteract.get', {module: 'qrsinteraction'});
 			logger.debug('get::PATH to run::' + path, {module: 'qrsinteraction'});
 
 
@@ -67,7 +67,7 @@ var qrsInteract =
 	{
 		return new Promise(function(resolve, reject)
 		{
-			logger.info('post::running QRSInteract.post', {module: 'qrsinteraction'});
+			logger.debug('post::running QRSInteract.post', {module: 'qrsinteraction'});
 			var sCode;
 			var r=qrsInteract.defaults;
 			r({
@@ -87,7 +87,7 @@ var qrsInteract =
 			{
 				if(sCode==200 || sCode==201)
 				{
-					logger.info('post::Response from QRS::' + JSON.stringify(data), {module: 'qrsinteraction'});
+					logger.debug('post::Response from QRS::' + JSON.stringify(data), {module: 'qrsinteraction'});
 					resolve(JSON.parse(data));
 				}
 				else
@@ -116,7 +116,7 @@ var qrsInteract =
 				sCode = response.statusCode;
 				if(sCode==204)
 				{
-					logger.info('put::Put successful ' + sCode, {module: 'qrsinteraction'});
+					logger.debug('put::Put successful ' + sCode, {module: 'qrsinteraction'});
 					resolve(sCode);
 				}
 				else
@@ -148,7 +148,7 @@ var qrsInteract =
 			.on('response', function(response)
 			{
 				sCode = response.statusCode;
-				logger.info('delete::Response from QRS::' + sCode, {module: 'qrsinteraction'});
+				logger.debug('delete::Response from QRS::' + sCode, {module: 'qrsinteraction'});
 					
 				if(sCode==204)
 				{
