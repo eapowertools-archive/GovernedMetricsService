@@ -5,6 +5,7 @@ var config = require('../config/config');
 var hypercube = require('./setCubeDims');
 var getdoc = require('./getdocid');
 var winston = require('winston');
+var fs = require('fs');
 
 //set up logging
 var logger = new (winston.Logger)({
@@ -18,7 +19,7 @@ var logger = new (winston.Logger)({
 
 var getMetricsHyperCube = 
 {
-	getMetricsTable: function(cookies)
+	getMetricsTable: function()
 	{
 		return new Promise(function(resolve, reject)
 		{
@@ -27,14 +28,17 @@ var getMetricsHyperCube =
 			
 			var qConfig = {
 				host: config.hostname,
+				port: config.enginePort,
 				origin: 'https://' + config.hostname,
 				isSecure: true,
 				rejectUnauthorized: false,
 				headers: {
 					'Content-Type' : 'application/json',
 					'x-qlik-xrfkey' : 'abcdefghijklmnop',
-					'Cookie': cookies[0]
+					'X-Qlik-User': config.repoAccount
 				},
+				key: fs.readFileSync(config.certificates.client_key),
+				cert: fs.readFileSync(config.certificates.client),
 				appname: null
 			};
 			var x = {};

@@ -29,9 +29,19 @@ var popMeasures =
 			tags.push(data[3].qText);
 			tags.push(data[3].qText.toLowerCase() + '_' + data[0].qText);
 
+			var boolPublishedApp = popMeasures.isAppPublished(app);
+			if(boolPublishedApp)
+			{
+				logger.info('popMeas::App is published.', {module: 'popMeasures'});
+			}
+			else
+			{
+				logger.info('popMeas::App is not published.', {module: 'popMeasures'});				
+			}
+
 			var objId = data[3].qText.toLowerCase() + '_' + data[0].qText;
-			
 			logger.info('popMeas::Calling popMeas for ' + objId, {module: 'popMeasures'});
+			
 			
 			if(data[1].qText.toLowerCase()=='dimension')
 			{
@@ -45,35 +55,60 @@ var popMeasures =
 						app.createDimension(dim)
 						.then(function()
 						{
-							
 							app.getDimension(objId)
 							.then(function(ready)
 							{
-								ready.publish()
-								.then(function()
+								//Only run this if the app is published.
+								if(boolPublishedApp)
 								{
-									logger.info('popMeas::Created Dimension ' + data[2].qtext, {module: 'popMeasures'});
-									qrsCO.changeOwner(appId, objId,ownerId)
+									ready.publish()
 									.then(function()
 									{
-										resolve('Created Dimension: ' + data[2].qtext);
+										logger.info('popMeas::Created Dimension ' + data[2].qtext, {module: 'popMeasures'});
+										popMeasures.changeOwner(appId,objId,ownerId)
+										.then(function(result)
+										{
+											if(result)
+											{
+												resolve('Created Dimension: ' + data[2].qtext);										
+											}
+										})
+										.catch(function(error)
+										{
+											reject(new Error(error));
+										});
 									})
 									.catch(function(error)
 									{
-										reject(error);
-									});									
-								})
-								.catch(function(error)
+										logger.error('popMeas::publish::' + error, {module: 'popMeasures'});
+										reject(new Error(error));
+									});
+								}
+								else
 								{
-									logger.error('popMeas::publish::' + error, {module: 'popMeasures'});
-									reject(new Error(error));
-								});
+									popMeasures.changeOwner(appId,objId,ownerId)
+									.then(function(result)
+									{
+										if(result)
+										{
+											resolve('Created Dimension: ' + data[2].qtext);										
+										}
+									})
+									.catch(function(error)
+									{
+										reject(new Error(error));
+									});
+								}
 							})
 							.catch(function(error)
 							{
 								logger.error('popMeas::getDimension::' + error, {module: 'popMeasures'});
 								reject(new Error(error));
 							});
+						})
+						.then(function()
+						{
+							
 						})
 						.catch(function(error)
 						{
@@ -86,26 +121,46 @@ var popMeasures =
 						result.setProperties(dim)
 						.then(function(ready)
 						{
-							
-							result.publish()
-							.then(function()
+							if(boolPublishedApp)
 							{
-								logger.info('popMeas::Updated Dimension ' + data[2].qText, {module: 'popMeasures'});
-								qrsCO.changeOwner(appId, objId,ownerId)
+								result.publish()
 								.then(function()
 								{
-									resolve('Updated Dimension: ' + data[2].qText);
+									logger.info('popMeas::Updated Dimension ' + data[2].qText, {module: 'popMeasures'});
+									popMeasures.changeOwner(appId,objId,ownerId)
+									.then(function(result)
+									{
+										if(result)
+										{
+											resolve('Created Dimension: ' + data[2].qtext);										
+										}
+									})
+									.catch(function(error)
+									{
+										reject(new Error(error));
+									})
 								})
 								.catch(function(error)
 								{
-									reject(error);
+									logger.error('popMeas::publish::' + error, {module: 'popMeasures'});
+									reject(new Error(error));
 								});
-							})
-							.catch(function(error)
+							}
+							else
 							{
-								logger.error('popMeas::publish::' + error, {module: 'popMeasures'});
-								reject(new Error(error));
-							});
+								popMeasures.changeOwner(appId,objId,ownerId)
+								.then(function(result)
+								{
+									if(result)
+									{
+										resolve('Created Dimension: ' + data[2].qtext);										
+									}
+								})
+								.catch(function(error)
+								{
+									reject(new Error(error));
+								})	
+							}
 						})
 						.catch(function(error)
 						{
@@ -133,29 +188,49 @@ var popMeasures =
 						app.createMeasure(meas)
 						.then(function(ready)
 						{
-							
 							app.getMeasure(objId)
 							.then(function(ready)
 							{
-								ready.publish()
-								.then(function()
+								if(boolPublishedApp)
 								{
-									logger.info('popMeas::Created Measure ' + data[2].qText, {module: 'popMeasures'});
-									qrsCO.changeOwner(appId, objId,ownerId)
+									ready.publish()
 									.then(function()
 									{
-										resolve('Created Measure: ' + data[2].qText);
+										logger.info('popMeas::Created Measure ' + data[2].qText, {module: 'popMeasures'});
+										popMeasures.changeOwner(appId,objId,ownerId)
+										.then(function(result)
+										{
+											if(result)
+											{
+												resolve('Created Measure: ' + data[2].qText);										
+											}
+										})
+										.catch(function(error)
+										{
+											reject(new Error(error));
+										})
 									})
 									.catch(function(error)
 									{
-										reject(error);
+										logger.error('popMeas::Publish::' + error, {module: 'popMeasures'});
+										reject(new Error(error));
 									});
-								})
-								.catch(function(error)
+								}
+								else
 								{
-									logger.error('popMeas::Publish::' + error, {module: 'popMeasures'});
-									reject(new Error(error));
-								});
+									popMeasures.changeOwner(appId,objId,ownerId)
+									.then(function(result)
+									{
+										if(result)
+										{
+											resolve('Created Measure: ' + data[2].qText);										
+										}
+									})
+									.catch(function(error)
+									{
+										reject(new Error(error));
+									})
+								}
 							})
 							.catch(function(error)
 							{
@@ -176,25 +251,54 @@ var popMeasures =
 						result.setProperties(meas)
 						.then(function(ready)
 						{
-							result.publish()
-							.then(function()
+							if(boolPublishedApp)
 							{
-								logger.info('popMeas::Updated Measure ' + data[2].qText, {module: 'popMeasures'});
-								qrsCO.changeOwner(appId, objId,ownerId)
+								result.publish()
 								.then(function()
 								{
-									resolve('Updated Measure: ' + data[2].qText);
+									logger.info('popMeas::Updated Measure ' + data[2].qText, {module: 'popMeasures'});
+									qrsCO.changeOwner(appId, objId,ownerId)
+									.then(function()
+									{
+										popMeasures.changeOwner(appId,objId,ownerId)
+										.then(function(result)
+										{
+											if(result)
+											{
+												resolve('Created Measure: ' + data[2].qText);										
+											}
+										})
+										.catch(function(error)
+										{
+											reject(new Error(error));
+										})
+									})
+									.catch(function(error)
+									{
+										reject(error);
+									});
 								})
 								.catch(function(error)
 								{
-									reject(error);
-								});
-							})
-							.catch(function(error)
+									logger.error('popMeas::Publish::' + error, {module: 'popMeasures'});
+									reject(new Error(error));
+								});								
+							}
+							else
 							{
-								logger.error('popMeas::Publish::' + error, {module: 'popMeasures'});
-								reject(new Error(error));
-							});
+								popMeasures.changeOwner(appId,objId,ownerId)
+								.then(function(result)
+								{
+									if(result)
+									{
+										resolve('Created Measure: ' + data[2].qText);										
+									}
+								})
+								.catch(function(error)
+								{
+									reject(new Error(error));
+								})
+							}
 						})
 						.catch(function(error)
 						{
@@ -210,6 +314,28 @@ var popMeasures =
 				});
 			}
 		});
+	},
+	isAppPublished: function(app)
+	{
+		app.getAppLayout().then(function(appLayout)
+		{
+			return appLayout.published;
+		});
+	},
+	changeOwner: function(appId, objId, ownerId)
+	{
+		return new Promise(function(resolve)
+		{
+			qrsCO.changeOwner(appId, objId, ownerId)
+			.then(function()
+			{
+				resolve(true)
+			})
+			.catch(function(error)
+			{
+				reject(error);
+			});
+		})
 	},
 	meas: function(data,tags)
 	{

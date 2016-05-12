@@ -1,4 +1,3 @@
-var qsocks = require('qsocks');
 var Promise = require('bluebird')
 var config = require('../config/config');
 var getdoc = require('./getdocid');
@@ -46,30 +45,25 @@ var doWork = {
 			logger.info('deleteAll::Calling deleteAll', {module: 'doWork'});
 			var message;
 			var x = {};
-			login.login()
-			.then(function(cookies)
+			
+			getdoc.getDocId(appname.appname)
+			.then(function(doc)
 			{
-				x.cookies = cookies;
-				getdoc.getDocId(appname.appname)
-				.then(function(doc)
+				deleteMetrics.deleteAllMasterItems(doc)
+				.then(function(result)
 				{
-					deleteMetrics.deleteAllMasterItems(x.cookies, doc)
-					.then(function(result)
+					var res = 
 					{
-						var res = 
-						{
-							result: result.result,
-							cookies: x.cookies
-						};
-						//result.engine.connection.ws.terminate();
-						logger.info('deleteAll success', {module: 'doWork'});
-						resolve(res);
-					})
-					.catch(function(error)
-					{
-						logger.error('deleteAll failure::' + JSON.stringify(error), {module: 'doWork'});
-						reject(error);
-					});
+						result: result.result
+					};
+					//result.engine.connection.ws.terminate();
+					logger.info('deleteAll success', {module: 'doWork'});
+					resolve(res);
+				})
+				.catch(function(error)
+				{
+					logger.error('deleteAll failure::' + JSON.stringify(error), {module: 'doWork'});
+					reject(error);
 				});
 			})
 			.catch(function(error)
@@ -97,107 +91,86 @@ var doWork = {
 				{
 					logger.info('updateAll::Found ' + customProp[0].name + ' in list of custom properties', {module: 'doWork'});
 					var x = {};
-					login.login()
-					.then(function(cookies)
+					
+					var y = {};
+					logger.info('updateAll::getMetricsTable', {module: 'doWork'});
+					gethypercube.getMetricsTable()
+					.then(function(matrix)
 					{
-						x.cookies = cookies;
-						var y = {};
-						logger.info('updateAll::getMetricsTable', {module: 'doWork'});
-						gethypercube.getMetricsTable(cookies)
-						.then(function(matrix)
+						y.matrix = matrix;
+						logger.info('updateAll::getSubjectAreas', {module: 'doWork'});
+						updateMetrics.getSubjectAreas(y.matrix, 3)
+						.then(function(subjectAreas)
 						{
-							y.matrix = matrix;
-							logger.info('updateAll::getSubjectAreas', {module: 'doWork'});
-							updateMetrics.getSubjectAreas(y.matrix, 3)
-							.then(function(subjectAreas)
+							logger.debug('updateAll::subjectAreas:' + JSON.stringify(subjectAreas), {module: 'doWork'});
+							console.log('array length: ' + subjectAreas.length)
+							subjectAreas.forEach(function(subjectArea,index, array)
 							{
-								logger.debug('updateAll::subjectAreas:' + JSON.stringify(subjectAreas), {module: 'doWork'});
-								console.log('array length: ' + subjectAreas.length)
-								subjectAreas.forEach(function(subjectArea,index, array)
+								
+								logger.info('updateAll::current subjectarea::' + subjectArea, {module: 'doWork'});
+								var val = subjectArea;
+								var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full"
+								path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
+								path += config.customPropName + "' and customProperties.value eq '" + val + "'";
+								logger.info('updateAll::qrsInteract.get::' + path, {module: 'doWork'});
+								qrsInteract.get(path)
+								.then(function(result)
 								{
 									
-									logger.info('updateAll::current subjectarea::' + subjectArea, {module: 'doWork'});
-									var val = subjectArea;
-									var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full"
-									path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
-									path += config.customPropName + "' and customProperties.value eq '" + val + "'";
-									logger.info('updateAll::qrsInteract.get::' + path, {module: 'doWork'});
-									qrsInteract.get(path)
-									.then(function(result)
+									if(result===undefined || result.length == 0)
 									{
-										
-										if(result===undefined || result.length == 0)
+										logger.info('updateAll::no applications with custom property '+ val, {module: 'doWork'});
+									}
+									else
+									{
+										logger.info('updateAll::applications with custom property '+ val + '::' + JSON.stringify(result), {module: 'doWork'});
+										logger.info('updateAll::result array has ' + result.length + ' entries', {module: 'doWork'});
+										var resultItems = 0;
+										result.forEach(function(item, index, array)
 										{
-											logger.info('updateAll::no applications with custom property '+ val, {module: 'doWork'});
-											/*if(subjectAreasProcessed == array.length)
+											resultItems++;
+											logger.info('updateAll::updateMetrics on ' + item.name + ', currently owned by ' + 
+													item.owner.userDirectory + '\\' + item.owner.userId, {module: 'doWork'});
+											updateMetrics.updateMetrics(item.id, item.owner.id, y.matrix, val)
+											.then(function(outcome)
 											{
-												logger.info('updateAll::no applications with custom properties from ' + config.customPropName, {module: 'doWork'});
-												var res = 
-												{
-													result: 'No Metrics Applied to apps because no apps using custom property ' + config.customPropName,
-													customProperty: config.customPropName,
-													cookies: x.cookies
-												};
-												resolve(res);
-											}*/
-										}
-										else
-										{
-											logger.info('updateAll::applications with custom property '+ val + '::' + JSON.stringify(result), {module: 'doWork'});
-											logger.info('updateAll::result array has ' + result.length + ' entries', {module: 'doWork'});
-											var resultItems = 0;
-											result.forEach(function(item, index, array)
+												logger.info('updateAll::' + outcome.result + '::' + item.name, {module: 'doWork'});	
+											})
+											.then(function()
 											{
-												resultItems++;
-												logger.info('updateAll::updateMetrics on ' + item.name + ', currently owned by ' + 
-														item.owner.userDirectory + '\\' + item.owner.userId, {module: 'doWork'});
-												updateMetrics.updateMetrics(x.cookies, item.id, item.owner.id, y.matrix, val)
-												.then(function(outcome)
+												if(resultItems===result.length)
 												{
-													logger.info('updateAll::' + outcome.result + '::' + item.name, {module: 'doWork'});	
-												})
-												.then(function()
-												{
-													if(resultItems===result.length)
+													var res = 
 													{
-														var res = 
-														{
-															result: 'Metric Application Complete',
-															cookies: x.cookies
-														};
-														resolve(res);
-													}
-												})
-												.catch(function(error)
-												{
-													logger.error('updateAll::' + error, {module: 'doWork'});
-													reject(error);
-												});	
-											});
-										}
-									})
-									.catch(function(error)
-									{
-										logger.error('updateAll::qrsInteract::' + error, {module: 'doWork'});
-										reject(error);
-									});
+														result: 'Metric Application Complete'
+													};
+													resolve(res);
+												}
+											})
+											.catch(function(error)
+											{
+												logger.error('updateAll::' + error, {module: 'doWork'});
+												reject(error);
+											});	
+										});
+									}
+								})
+								.catch(function(error)
+								{
+									logger.error('updateAll::qrsInteract::' + error, {module: 'doWork'});
+									reject(error);
 								});
-							})
-							.catch(function(error)
-							{
-								logger.error('updateAll::getSubjectAreas::' + error, {module: 'doWork'});
-								reject(error);
 							});
 						})
 						.catch(function(error)
 						{
-							logger.error('updateAll::getMetricsTable::' + error, {module: 'doWork'});
+							logger.error('updateAll::getSubjectAreas::' + error, {module: 'doWork'});
 							reject(error);
 						});
 					})
 					.catch(function(error)
 					{
-						logger.error('updateAll::login::' + error, {module: 'doWork'});
+						logger.error('updateAll::getMetricsTable::' + error, {module: 'doWork'});
 						reject(error);
 					});
 				}
@@ -218,31 +191,22 @@ var doWork = {
 		return new Promise(function(resolve, reject)
 		{
 			var x={};
-			login.login()
-			.then(function(cookies)
+			logger.info('reloadMetricsApp::reloadMetrics', {module: 'doWork'});
+			reloadMetrics.reloadMetrics(config.taskName)
+			.then(function(response)
 			{
-				logger.info('reloadMetricsApp::reloadMetrics', {module: 'doWork'});
-				reloadMetrics.reloadMetrics(config.taskName)
-				.then(function(response)
-				{
-					logger.info('reloadMetricsApp success::' + response, {module: 'doWork'});
-					var res = {
-						complete: true,
-						result: response
-					};
-					resolve(res);				
-				})
-				.catch(function(error)
-				{
-					logger.error('reloadMetricsApp::reloadMetrics::' + error, {module: 'doWork'});
-					reject(new Error(error));
-				});	
+				logger.info('reloadMetricsApp success::' + response, {module: 'doWork'});
+				var res = {
+					complete: true,
+					result: response
+				};
+				resolve(res);				
 			})
 			.catch(function(error)
 			{
-				logger.error('reloadMetricsApp::login::' + error, {module: 'doWork'});
+				logger.error('reloadMetricsApp::reloadMetrics::' + error, {module: 'doWork'});
 				reject(new Error(error));
-			});
+			});	
 		});
 	}			
 };

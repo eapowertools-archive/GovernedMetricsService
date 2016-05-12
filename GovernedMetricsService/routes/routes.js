@@ -93,12 +93,8 @@ router.route('/add/all')
 		worker.addAll()
 		.then(function(result)
 		{
-			killsession.logout(result.cookies)
-			.then(function(message)
-			{
-				logger.info('POST add/all success::' + result.result, {module: 'popmasterlib'});
-				response.status(200).json(result.result + '\n' + message);
-			});
+			logger.info('POST add/all success::' + result.result, {module: 'popmasterlib'});
+			response.status(200).json(result.result);
 		})
 		.catch(function(error)
 		{
@@ -116,11 +112,7 @@ router.route('/update/all')
 		.then(function(result)
 		{
 			logger.info('POST update/all success::' + result.result, {module: 'popmasterlib'});
-			killsession.logout(result.cookies)
-			.then(function(message)
-			{
-				response.status(200).json(result.result + '\n' + message);
-			});
+				response.status(200).json(result.result + '\n');
 		})
 		.catch(function(error)
 		{
@@ -137,11 +129,7 @@ router.route('/delete/all')
 		.then(function(result)
 		{
 			logger.info('POST delete/all success::' + result.result, {module: 'popmasterlib'});
-			killsession.logout(result.cookies)
-			.then(function(message)
-			{
-				response.status(200).json(result.result + '\n' + message);
-			});
+			response.status(200).json(result.result + '\n');
 		});
 	});
 
