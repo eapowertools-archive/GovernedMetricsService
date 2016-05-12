@@ -24,11 +24,11 @@ var doWork = {
 	{
 		return new Promise(function(resolve, reject)
 		{
-			logger.info('Calling getDoc', {module: 'doWork'});
+			logger.debug('Calling getDoc', {module: 'doWork'});
 			getdoc.getDocId(body)
 			.then(function(doc)
 			{
-				logger.info('getDoc success', {module: 'doWork'});
+				logger.debug('getDoc success', {module: 'doWork'});
 				resolve(doc);					
 			})
 			.catch(function(error)
@@ -93,12 +93,12 @@ var doWork = {
 					var x = {};
 					
 					var y = {};
-					logger.info('updateAll::getMetricsTable', {module: 'doWork'});
+					logger.debug('updateAll::getMetricsTable', {module: 'doWork'});
 					gethypercube.getMetricsTable()
 					.then(function(matrix)
 					{
 						y.matrix = matrix;
-						logger.info('updateAll::getSubjectAreas', {module: 'doWork'});
+						logger.debug('updateAll::getSubjectAreas', {module: 'doWork'});
 						updateMetrics.getSubjectAreas(y.matrix, 3)
 						.then(function(subjectAreas)
 						{
@@ -112,7 +112,7 @@ var doWork = {
 								var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full"
 								path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
 								path += config.customPropName + "' and customProperties.value eq '" + val + "'";
-								logger.info('updateAll::qrsInteract.get::' + path, {module: 'doWork'});
+								logger.debug('updateAll::qrsInteract.get::' + path, {module: 'doWork'});
 								qrsInteract.get(path)
 								.then(function(result)
 								{
@@ -129,7 +129,7 @@ var doWork = {
 										result.forEach(function(item, index, array)
 										{
 											resultItems++;
-											logger.info('updateAll::updateMetrics on ' + item.name + ', currently owned by ' + 
+											logger.debug('updateAll::updateMetrics on ' + item.name + ', currently owned by ' + 
 													item.owner.userDirectory + '\\' + item.owner.userId, {module: 'doWork'});
 											updateMetrics.updateMetrics(item.id, item.owner.id, y.matrix, val)
 											.then(function(outcome)
@@ -191,11 +191,11 @@ var doWork = {
 		return new Promise(function(resolve, reject)
 		{
 			var x={};
-			logger.info('reloadMetricsApp::reloadMetrics', {module: 'doWork'});
+			logger.debug('reloadMetricsApp::reloadMetrics', {module: 'doWork'});
 			reloadMetrics.reloadMetrics(config.taskName)
 			.then(function(response)
 			{
-				logger.info('reloadMetricsApp success::' + response, {module: 'doWork'});
+				logger.debug('reloadMetricsApp success::' + response, {module: 'doWork'});
 				var res = {
 					complete: true,
 					result: response

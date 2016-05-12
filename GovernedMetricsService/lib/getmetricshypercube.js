@@ -46,7 +46,7 @@ var getMetricsHyperCube =
 			getdoc.getDocId(config.appName)
 			.then(function(doc)
 			{
-				logger.info('getMetricsTable::Metrics Library AppId: ' + doc, {module: 'getmetricshypercube'});
+				logger.debug('getMetricsTable::Metrics Library AppId: ' + doc, {module: 'getmetricshypercube'});
 				qConfig.appname = doc;
 				x.doc = doc;
 				qsocks.Connect(qConfig)
@@ -64,7 +64,7 @@ var getMetricsHyperCube =
 					})
 					.then(function()
 					{
-						logger.info('getMetricsTable::Creating session object', {module: 'getmetricshypercube'});
+						logger.debug('getMetricsTable::Creating session object', {module: 'getmetricshypercube'});
 						return x.app.createSessionObject(cube);
 					})
 					.then(function(obj)

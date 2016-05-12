@@ -90,7 +90,7 @@ function progressCheck(id, callback)
 		else
 		{
 			var reloadStep = reloadProgress[0].executionResult.details.length;
-			logger.info('reloadMetrics::progressCheck::' + reloadProgress[0].executionResult.details[reloadStep-1].message, {module: 'reloadmetrics'});	
+			logger.debug('reloadMetrics::progressCheck::' + reloadProgress[0].executionResult.details[reloadStep-1].message, {module: 'reloadmetrics'});	
 			progressCheck(id,callback);
 		}
 	})
