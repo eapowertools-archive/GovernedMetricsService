@@ -2,6 +2,7 @@ var qsocks = require('qsocks');
 var Promise = require('bluebird');
 var config = require('../config/config');
 var winston = require('winston');
+var fs = require('fs');
 
 //set up logging
 var logger = new (winston.Logger)({
@@ -14,34 +15,37 @@ var logger = new (winston.Logger)({
 
 var deleteMetrics = 
 {
-	config : function(cookies, appId)
+	config : function(appId)
 	{
 		return new Promise(function(resolve)
 		{
 			var qConfig2 =
 			{
 				host: config.hostname,
+				port: config.enginePort,
 				origin: 'https://' + config.hostname,
 				isSecure: true,
 				rejectUnauthorized: false,
 				headers: {
 					'Content-Type' : 'application/json',
 					'x-qlik-xrfkey' : 'abcdefghijklmnop',
-					'Cookie': cookies[0]
+					'X-Qlik-User': config.repoAccount
 				},
+				key: fs.readFileSync(config.certificates.client_key),
+				cert: fs.readFileSync(config.certificates.client),
 				appname: appId
 			};
 			resolve(qConfig2);
 		});
 	},
-	deleteAllMasterItems : function(cookies, appId)
+	deleteAllMasterItems : function(appId)
 	{
 		return new Promise(function(resolve, reject)
 		{
 			logger.info('deleteAllMasterItems::Deleting all MasterItem dimensions and measures from app: ' + appId, {module: 'deletemetrics'});
 			var stuff = {};
 			stuff.appId = appId;
-			deleteMetrics.config(cookies,appId)
+			deleteMetrics.config(appId)
 			.then(function(config)
 			{
 				qsocks.Connect(config)
@@ -127,18 +131,21 @@ var deleteMetrics =
 			});
 		});
 	},
-	deleteAllMasterItemMeasures : function(cookies, appId, callback)
+	deleteAllMasterItemMeasures : function(appId, callback)
 	{
 		var qConfig2 = {
 			host: config.hostname,
+			port: config.enginePort,
 			origin: 'https://' + config.hostname,
 			isSecure: true,
 			rejectUnauthorized: false,
 			headers: {
 				'Content-Type' : 'application/json',
 				'x-qlik-xrfkey' : 'abcdefghijklmnop',
-				'Cookie': cookies[0]
+				'X-Qlik-User': config.repoAccount
 			},
+			key: fs.readFileSync(config.certificates.client_key),
+			cert: fs.readFileSync(config.certificates.client),
 			appname: appId
 		};
 
@@ -193,18 +200,21 @@ var deleteMetrics =
 			}); 
 		});
 	},
-	deleteAllDimensions : function(cookies, appId, callback)
+	deleteAllDimensions : function(appId, callback)
 	{
 		var qConfig2 = {
 			host: config.hostname,
+			port: config.enginePort,
 			origin: 'https://' + config.hostname,
 			isSecure: true,
 			rejectUnauthorized: false,
 			headers: {
 				'Content-Type' : 'application/json',
 				'x-qlik-xrfkey' : 'abcdefghijklmnop',
-				'Cookie': cookies[0]
+				'X-Qlik-User': config.repoAccount
 			},
+			key: fs.readFileSync(config.certificates.client_key),
+			cert: fs.readFileSync(config.certificates.client),
 			appname: appId
 		};
 
@@ -259,11 +269,11 @@ var deleteMetrics =
 			}); 
 		});
 	},
-	deleteMeasure : function(cookies, appId, qId, callback)
+	deleteMeasure : function(appId, qId, callback)
 	{
 
 	},
-	deleteDimension : function(cookies, appId, qId, callback)
+	deleteDimension : function(appId, qId, callback)
 	{
 
 	},

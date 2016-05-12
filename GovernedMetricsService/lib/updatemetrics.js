@@ -4,6 +4,7 @@ var Promise = require('bluebird')
 var config = require('../config/config');
 var winston = require('winston');
 var popMeas = require('./popmeasures');
+var fs = require('fs');
 
 //set up logging
 var logger = new (winston.Logger)({
@@ -48,33 +49,36 @@ var updateMetrics =
 			}			
 		});
 	},
-	config : function(cookies, appId)
+	config : function(appId)
 	{
 		return new Promise(function(resolve)
 		{
 			var qConfig2 =
 			{
 				host: config.hostname,
+				port: config.enginePort,
 				origin: 'https://' + config.hostname,
 				isSecure: true,
 				rejectUnauthorized: false,
 				headers: {
 					'Content-Type' : 'application/json',
 					'x-qlik-xrfkey' : 'abcdefghijklmnop',
-					'Cookie': cookies[0]
+					'X-Qlik-User': config.repoAccount
 				},
+				key: fs.readFileSync(config.certificates.client_key),
+				cert: fs.readFileSync(config.certificates.client),
 				appname: appId
 			};
 			resolve(qConfig2);
 		});
 	},
-	updateMetrics : function(cookies, appId, ownerId, data, subjectArea)
+	updateMetrics : function(appId, ownerId, data, subjectArea)
 	{
 		return new Promise(function(resolve, reject)
 		{
 			logger.info('updateMetrics::Calling updateMetrics on application ' + appId, {module: 'updateMetrics'});
 			var x = {};
-			updateMetrics.config(cookies, appId)
+			updateMetrics.config(appId)
 			.then(function(qConfig)
 			{
 				logger.info('updateMetrics::in application::' + appId, {module: 'updateMetrics'});

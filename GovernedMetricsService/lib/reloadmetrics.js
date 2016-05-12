@@ -1,4 +1,3 @@
-var qsocks = require('qsocks');
 var Promise = require('bluebird');
 var config = require('../config/config');
 var winston = require('winston');
