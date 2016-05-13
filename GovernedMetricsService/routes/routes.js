@@ -6,7 +6,6 @@ var hypercube = require('../lib/setCubeDims');
 var worker = require('../lib/dowork');
 var getdoc = require('../lib/getdocid');
 var gethypercube = require('../lib/getmetricshypercube');
-var killsession = require('../lib/killsession');
 var winston = require('winston');
 var config = require('../config/config');
 
