@@ -4,7 +4,9 @@ var express=require('express');
 var xlsx=require('xlsx');
 var url= require('url');
 
-var ADODB = require('node-adodb'), connection = ADODB.open('Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\\Program Files\\Qlik\\Sense\\ServiceDispatcher\\Node\\Metrics-Library-Editor\\metricsdata\\Metrics.accdb;');
+var instPath = 'C:\\Program Files\\Qlik\\Sense\\ServiceDispatcher\\Node\\MetricsLibraryEditor';
+
+var ADODB = require('node-adodb'), connection = ADODB.open('Provider=Microsoft.ACE.OLEDB.12.0;Data Source=' + instPath + '\\metricsdata\\Metrics.accdb;');
 ADODB.debug = true;
 
 
@@ -19,7 +21,7 @@ app.configure(function () {
 	app.use(express.cookieParser('Test'));
 	app.use(express.session());
   app.use(app.router);
-  app.use(express.static('C:\\Program Files\\Qlik\\Sense\\ServiceDispatcher\\Node\\Metrics-Library-Editor\\public'));
+  app.use(express.static(instPath + '\\public'));
 });
 
 app.get("/", function (req, res) {
@@ -32,7 +34,7 @@ app.get("/", function (req, res) {
   			//data = JSON.stringify(result, null, '  ');
   			data = result.records;
     		console.log('Result:' + JSON.stringify(result, null, '  '));
-        res.sendfile('C:\\Program Files\\Qlik\\Sense\\ServiceDispatcher\\Node\\Metrics-Library-Editor\\Index.htm');
+        res.sendfile(instPath + '\\Index.htm');
   		})
   		.on('fail', function (result)
   		{
