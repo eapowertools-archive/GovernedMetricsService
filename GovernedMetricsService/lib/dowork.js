@@ -189,22 +189,32 @@ var doWork = {
 		return new Promise(function(resolve, reject)
 		{
 			var x={};
-			logger.debug('reloadMetricsApp::reloadMetrics', {module: 'doWork'});
-			reloadMetrics.reloadMetrics(config.taskName)
-			.then(function(response)
+			getdoc.getAppReference(config.appName)
+			.then(function(app)
 			{
-				logger.debug('reloadMetricsApp success::' + response, {module: 'doWork'});
-				var res = {
-					complete: true,
-					result: response
-				};
-				resolve(res);				
+				x.app = app;
+				logger.debug('reloadMetricsApp::reloadMetrics', {module: 'doWork'});
+				reloadMetrics.reloadMetrics(x.app, config.taskName)
+				.then(function(response)
+				{
+					logger.debug('reloadMetricsApp success::' + response, {module: 'doWork'});
+					var res = {
+						complete: true,
+						result: response
+					};
+					resolve(res);				
+				})
+				.catch(function(error)
+				{
+					logger.error('reloadMetricsApp::reloadMetrics::' + error, {module: 'doWork'});
+					reject(new Error(error));
+				});	
+	
 			})
 			.catch(function(error)
 			{
-				logger.error('reloadMetricsApp::reloadMetrics::' + error, {module: 'doWork'});
-				reject(new Error(error));
-			});	
+				logger.error('reloadMetricsApp::getAppReference::' + JSON.stringify(error), {module: 'doWork'});
+			});
 		});
 	}			
 };

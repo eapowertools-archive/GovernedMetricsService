@@ -34,6 +34,27 @@ var getDocId =
 				reject(new Error(error));
 			});
 		});
+	},
+	getAppReference: function(appName)
+	{
+		return new Promise(function(resolve,reject)
+		{
+			logger.info('getDocId::running getAppReference', {module: 'getdocid'});
+			var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app"
+			path += "?xrfkey=ABCDEFG123456789&filter=name eq '" + appName + "'";
+			logger.debug('getDocId::qrsInteract::' + path, {module: 'getdocid'});
+			qrsInteract.get(path)
+			.then(function(result)
+			{
+				logger.debug('getDocId::qrsInteract::' + appName + ' id:' + result[0].id, {module: 'getdocid'});
+				resolve(result[0]);
+			})
+			.catch(function(error)
+			{
+				logger.error('getDocId::qrsInteract::' + error, {module: 'getdocid'});
+				reject(new Error(error));
+			});
+		})
 	}
 };
 
