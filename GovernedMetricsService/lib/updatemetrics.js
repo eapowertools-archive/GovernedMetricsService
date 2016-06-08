@@ -4,6 +4,7 @@ var Promise = require('bluebird')
 var config = require('../config/config');
 var winston = require('winston');
 var popMeas = require('./popmeasures');
+var qrsCO = require('./qrsChangeOwner');
 var fs = require('fs');
 
 //set up logging
@@ -93,40 +94,46 @@ var updateMetrics =
 						x.app = app;
 						console.log('data length: ' + data.length);
 						var dataCount = 0;
-						data.forEach(function(item, index, array)
+						//var reducedData = data.filter(v => v.item[3].qText == subjectArea);
+						var reducedData = data.filter(filterMetrics(subjectArea));
+						logger.debug('Result of reduced Data::' + JSON.stringify(reducedData), {module:'updateMetrics'});
+						popMeas.popMeas(x.app, appId, ownerId, reducedData)
+						.then(function(arrMetrics)
 						{
-							dataCount++
-							var objId = item[3].qText.toLowerCase() + '_' + item[0].qText;
-							logger.debug('updateMetrics::' + objId + ' : ' + index, {module: 'updateMetrics'});
-							//console.log(objId + ' : ' + index);
-							if(item[3].qText==subjectArea)
+							//Once we have done all the creating, 
+							//then we can change all of the owning.
+							qrsCO.getRepoIDs(appId, subjectArea)
+							.then(function(response)
 							{
-								popMeas.popMeas(x.app, appId, ownerId, item)
-								.then(function(q)
-								{
-									logger.debug('updateMetrics::' + objId + ' complete', {module: 'updateMetrics'});
-									//add logging that the item has been udpated.	
-								})
+								qrsCO.changeOwner(appId,response,ownerId)
 								.then(function()
 								{
-									if(dataCount === data.length)
-									{
-										
-										var res = {
-											result: 'finished applying metrics to ' + appId,	
-										};
-										//x.global.connection.ws.terminate();
-										logger.info('updateMetrics::' + appId + ' master library updated', {module: 'updateMetrics'});
-										resolve(res);
-									}
+									logger.info('Change Ownership work complete',{module: 'updateMetrics'});
 								})
 								.catch(function(error)
 								{
-									logger.error('updateMetrics::Failure::' + error, {module: 'updateMetrics'});
-									console.log('Error at updatemetrics during popMeas');
 									reject(new Error(error));
 								});
-							}
+							})
+							.catch(function(error)
+							{
+								reject(new Error(error));
+							});		
+						})
+						.then(function()
+						{
+								var res = {
+									result: 'finished applying metrics to ' + appId	
+								};
+								//x.global.connection.ws.terminate();
+								logger.info('updateMetrics::' + appId + ' master library updated', {module: 'updateMetrics'});
+								resolve(res);
+						})
+						.catch(function(error)
+						{
+							logger.error('updateMetrics::Failure::' + error, {module: 'updateMetrics'});
+							console.log('Error at updatemetrics during popMeas');
+							reject(new Error(error));
 						});
 					})
 					.catch(function(error)
@@ -149,5 +156,13 @@ var updateMetrics =
 		});
 	}
 };
+
+function filterMetrics(subjectArea)
+{
+	return function(obj)
+	{
+		return obj[3].qText == subjectArea;
+	}	
+}
 
 module.exports= updateMetrics;
