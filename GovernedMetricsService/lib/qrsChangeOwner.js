@@ -13,13 +13,58 @@ var logger = new (winston.Logger)({
     ]
 });
 
-var result ='';
+
 var changeOwner = 
 {
-    changeOwner: function(appid, objectId, ownerId)
+    getRepoIDs: function(appId, subjectArea)
+    {
+        var resultArray= [];
+        return new Promise(function(resolve)
+        {
+            var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/object";
+            path +=  "?xrfkey=ABCDEFG123456789&filter=engineObjectId sw '" + subjectArea + "' and app.id eq " + appId;
+            logger.debug('getRepoIDs path::' + path, {module: 'qrsChangeOwner'});
+            qrsInteract.get(path)
+            .then(function(result)
+            {
+                result.forEach(function(item)
+                {
+                   resultArray.push(item.id); 
+                });
+                resolve(resultArray);
+            })
+            .catch(function(error)
+            {
+               reject(error); 
+            });            
+        });
+    },
+    createBody: function(arrObjects)
+    {
+      var resultArray = [];
+      var objCount = 0;
+      arrObjects.forEach(item, index, array)
+      {
+          objCount++;
+          var object = {
+            "type":"App.Object",
+            "objectID": item.id  
+          };
+          resultArray.push(object);
+          if(objCount === array.length)
+          {
+              return {
+                  "items": resultArray
+              }
+          }
+      }
+      
+    },
+    changeOwner: function(appid, arrObjects, ownerId)
     {
         return new Promise(function(resolve)
         {
+            var body = changeOwner.createBody(arrObjects);
             var x = {};
             var postPath = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection/app/object";
             postPath +=  "?xrfkey=ABCDEFG123456789&filter=engineObjectId eq '" + objectId + "' and app.id eq " + appid;
