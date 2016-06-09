@@ -13,117 +13,184 @@ var logger = new (winston.Logger)({
     ]
 });
 
-
-var changeOwner = 
+function inRepo(appId, subjectArea, arrMetrics, attempts, callback)
 {
-    getRepoIDs: function(appId, subjectArea)
+    if(attempts <= config.repoAttempts)
     {
-        var resultArray= [];
-        return new Promise(function(resolve)
+        attempts++;
+        logger.debug('getRepoIDs attempt ' + attempts, {module: 'qrsChangeOwner'});
+        var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/object";
+        path +=  "?xrfkey=ABCDEFG123456789&filter=engineObjectId sw '" + subjectArea + "' and app.id eq " + appId;
+        logger.debug('getRepoIDs path::' + path, {module: 'qrsChangeOwner'});
+        
+        qrsInteract.get(path)
+        .then(function(result)
         {
-            var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/object";
-            path +=  "?xrfkey=ABCDEFG123456789&filter=engineObjectId sw '" + subjectArea + "' and app.id eq " + appId;
-            logger.debug('getRepoIDs path::' + path, {module: 'qrsChangeOwner'});
-            qrsInteract.get(path)
-            .then(function(result)
+            if(result.length==arrMetrics.length)
             {
-                result.forEach(function(item)
-                {
-                   resultArray.push(item.id); 
-                });
-                resolve(resultArray);
-            })
-            .catch(function(error)
+                logger.debug('getrepoIDs returned a result on attempt ' + attempts, {module: 'qrsChangeOwner'});
+                callback(null,result);                
+            }
+            else
             {
-               reject(error); 
-            });            
+                var count = config.repoAttempts - attempts;
+                logger.debug('getRepoIDs returned no values.  Trying again ' , count  , ' times.', {module: 'qrsChangeOwner'});
+                inRepo(appId, subjectArea, arrMetrics, attempts, callback);        
+            }
+        })
+        .catch(function(error)
+        {
+            logger.error(error,{module: 'qrsChangeOwner'});
+            callback(error);
         });
-    },
-    createBody: function(arrObjects)
+    }
+    else
     {
-      var resultArray = [];
-      var objCount = 0;
-      arrObjects.forEach(item, index, array)
-      {
-          objCount++;
-          var object = {
-            "type":"App.Object",
-            "objectID": item.id  
-          };
-          resultArray.push(object);
-          if(objCount === array.length)
-          {
-              return {
-                  "items": resultArray
-              }
-          }
-      }
-      
+        logger.error('Did not find the new metric in ' + attempts + ' attempts',{module: 'qrsChangeOwner'});
+        callback('Did not find the new metric in ' + attempts + ' attempts');
+    }
+}
+
+var qrsChangeOwner = 
+{
+    getRepoIDs: function(appId, subjectArea, arrMetrics)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            var resultArray= [];
+            logger.info('getting app.object ids for subjectarea:' + subjectArea + ' for appId:' + appId, {module: 'qrsChangeOwner'});
+            var idCount = 0;
+            inRepo(appId, subjectArea, arrMetrics, 0, function(error, result)
+            {
+                if(error)
+                {
+                    reject(new Error(error));
+                }
+                else
+                {
+                    logger.debug('qrs returned ' + result.length + ' items compared to ' + arrMetrics.length + ' items created or updated.', {module:'qrsChangeOwner'});
+                    result.forEach(function(item, index, array)
+                    {
+                        idCount++;
+                        resultArray.push(item.id);
+                        if(idCount === array.length)
+                        {
+                            logger.debug('repoIDS!!!' + JSON.stringify(resultArray),{module: 'qrsChangeOwner'});
+                            resolve(resultArray);                
+                        }
+                    });                    
+                }
+            });
+        });
     },
     changeOwner: function(appid, arrObjects, ownerId)
     {
-        return new Promise(function(resolve)
+        return new Promise(function(resolve, reject)
         {
-            var body = changeOwner.createBody(arrObjects);
             var x = {};
-            var postPath = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection/app/object";
-            postPath +=  "?xrfkey=ABCDEFG123456789&filter=engineObjectId eq '" + objectId + "' and app.id eq " + appid;
-            logger.debug("qrsChangeOwner::postPath::" + postPath, {module: 'qrsChangeOwner'});
-            qrsInteract.post(postPath)
-            .then(function(result)
+            logger.debug('Entering changeOwner', {module:'qrsChangeOwner'});
+            logger.debug('arrObjects to be processed: ' + JSON.stringify(arrObjects), {module: 'qrsChangeOwner'});
+            createBody(arrObjects)
+            .then(function(body)
             {
-                logger.debug('qrsChangeOwner:: Selection on app.object ' + objectId + ' created.  ' + JSON.stringify(result), {module: 'qrsChangeOwner'});
-                x.id = result.id;
-                var body =
+                logger.debug('Body of objects for selection:' + JSON.stringify(body),{module:'qrsChangeOwner'});          
+                
+                var postPath = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection";
+                postPath +=  "?xrfkey=ABCDEFG123456789";
+                logger.debug("qrsChangeOwner::postPath::" + postPath, {module: 'qrsChangeOwner'});
+                qrsInteract.post(postPath, body, 'json')
+                .then(function(result)
                 {
-                    "latestModifiedDate": buildModDate(),
-                    "type": "App.Object",
-                    "properties": [
+                    logger.debug('qrsChangeOwner:: Selection on app.object created.  ' + JSON.stringify(result), {module: 'qrsChangeOwner'});
+                    x.id = result.id;
+                    var body =
                     {
-                        "name":"owner",
-                        "value": ownerId,
-                        "valueIsDifferent": false,
-                        "valueIsModified": true
-                    }]
-                };
-                logger.debug('qrsChangeOwner::Body for changing owner on app.object. ' +  JSON.stringify(body), {module: 'qrsChangeOwner'});
-                var putPath = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection/" + result.id + "/app/object/synthetic";
-                putPath +=  "?xrfkey=ABCDEFG123456789"
-                logger.debug('qrsChangeOwner::PutPath::' + putPath, {module: 'qrsChangeOwner'});
-                qrsInteract.put(putPath, body)
-                .then(function()
-                {
-                    //added the value
-                    logger.debug('qrsChangeOwner::Changed ownership of ' + objectId + ' to user ' + ownerId, {module: 'qrsChangeOwner'});
-                    var deletePath =  "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection/" + x.id;
-                    deletePath += "/?xrfkey=ABCDEFG123456789";
-                    logger.debug(x.id, {module: 'qrsChangeOwner'});
-                    qrsInteract.delete(deletePath)
-                    .then(function(result)
+                        "latestModifiedDate": buildModDate(),
+                        "type": "App.Object",
+                        "properties": [
+                        {
+                            "name":"owner",
+                            "value": ownerId,
+                            "valueIsDifferent": false,
+                            "valueIsModified": true
+                        }]
+                    };
+                    logger.debug('qrsChangeOwner::Body for changing owner on app.object. ' +  JSON.stringify(body), {module: 'qrsChangeOwner'});
+                    var putPath = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection/" + result.id + "/app/object/synthetic";
+                    putPath +=  "?xrfkey=ABCDEFG123456789"
+                    logger.debug('qrsChangeOwner::PutPath::' + putPath, {module: 'qrsChangeOwner'});
+                    qrsInteract.put(putPath, body)
+                    .then(function(sCode)
                     {
-                        logger.debug('qrsChangeOwner::Deleting selection for ownership change.' + result, {module: 'qrsChangeOwner'});
-                        resolve();
+                        //added the value
+                       logger.info(sCode + ' received during Put operation for changing ownership',{module: 'qrsChangeOwner'});
+                       logger.info('delete this selection:' + x.id, {module: 'qrsChangeOwner'});
+                       logger.debug('qrsChangeOwner::Changed ownership to user ' + ownerId, {module: 'qrsChangeOwner'});
+                        var deletePath =  "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection/" + x.id;
+                        deletePath += "/?xrfkey=ABCDEFG123456789";
+                        logger.debug(x.id, {module: 'qrsChangeOwner'});
+                        qrsInteract.delete(deletePath)
+                        .then(function(result)
+                        {
+                            logger.debug('qrsChangeOwner::Deleting selection for ownership change.' + result, {module: 'qrsChangeOwner'});
+                            resolve();
+                        })
+                        .catch(function(error)
+                        {
+                        logger.error('qrsChangeOwner::delete selection::' + JSON.stringify(error) , {module: 'qrsChangeOwner'});
+                        reject(new Error(error)); 
+                        }); 
                     })
                     .catch(function(error)
                     {
-                       logger.error('qrsChangeOwner::delete selection::' + JSON.stringify(error) , {module: 'qrsChangeOwner'});
-                       reject(new Error(error)); 
+                    logger.error('qrsChangeOwner::change ownership::' + JSON.stringify(error) , {module: 'qrsChangeOwner'})
+                    reject(new Error(error)); 
                     });
                 })
                 .catch(function(error)
                 {
-                   logger.error('qrsChangeOwner::change ownership::' + JSON.stringify(error) , {module: 'qrsChangeOwner'})
-                   reject(new Error(error)); 
+                logger.error('qrsChangeOwner::create selection::' + JSON.stringify(error) , {module: 'qrsChangeOwner'})
+                reject(new Error(error)); 
                 });
+                
             })
             .catch(function(error)
             {
-               logger.error('qrsChangeOwner::create selection::' + JSON.stringify(error) , {module: 'qrsChangeOwner'})
-               reject(new Error(error)); 
+                logger.error('createBody Error::' + error, {module: 'qrsChangeOwner'});
+                reject(error);
             });
-        })
+        });
     }
 };
+
+function createBody(arrObjects)
+{
+    return new Promise(function(resolve)
+    {
+        var resultArray = [];
+        var objCount = 0;
+        arrObjects.forEach(function(item, index, array)
+        {
+            objCount++;
+            //logger.debug(objCount + ' of ' + array.length + ' metrics', {module: 'qrsChangeOwner'});
+            
+            var object = {
+            "type":"App.Object",
+            "objectID": item  
+            };
+            resultArray.push(object);
+            if(objCount === array.length)
+            {
+                logger.debug('createBody Array Results::' + JSON.stringify(resultArray), {module: 'qrsChangeOwner'});
+                var result = {
+                    "items": resultArray
+                };
+                logger.debug('final output of createBody::' + JSON.stringify(result), {module:'qrsChangeOwner'});
+                resolve(result);
+            }
+        });        
+    })
+}
 
 function buildModDate()
 {   
@@ -131,4 +198,4 @@ function buildModDate()
     return d.toISOString();
 }
 
-module.exports= changeOwner;
+module.exports= qrsChangeOwner;

@@ -17,6 +17,7 @@ var config = extend(true, {
 	port: 8590,
 	enginePort: 4747,
 	qrsPort: 4242,
+	repoAttempts: 4000,
 	hostname: 'masterlib.112adams.local',
 	userDirectory: 'masterlib',
 	userId: 'qvadmin',

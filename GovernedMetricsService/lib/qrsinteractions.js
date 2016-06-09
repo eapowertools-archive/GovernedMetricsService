@@ -63,17 +63,19 @@ var qrsInteract =
 			});
 		});
 	},
-	post: function(path,body)
+	post: function(path,body,sendType)
 	{
 		return new Promise(function(resolve, reject)
 		{
 			logger.debug('post::running QRSInteract.post', {module: 'qrsinteraction'});
 			var sCode;
 			var r=qrsInteract.defaults;
+			var finalBody = body != undefined ? (sendType.toLowerCase() == 'json' ? body : JSON.stringify(body)) : undefined;
+			logger.debug('Bodytype: ' + typeof finalBody, {module: 'qrsinteractions'});
 			r({
 				url: path,
 				method: 'POST',
-				body: JSON.stringify(body)
+				body: finalBody
 			})
 			.on('response', function(response, body)
 			{
@@ -87,7 +89,8 @@ var qrsInteract =
 			{
 				if(sCode==200 || sCode==201)
 				{
-					logger.debug('post::Response from QRS::' + JSON.stringify(data), {module: 'qrsinteraction'});
+					logger.debug('data is of type: ' + typeof data, {module: 'qrsinteractions'});
+					logger.debug('post::Response from QRS::' + sCode + '::' + JSON.stringify(data), {module: 'qrsinteraction'});
 					resolve(JSON.parse(data));
 				}
 				else

@@ -90,44 +90,49 @@ var updateMetrics =
 					global.openDoc(appId,'','','',true)
 					.then(function(app)
 					{
+						logger.debug(app, {module: 'blaaaaahh'});
 						logger.debug('updateMetrics::' + appId + ' opened without data', {module: 'updateMetrics'});
 						x.app = app;
 						console.log('data length: ' + data.length);
 						var dataCount = 0;
 						//var reducedData = data.filter(v => v.item[3].qText == subjectArea);
 						var reducedData = data.filter(filterMetrics(subjectArea));
-						logger.debug('Result of reduced Data::' + JSON.stringify(reducedData), {module:'updateMetrics'});
-						popMeas.popMeas(x.app, appId, ownerId, reducedData)
+						popMeas.popMeas(x.app, appId, reducedData)
 						.then(function(arrMetrics)
 						{
 							//Once we have done all the creating, 
 							//then we can change all of the owning.
-							qrsCO.getRepoIDs(appId, subjectArea)
+							qrsCO.getRepoIDs(appId, subjectArea, arrMetrics)
 							.then(function(response)
 							{
-								qrsCO.changeOwner(appId,response,ownerId)
+								logger.debug('list of engineObjectIDs::' + JSON.stringify(response),{module: 'updateMetrics'});
+								qrsCO.changeOwner(appId, response, ownerId)
 								.then(function()
 								{
 									logger.info('Change Ownership work complete',{module: 'updateMetrics'});
 								})
+								.then(function()
+								{
+									var res = {
+										result: 'finished applying metrics to ' + appId	
+									};
+									//x.global.connection.ws.terminate();
+									logger.info('updateMetrics::' + appId + ' master library updated', {module: 'updateMetrics'});
+									logger.info('Closing the connection to the app', {module: 'updateMetrics'});
+									x.global.connection.close();
+									resolve(res);
+								})
 								.catch(function(error)
 								{
+									logger.error('updateMetrics::Failure::' + error, {module: 'updateMetrics'});
 									reject(new Error(error));
 								});
 							})
 							.catch(function(error)
 							{
+								logger.error('updateMetrics::Failure::' + error, {module: 'updateMetrics'});
 								reject(new Error(error));
 							});		
-						})
-						.then(function()
-						{
-								var res = {
-									result: 'finished applying metrics to ' + appId	
-								};
-								//x.global.connection.ws.terminate();
-								logger.info('updateMetrics::' + appId + ' master library updated', {module: 'updateMetrics'});
-								resolve(res);
 						})
 						.catch(function(error)
 						{

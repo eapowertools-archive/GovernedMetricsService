@@ -102,9 +102,10 @@ var doWork = {
 						{
 							logger.debug('updateAll::subjectAreas:' + JSON.stringify(subjectAreas), {module: 'doWork'});
 							console.log('array length: ' + subjectAreas.length)
+							var subjectAreaCount = 0;
 							subjectAreas.forEach(function(subjectArea,index, array)
 							{
-								
+								subjectAreaCount++;
 								logger.info('updateAll::current subjectarea::' + subjectArea, {module: 'doWork'});
 								var val = subjectArea;
 								var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full"
@@ -136,13 +137,9 @@ var doWork = {
 											})
 											.then(function()
 											{
-												if(resultItems===result.length)
+												if(resultItems===array.length)
 												{
-													var res = 
-													{
-														result: 'Metric Application Complete'
-													};
-													resolve(res);
+													logger.info('Metrics application complete for ' + item.name, {module: 'dowork'});
 												}
 											})
 											.catch(function(error)
@@ -158,6 +155,15 @@ var doWork = {
 									logger.error('updateAll::qrsInteract::' + error, {module: 'doWork'});
 									reject(error);
 								});
+								
+								if(subjectAreaCount == array.length)
+								{
+									var res = 
+									{
+										result: 'Metric Application Complete'
+									};
+									resolve(res);
+								}
 							});
 						})
 						.catch(function(error)

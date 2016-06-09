@@ -1,7 +1,6 @@
 var Promise = require('Bluebird');
 var winston = require('winston');
 var config = require('../config/config');
-var qrsCO = require('./qrsChangeOwner');
 var creator = require('./objCreator');
 
 //set up logging
@@ -15,11 +14,11 @@ var logger = new (winston.Logger)({
 
 var popMeasures =
 {
-	popMeas: function(app, appId, ownerId, data)
+	popMeas: function(app, appId, data)
 	{
-		var arrNewMetrics = [];
-		return new Promise(function(resolve)
+		return new Promise(function(resolve, reject)
 		{
+			var arrNewMetrics = [];
 			var boolPublishedApp = popMeasures.isAppPublished(app);
 			if(boolPublishedApp)
 			{
@@ -33,6 +32,7 @@ var popMeasures =
 			data.forEach(function(data, index, array)
 			{
 				dataCount++;
+				//logger.debug(dataCount + ' of ' + array.length + ' metrics', {module: 'popMeasures'});
 				var tags = []
 				var tagString = data[4].qText.split(";");
 				tagString.forEach(function(tagValue)
@@ -45,17 +45,19 @@ var popMeasures =
 				tags.push(data[3].qText.toLowerCase() + '_' + data[0].qText);
 
 				var objId = data[3].qText.toLowerCase() + '_' + data[0].qText;
-				logger.debug('popMeas::Calling popMeas for ' + objId, {module: 'popMeasures'});
+				logger.debug('popMeas::Calling popMeas for ' + objId + ' on application: ' + app.name, {module: 'popMeasures'});
 				
 				if(data[1].qText.toLowerCase()=='dimension')
 				{
 					creator.dimCreator(app, boolPublishedApp, data, tags, objId)
 					.then(function(result)
 					{
+						logger.debug('adding ' + result, {module: 'popMeasures'});
 						arrNewMetrics.push(result);
 					})
 					.catch(function(error)
 					{
+						logger.error('Failure::' + error, {module: 'popMeasures'});
 						reject(error);
 					});
 				}
@@ -64,10 +66,12 @@ var popMeasures =
 					creator.measCreator(app, boolPublishedApp, data, tags, objId)
 					.then(function(result)
 					{
+						logger.debug('adding ' + result, {module: 'popMeasures'});
 						arrNewMetrics.push(result);
 					})
 					.catch(function(error)
 					{
+						logger.error('Failure::' + error, {module: 'popMeasures'});
 						reject(error);
 					});
 				}
@@ -75,14 +79,21 @@ var popMeasures =
 				if(dataCount === array.length)
 				{
 					//Sending back the new objects we've created.
-					resolve(arrNewMetrics);
-					//When the array finishes
-					
-										
-				}
-					
+					app.saveObjects()
+					.then(function()
+					{
+						logger.info('Completed creator process.  Proceeding to changing ownership section', {module: 'popMeasures'});
+						//logger.debug(JSON.stringify(arrNewMetrics), {module: 'popMeasure'});
+						resolve(arrNewMetrics);
+						//When the array finishes						
+					})
+					.catch(function(error)
+					{
+						logger.error(error, {module: 'popMeasures'});
+						reject(error);
+					});
+				}					
 			});
-			
 		});
 	},
 	isAppPublished: function(app)
@@ -91,23 +102,7 @@ var popMeasures =
 		{
 			return appLayout.published;
 		});
-	},
-	changeOwner: function(appId, objId, ownerId)
-	{
-		return new Promise(function(resolve)
-		{
-			qrsCO.changeOwner(appId, objId, ownerId)
-			.then(function()
-			{
-				resolve(true)
-			})
-			.catch(function(error)
-			{
-				reject(error);
-			});
-		})
-	},
-	
+	}
 }
 
 module.exports = popMeasures;
