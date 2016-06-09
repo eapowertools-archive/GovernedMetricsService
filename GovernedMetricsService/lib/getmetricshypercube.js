@@ -93,7 +93,8 @@ var getMetricsHyperCube =
 					})
 					.then(function()
 					{
-						//x.global.connection.ws.terminate();
+						logger.info('Closing connection to Metrics Hypercube', {module: 'getmetricshypercube'});
+						x.global.connection.close();
 						resolve(x.data);
 					})
 					.catch(function(error)

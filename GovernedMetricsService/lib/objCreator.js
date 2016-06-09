@@ -16,7 +16,7 @@ var objCreators =
 {
     dimCreator: function(app, boolPublishedApp, data, tags, objId)
 	{
-        return new Promise(function(resolve)
+        return new Promise(function(resolve, reject)
         {
             var dim = objCreators.dim(data,tags);
             
@@ -26,18 +26,19 @@ var objCreators =
                 if(result==null)
                 {
                     app.createDimension(dim)
-                    .then(function()
+                    .then(function(result)
                     {
                         app.getDimension(objId)
                         .then(function(ready)
                         {
+                            logger.debug('Got the new measure!::', {module: 'objCreator'});
                             //Only run this if the app is published.
                             if(boolPublishedApp)
                             {
                                 ready.publish()
                                 .then(function()
                                 {
-                                    logger.debug('popMeas::Created Dimension ' + data[2].qtext, {module: 'objCreators'});
+                                    logger.debug('popMeas::Created Dimension ' + data[2].qText, {module: 'objCreators'});
                                     resolve(objId);
                                 })
                                 .catch(function(error)
@@ -45,6 +46,11 @@ var objCreators =
                                     logger.error('popMeas::publish::' + error, {module: 'objCreators'});
                                     reject(new Error(error));
                                 });
+                            }
+                            else
+                            {
+                                logger.debug('popMeas::Created Dimension ' + data[2].qText, {module: 'objCreators'});
+                                resolve(objId);
                             }
                         })
                         .catch(function(error)
@@ -61,6 +67,7 @@ var objCreators =
                 }
                 else
                 {
+                    
                     result.setProperties(dim)
                     .then(function(ready)
                     {
@@ -77,6 +84,11 @@ var objCreators =
                                 logger.error('popMeas::publish::' + error, {module: 'objCreators'});
                                 reject(new Error(error));
                             });
+                        }
+                        else
+                        {
+                            logger.debug('popMeas::Updated Dimension ' + data[2].qText, {module: 'objCreators'});
+                            resolve(objId);   
                         }
                     })
                     .catch(function(error)
@@ -95,7 +107,7 @@ var objCreators =
 	},
     measCreator: function(app, boolPublishedApp, data, tags, objId)
     {
-        return new Promise(function(resolve)
+        return new Promise(function(resolve, reject)
         {
             var meas = objCreators.meas(data,tags);
             
@@ -105,18 +117,20 @@ var objCreators =
                 if(result==null)
                 {
                     app.createMeasure(meas)
-                    .then(function()
+                    .then(function(result)
                     {
                         app.getMeasure(objId)
                         .then(function(ready)
                         {
+                            logger.debug('Got the new measure!::', {module: 'objCreator'});
+                            
                             //Only run this if the app is published.
                             if(boolPublishedApp)
                             {
                                 ready.publish()
                                 .then(function()
                                 {
-                                    logger.debug('popMeas::Created Measure ' + data[2].qtext, {module: 'objCreators'});
+                                    logger.debug('popMeas::Created Measure ' + data[2].qText, {module: 'objCreators'});
                                     resolve(objId);
                                 })
                                 .catch(function(error)
@@ -124,6 +138,11 @@ var objCreators =
                                     logger.error('popMeas::publish::' + error, {module: 'objCreators'});
                                     reject(new Error(error));
                                 });
+                            }
+                            else
+                            {
+                                logger.debug('popMeas::Created Measure ' + data[2].qText, {module: 'objCreators'});
+                                resolve(objId);
                             }
                         })
                         .catch(function(error)
@@ -156,6 +175,11 @@ var objCreators =
                                 logger.error('popMeas::publish::' + error, {module: 'objCreators'});
                                 reject(new Error(error));
                             });
+                        }
+                        else
+                        {
+                            logger.debug('popMeas::Updated Measure ' + data[2].qText, {module: 'objCreators'});
+                            resolve(objId);
                         }
                     })
                     .catch(function(error)
