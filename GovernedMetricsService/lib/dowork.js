@@ -221,7 +221,13 @@ var doWork = {
 			});			
 		});
 
-	}			
+	},
+	bulkchangeOwner	: function(body)
+	{
+		logger.info('bulkChangeOwner called', {module:'doWork',method:'bulkChangeOwner'});
+		logger.debug(body, {module:'doWork',method:'bulkChangeOwner'})
+		return qrsCO.readNotification(body);
+	}		
 };
 
 module.exports = doWork;

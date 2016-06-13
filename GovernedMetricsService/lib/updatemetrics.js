@@ -89,6 +89,7 @@ var updateMetrics =
 				qrsNotify.setNotification(appRef)
 				.then(function(result)
 				{
+					global.notificationHandle = result;
 					x.notificationHandle = result;
 					updateMetrics.config(appId)
 					.then(function(qConfig)
@@ -104,63 +105,35 @@ var updateMetrics =
 								logger.debug('' + appRef.name + ' opened without data', {module: 'updateMetrics', method: 'updateMetrics'});
 								x.app = app;
 								x.runDate = buildModDate();
+								logger.debug(x.runDate + ' is my run date for this run', {module: 'updateMetrics', method: 'updateMetrics'});
 								var dataCount = 0;
 								//var reducedData = data.filter(v => v.item[3].qText == subjectArea);
 								var reducedData = data.filter(filterMetrics(x.appSubjectAreas));
-								popMeas.popMeas(x, appId, reducedData)
-								.then(function(arrMetrics)
-								{
-									
-									//Once we have done all the creating, close the app
-									x.global.connection.close();
-									logger.info('' + appRef.name + ' with id:' + appId + ' master library updated', {module: 'updateMetrics', method: 'updateMetrics'});
-									logger.info('Closing the connection to the app', {module: 'updateMetrics', method: 'updateMetrics'});
-											
-									//Now work on changing ownership.  //Check the time and look for changes 
-									qrsCO.getRepoIDs(appRef, x.runDate, arrMetrics)
-									.then(function(response)
-									{
-										logger.debug('list of engineObjectIDs::' + JSON.stringify(response),{module: 'updateMetrics', method: 'updateMetrics'});
-										if(response.length >0)
-										{
-											qrsCO.changeOwner(appId, response, ownerId)
-											.then(function()
-											{
-												logger.info('Change Ownership work complete',{module: 'updateMetrics', method: 'updateMetrics'});
-											})
-											.then(function()
-											{
-												var res = {
-													result: 'finished applying metrics to ' + appRef.name + ' with id:' + appId	
-												};
-												resolve(res);
-											})
-											.catch(function(error)
-											{
-												logger.error('Failure::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
-												reject(new Error(error));
-											});
-										}
-										else
-										{
-											var res = {
-												result: 'No Repo IDs to change ownership on for ' + appRef.name + ' with id:' + appId	
-											};
-											resolve(res);
-										}
-									})
-									.catch(function(error)
-									{
-										logger.error('Failure::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
-										reject(new Error(error));
-									});		
-								})
-								.catch(function(error)
-								{
-									logger.error('Failure::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
-									console.log('Error at updatemetrics during popMeas');
-									reject(new Error(error));
-								});
+								return reducedData;
+							})
+							.then(function(reducedData)
+							{
+								return popMeas.popMeas(x, appId, reducedData);
+							})
+							.then(function(arrMetrics)
+							{
+								x.arrMetrics = arrMetrics;
+								logger.info('' + appRef.name + ' with id:' + appId + ' master library updated', {module: 'updateMetrics', method: 'updateMetrics'});
+								logger.info('Closing the connection to the app', {module: 'updateMetrics', method: 'updateMetrics'});
+								return x.global.connection.close();
+								
+							})
+							.then(function()
+							{
+								var res = {
+									result: 'finished applying metrics to ' + appRef.name + ' with id:' + appId,
+									notificationHandle: x.notificationHandle	
+								};
+								return res;
+							})
+							.then(function(res)
+							{
+								resolve(res);
 							})
 							.catch(function(error)
 							{
@@ -188,8 +161,16 @@ var updateMetrics =
 			})
 			.catch(function(error)
 			{
-				logger.error('appSubjectAreas::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
-				reject(new Error(error));
+				qrsNotify.delNotification(x.notificationHandle)
+				.then(function(result)
+				{
+					logger.error('appSubjectAreas::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
+					reject(new Error(error));
+				})
+				.catch(function(error)
+				{
+					reject(new Error(error));
+				});
 			});
 		});
 	}

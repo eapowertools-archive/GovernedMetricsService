@@ -2,6 +2,7 @@ var Promise = require('bluebird')
 var config = require('../config/config');
 var winston = require('winston');
 var qrsInteract = require('./qrsinteractions');
+var qrsNotify = require('./qrsNotify');
 
 
 //set up logging
@@ -85,6 +86,113 @@ var qrsChangeOwner =
             });
         });
     },
+    readNotification: function(arrObjects)
+    {
+        return new Promise(function(resolve, reject)
+        {
+            logger.debug('running readNotification', {module:'qrsChangeOwner',method:'readNotification'})
+            var sequence = Promise.resolve();
+            var x = {};
+            sequence = sequence
+            .then(function()
+            {
+                //delete the notification handle
+                return qrsNotify.delNotification(global.notificationHandle);
+            })
+            .then(function()
+            {
+                return arrObjects.map(function(obj)
+                {
+                    return obj.objectID;
+                });
+            })
+            .then(function(objectIds)
+            {
+                logger.debug('changed objectIds: ' + JSON.stringify(objectIds),{module:'qrsChangeOwner',method:'readNotification'})
+                x.objectIds = objectIds;
+                return createBody(objectIds);
+            })
+            .then(function(body)
+            {
+                var postPath = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection";
+                postPath +=  "?xrfkey=ABCDEFG123456789";
+                logger.debug('qrsInteract.post on path:' + postPath, {module:'qrsChangeOwner',method:'readNotification'});
+                return qrsInteract.post(postPath, body, 'json');                
+            })
+            .then(function(selection)
+            {
+                //get the full information of the objects and reduce to the app.
+                var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection";
+                path += "/" + selection.id + "/app/object/full";
+                path +=  "?xrfkey=ABCDEFG123456789";
+                logger.debug('qrsInteract.get on path:'+ path, {module:'qrsChangeOwner',method:'readNotification'});
+                return qrsInteract.get(path); 
+            })
+            .then(function(objInfo)
+            {
+                return objInfo.filter(getOwnerItems);
+            })
+            .then(function(objInfo)
+            {
+                //These are the objectIds to change ownership on
+                //logger.debug('these items are currently owned by ', item.owner.userDirectory ,'\\', config.repoAccountUserDirectory, {module:'qrsChangeOwner',method:'readNotification'});
+                x.objInfo = objInfo
+                return objInfo.map(function(obj)
+                {
+                    return obj.app.id;
+                })
+            })
+            .then(function(appList)
+            {
+                return appList.filter(function(item, pos)
+                {
+                    return appList.indexOf(item)==pos;
+                });
+            })
+            .then(function(uniqueApps)
+            {
+                if(uniqueApps.length == 1)
+                {
+                    logger.debug('Found 1 app!', {module:'qrsChangeOwner',method:'readNotification'});
+                    x.appId = uniqueApps[0];
+                    //get the app information
+                    var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full";
+                    path +=  "?xrfkey=ABCDEFG123456789";
+                    path += "&filter=id eq " + uniqueApps[0];
+                    return qrsInteract.get(path);
+                }
+                else
+                {
+                    reject('More than one app found')
+                }
+            })
+            .then(function(appInfo)
+            {
+                return x.ownerId = appInfo[0].owner.id; 
+            })
+            .then(function()
+            {
+                // get the objectIds we are going to change
+                return x.objInfo.map(function(obj)
+                {
+                    return obj.id;
+                })
+            })
+            .then(function(objects)
+            {
+                return qrsChangeOwner.changeOwner(x.appId,objects, x.ownerId);
+            })
+            .then(function()
+            {
+                resolve('Change Ownership based on notification complete.');
+            })
+            .catch(function(error)
+            {
+                logger.error(error, {module:'qrsChangeOwner',method:'readNotification'});
+                reject(error);
+            });            
+        });     
+    },
     changeOwner: function(appid, arrObjects, ownerId)
     {
         return new Promise(function(resolve, reject)
@@ -164,6 +272,14 @@ var qrsChangeOwner =
         });
     }
 };
+
+function getOwnerItems(obj)
+{
+    if(obj.owner.userId == config.repoAccountUserId && obj.owner.userDirectory == config.repoAccountUserDirectory)
+    {
+        return true;
+    }
+}
 
 function createBody(arrObjects)
 {
