@@ -14,10 +14,11 @@ var logger = new (winston.Logger)({
 
 var popMeasures =
 {
-	popMeas: function(app, appId, data)
+	popMeas: function(x, appId, data)
 	{
 		return new Promise(function(resolve, reject)
 		{
+			var app = x.app;
 			var arrNewMetrics = [];
 			var boolPublishedApp = popMeasures.isAppPublished(app);
 			if(boolPublishedApp)
@@ -29,70 +30,94 @@ var popMeasures =
 				logger.info('popMeas::App ' + appId + ' is not published.', {module: 'popMeasures'});				
 			}
 			var dataCount = 0;
+			var sequence = Promise.resolve();
 			data.forEach(function(data, index, array)
 			{
-				dataCount++;
-				//logger.debug(dataCount + ' of ' + array.length + ' metrics', {module: 'popMeasures'});
-				var tags = []
-				var tagString = data[4].qText.split(";");
-				tagString.forEach(function(tagValue)
+				
+				sequence = sequence.then(function()
 				{
-					tags.push(tagValue);
+					dataCount++;
+					console.log(dataCount);
+					//logger.debug(dataCount + ' of ' + array.length + ' metrics', {module: 'popMeasures'});
+					var tags = []
+					var tagString = data[4].qText.split(";");
+					tagString.forEach(function(tagValue)
+					{
+						tags.push(tagValue);
+					});
+
+					tags.push("MasterItem");
+					tags.push(data[3].qText);
+					tags.push(data[3].qText.toLowerCase() + '_' + data[0].qText);
+					return tags;
+				})
+				.then(function(tags)
+				{
+					var objId = data[3].qText.toLowerCase() + '_' + data[0].qText;
+					logger.debug('popMeas::Calling popMeas for ' + objId + ' on application: ' + app.name, {module: 'popMeasures'});
+					logger.debug(data[1].qText.toLowerCase(), {module: 'popMeasures'});
+					
+					if(data[1].qText.toLowerCase()=='dimension')
+					{
+						 return creator.dimCreator(app, boolPublishedApp, data, tags, objId)
+						.then(function(result)
+						{
+							if(result.changed)
+							{
+								logger.debug('adding ' + result.objId, {module: 'popMeasures'});
+								arrNewMetrics.push(result.objId);
+							}
+						})
+						.catch(function(error)
+						{
+							logger.error('Failure::' + error, {module: 'popMeasures'});
+							reject(error);
+						});
+					}
+					else if(data[1].qText.toLowerCase()=='measure')
+					{
+						return creator.measCreator(app, boolPublishedApp, data, tags, objId)
+						.then(function(result)
+						{
+							if(result.changed)
+							{
+								logger.debug('adding ' + result.objId, {module: 'popMeasures'});
+								arrNewMetrics.push(result.objId);							
+							}
+						})
+						.catch(function(error)
+						{
+							logger.error('Failure::' + error, {module: 'popMeasures'});
+							reject(error);
+						});
+					}
+				})
+				.then(function()
+				{
+					if(dataCount === array.length)
+					{
+						//Sending back the new objects we've created.
+						return app.saveObjects()
+						.then(function()
+						{
+
+							logger.info('Completed creator process.  Proceeding to changing ownership section', {module: 'popMeasures'});
+							//logger.debug(JSON.stringify(arrNewMetrics), {module: 'popMeasure'});
+							resolve(arrNewMetrics);
+							//When the array finishes						
+						})
+						.catch(function(error)
+						{
+							logger.error(error, {module: 'popMeasures'});
+							reject(error);
+						});
+					}										
+				})
+				.catch(function(error)
+				{
+					logger.error(error, {module: 'popMeasures'});
+					reject(error)
 				});
-
-				tags.push("MasterItem");
-				tags.push(data[3].qText);
-				tags.push(data[3].qText.toLowerCase() + '_' + data[0].qText);
-
-				var objId = data[3].qText.toLowerCase() + '_' + data[0].qText;
-				logger.debug('popMeas::Calling popMeas for ' + objId + ' on application: ' + app.name, {module: 'popMeasures'});
-				
-				if(data[1].qText.toLowerCase()=='dimension')
-				{
-					creator.dimCreator(app, boolPublishedApp, data, tags, objId)
-					.then(function(result)
-					{
-						logger.debug('adding ' + result, {module: 'popMeasures'});
-						arrNewMetrics.push(result);
-					})
-					.catch(function(error)
-					{
-						logger.error('Failure::' + error, {module: 'popMeasures'});
-						reject(error);
-					});
-				}
-				else if(data[1].qText.toLowerCase()=='measure')
-				{
-					creator.measCreator(app, boolPublishedApp, data, tags, objId)
-					.then(function(result)
-					{
-						logger.debug('adding ' + result, {module: 'popMeasures'});
-						arrNewMetrics.push(result);
-					})
-					.catch(function(error)
-					{
-						logger.error('Failure::' + error, {module: 'popMeasures'});
-						reject(error);
-					});
-				}
-				
-				if(dataCount === array.length)
-				{
-					//Sending back the new objects we've created.
-					app.saveObjects()
-					.then(function()
-					{
-						logger.info('Completed creator process.  Proceeding to changing ownership section', {module: 'popMeasures'});
-						//logger.debug(JSON.stringify(arrNewMetrics), {module: 'popMeasure'});
-						resolve(arrNewMetrics);
-						//When the array finishes						
-					})
-					.catch(function(error)
-					{
-						logger.error(error, {module: 'popMeasures'});
-						reject(error);
-					});
-				}					
 			});
 		});
 	},

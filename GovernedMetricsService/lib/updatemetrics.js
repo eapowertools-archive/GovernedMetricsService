@@ -4,6 +4,7 @@ var Promise = require('bluebird')
 var config = require('../config/config');
 var winston = require('winston');
 var popMeas = require('./popmeasures');
+var qrsNotify = require('./qrsNotify');
 var qrsCO = require('./qrsChangeOwner');
 var fs = require('fs');
 
@@ -73,101 +74,167 @@ var updateMetrics =
 			resolve(qConfig2);
 		});
 	},
-	updateMetrics : function(appId, ownerId, data, subjectArea)
+	updateMetrics : function(appRef, data)
 	{
 		return new Promise(function(resolve, reject)
 		{
-			logger.info('updateMetrics::Calling updateMetrics on application ' + appId, {module: 'updateMetrics'});
+			var appId = appRef.id;
+			var ownerId = appRef.owner.id;
+			logger.info('Calling updateMetrics on application:' + appRef.name + ' with id:' + appId, {module: 'updateMetrics', method: 'updateMetrics'});
 			var x = {};
-			updateMetrics.config(appId)
-			.then(function(qConfig)
+			getAppSubjectAreas(appRef, config.customPropName)
+			.then(function(appSubjectAreas)
 			{
-				qsocks.Connect(qConfig)
-				.then(function(global)
+				x.appSubjectAreas = appSubjectAreas;
+				qrsNotify.setNotification(appRef)
+				.then(function(result)
 				{
-					x.global = global;
-					logger.info('updateMetrics::opening ' + appId + ' without data', {module: 'updateMetrics'});
-					global.openDoc(appId,'','','',true)
-					.then(function(app)
+					x.notificationHandle = result;
+					updateMetrics.config(appId)
+					.then(function(qConfig)
 					{
-						logger.debug(app, {module: 'blaaaaahh'});
-						logger.debug('updateMetrics::' + appId + ' opened without data', {module: 'updateMetrics'});
-						x.app = app;
-						console.log('data length: ' + data.length);
-						var dataCount = 0;
-						//var reducedData = data.filter(v => v.item[3].qText == subjectArea);
-						var reducedData = data.filter(filterMetrics(subjectArea));
-						popMeas.popMeas(x.app, appId, reducedData)
-						.then(function(arrMetrics)
+						qsocks.Connect(qConfig)
+						.then(function(global)
 						{
-							//Once we have done all the creating, 
-							//then we can change all of the owning.
-							qrsCO.getRepoIDs(appId, subjectArea, arrMetrics)
-							.then(function(response)
+							x.global = global;
+							logger.info('opening ' + appRef.name + ' without data', {module: 'updateMetrics', method: 'updateMetrics'});
+							global.openDoc(appId,'','','',true)
+							.then(function(app)
 							{
-								logger.debug('list of engineObjectIDs::' + JSON.stringify(response),{module: 'updateMetrics'});
-								qrsCO.changeOwner(appId, response, ownerId)
-								.then(function()
+								logger.debug('' + appRef.name + ' opened without data', {module: 'updateMetrics', method: 'updateMetrics'});
+								x.app = app;
+								x.runDate = buildModDate();
+								var dataCount = 0;
+								//var reducedData = data.filter(v => v.item[3].qText == subjectArea);
+								var reducedData = data.filter(filterMetrics(x.appSubjectAreas));
+								popMeas.popMeas(x, appId, reducedData)
+								.then(function(arrMetrics)
 								{
-									logger.info('Change Ownership work complete',{module: 'updateMetrics'});
-								})
-								.then(function()
-								{
-									var res = {
-										result: 'finished applying metrics to ' + appId	
-									};
-									//x.global.connection.ws.terminate();
-									logger.info('updateMetrics::' + appId + ' master library updated', {module: 'updateMetrics'});
-									logger.info('Closing the connection to the app', {module: 'updateMetrics'});
+									
+									//Once we have done all the creating, close the app
 									x.global.connection.close();
-									resolve(res);
+									logger.info('' + appRef.name + ' with id:' + appId + ' master library updated', {module: 'updateMetrics', method: 'updateMetrics'});
+									logger.info('Closing the connection to the app', {module: 'updateMetrics', method: 'updateMetrics'});
+											
+									//Now work on changing ownership.  //Check the time and look for changes 
+									qrsCO.getRepoIDs(appRef, x.runDate, arrMetrics)
+									.then(function(response)
+									{
+										logger.debug('list of engineObjectIDs::' + JSON.stringify(response),{module: 'updateMetrics', method: 'updateMetrics'});
+										if(response.length >0)
+										{
+											qrsCO.changeOwner(appId, response, ownerId)
+											.then(function()
+											{
+												logger.info('Change Ownership work complete',{module: 'updateMetrics', method: 'updateMetrics'});
+											})
+											.then(function()
+											{
+												var res = {
+													result: 'finished applying metrics to ' + appRef.name + ' with id:' + appId	
+												};
+												resolve(res);
+											})
+											.catch(function(error)
+											{
+												logger.error('Failure::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
+												reject(new Error(error));
+											});
+										}
+										else
+										{
+											var res = {
+												result: 'No Repo IDs to change ownership on for ' + appRef.name + ' with id:' + appId	
+											};
+											resolve(res);
+										}
+									})
+									.catch(function(error)
+									{
+										logger.error('Failure::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
+										reject(new Error(error));
+									});		
 								})
 								.catch(function(error)
 								{
-									logger.error('updateMetrics::Failure::' + error, {module: 'updateMetrics'});
+									logger.error('Failure::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
+									console.log('Error at updatemetrics during popMeas');
 									reject(new Error(error));
 								});
 							})
 							.catch(function(error)
 							{
-								logger.error('updateMetrics::Failure::' + error, {module: 'updateMetrics'});
+								logger.error('openDoc::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
 								reject(new Error(error));
-							});		
+							});
 						})
 						.catch(function(error)
 						{
-							logger.error('updateMetrics::Failure::' + error, {module: 'updateMetrics'});
-							console.log('Error at updatemetrics during popMeas');
+							logger.error('qSocks::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
 							reject(new Error(error));
 						});
 					})
 					.catch(function(error)
 					{
-						logger.error('updateMetrics::openDoc::' + error, {module: 'updateMetrics'});
+						logger.error('Config::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
 						reject(new Error(error));
 					});
 				})
 				.catch(function(error)
 				{
-					logger.error('updateMetrics::qSocks::' + error, {module: 'updateMetrics'});
+					logger.error('setNotification::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
 					reject(new Error(error));
 				});
 			})
 			.catch(function(error)
 			{
-				logger.error('updateMetrics::Config::' + error, {module: 'updateMetrics'});
+				logger.error('appSubjectAreas::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
 				reject(new Error(error));
 			});
 		});
 	}
 };
 
-function filterMetrics(subjectArea)
+function buildModDate()
+{   
+    var d = new Date();
+    return d.toISOString();
+}
+
+function filterMetrics(subjectAreas)
 {
 	return function(obj)
 	{
-		return obj[3].qText == subjectArea;
+		return subjectAreas.filter(function(subjectArea)
+		{
+			return subjectAreas.indexOf(obj[3].qText) > -1;
+		}).length === subjectAreas.length;
 	}	
+}
+
+function getAppSubjectAreas(appRef, customProp)
+{
+	return new Promise(function (resolve)
+	{
+		var result = [];
+		var itemCount = 0;
+		appRef.customProperties.forEach(function(item, index, array)
+		{
+			itemCount++;
+			if(item.definition.name==customProp)
+			{
+				result.push(item.value);
+			}
+			
+			if(itemCount==array.length)
+			{
+				resolve(result);
+			}
+			
+			
+		});		
+	});
+
 }
 
 module.exports= updateMetrics;

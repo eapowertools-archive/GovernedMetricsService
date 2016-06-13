@@ -53,33 +53,35 @@ function inRepo(appId, subjectArea, arrMetrics, attempts, callback)
 
 var qrsChangeOwner = 
 {
-    getRepoIDs: function(appId, subjectArea, arrMetrics)
+    
+    getRepoIDs: function(appRef, runDate, arrMetrics)
     {
         return new Promise(function(resolve, reject)
         {
             var resultArray= [];
-            logger.info('getting app.object ids for subjectarea:' + subjectArea + ' for appId:' + appId, {module: 'qrsChangeOwner'});
             var idCount = 0;
-            inRepo(appId, subjectArea, arrMetrics, 0, function(error, result)
+
+            var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/object";
+            path += "?xrfkey=ABCDEFG123456789&filter=app.id eq " + appRef.id + " and modifiedDate ge '" + runDate + "'";
+            path += " and modifiedByUserName eq '" + config.repoAccountUserDirectory + '\\' + config.repoAccountUserId + "'";
+            logger.debug(path, {module: 'qrsChangeOwner', method: 'getRepoIDs'});
+            qrsInteract.get(path)
+            .then(function(result)
             {
-                if(error)
+                logger.info('Returned ' + result.length + ' ids from the QRS request', {module: 'qrsChangeOwner', method: 'getRepoIDs'});
+                return result.map(function(obj)
                 {
-                    reject(new Error(error));
-                }
-                else
-                {
-                    logger.debug('qrs returned ' + result.length + ' items compared to ' + arrMetrics.length + ' items created or updated.', {module:'qrsChangeOwner'});
-                    result.forEach(function(item, index, array)
-                    {
-                        idCount++;
-                        resultArray.push(item.id);
-                        if(idCount === array.length)
-                        {
-                            logger.debug('repoIDS!!!' + JSON.stringify(resultArray),{module: 'qrsChangeOwner'});
-                            resolve(resultArray);                
-                        }
-                    });                    
-                }
+                    return obj.id;
+                });                    
+            })
+            .then(function(objectIds)
+            {
+                resolve(objectIds);
+            })
+            .catch(function(error)
+            {
+                logger.error(error, {module: 'qrsChangeOwner', method: 'getRepoIDs'});
+                reject(error);
             });
         });
     },

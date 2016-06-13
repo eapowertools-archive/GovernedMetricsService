@@ -6,6 +6,7 @@ var updateMetrics = require('./updatemetrics');
 var qrsInteract = require('./qrsinteractions');
 var deleteMetrics = require('./deletemetrics');
 var reloadMetrics = require('./reloadmetrics');
+var qrsCO = require('./qrsChangeOwner');
 var winston = require('winston');
 
 //set up logging
@@ -87,94 +88,76 @@ var doWork = {
 			{
 				if(customProp !== undefined || customProp.length != 0)
 				{
-					logger.info('updateAll::Found ' + customProp[0].name + ' in list of custom properties', {module: 'doWork'});
+					logger.info('Found ' + customProp[0].name + ' in list of custom properties', {module: 'doWork'});
 					var x = {};
 					
 					var y = {};
-					logger.debug('updateAll::getMetricsTable', {module: 'doWork'});
+					logger.debug('getMetricsTable', {module: 'doWork'});
 					gethypercube.getMetricsTable()
 					.then(function(matrix)
 					{
 						y.matrix = matrix;
-						logger.debug('updateAll::getSubjectAreas', {module: 'doWork'});
+						logger.debug('getSubjectAreas', {module: 'doWork'});
 						updateMetrics.getSubjectAreas(y.matrix, 3)
 						.then(function(subjectAreas)
 						{
-							logger.debug('updateAll::subjectAreas:' + JSON.stringify(subjectAreas), {module: 'doWork'});
+							logger.debug('subjectAreas:' + JSON.stringify(subjectAreas), {module: 'doWork'});
 							console.log('array length: ' + subjectAreas.length)
-							var subjectAreaCount = 0;
-							subjectAreas.forEach(function(subjectArea,index, array)
+							//so now I have subject areas, but I want the apps so I can loop through the apps that have subject areas 
+							//and at one time update all the metrics for that app based on values applied
+							//So I want apps that have the custom prop applied with values identified first, then match subjectarea
+							//with values applied and run through.
+							var appCount = 0;
+							var appCheckPath = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full"
+							appCheckPath += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
+							appCheckPath += config.customPropName + "' and customProperties.value ne null";
+							logger.debug('Getting list of apps that have ' + config.customPropName + ' applied', {module: 'doWork', method: 'updateAll'});
+							qrsInteract.get(appCheckPath)
+							.then(function(appRefList)
 							{
-								subjectAreaCount++;
-								logger.info('updateAll::current subjectarea::' + subjectArea, {module: 'doWork'});
-								var val = subjectArea;
-								var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full"
-								path += "?xrfkey=ABCDEFG123456789&filter=customProperties.definition.name eq '";
-								path += config.customPropName + "' and customProperties.value eq '" + val + "'";
-								logger.debug('updateAll::qrsInteract.get::' + path, {module: 'doWork'});
-								qrsInteract.get(path)
-								.then(function(result)
+								appCount++;
+								appRefList.forEach(function(appRef,index,array)
 								{
-									
-									if(result===undefined || result.length == 0)
+									//for each app reference, we are going to send in the subjectareas and the app 
+									//into updatemetrics function.  Once in that function, deterine the subject areas to apply
+									//metrics and do all at once on one app instead of opening and closing app multiple times.
+									logger.info('Updating app:' + appRef.name + ' with id:' + appRef.id + 'currently owned by ' + 
+									appRef.owner.userDirectory + '\\' + appRef.owner.userId, {module: 'doWork', method: 'updateAll'});
+									updateMetrics.updateMetrics(appRef, y.matrix)
+									.then(function(outcome)
 									{
-										logger.info('updateAll::no applications with custom property '+ val, {module: 'doWork'});
-									}
-									else
+										logger.info('' + outcome.result + '::' + appRef.name, {module: 'doWork', method: 'updateAll'});	
+									})
+									.catch(function(error)
 									{
-										logger.info('updateAll::applications with custom property '+ val + '::' + JSON.stringify(result), {module: 'doWork'});
-										logger.info('updateAll::result array has ' + result.length + ' entries', {module: 'doWork'});
-										var resultItems = 0;
-										result.forEach(function(item, index, array)
-										{
-											resultItems++;
-											logger.debug('updateAll::updateMetrics on ' + item.name + ', currently owned by ' + 
-													item.owner.userDirectory + '\\' + item.owner.userId, {module: 'doWork'});
-											updateMetrics.updateMetrics(item.id, item.owner.id, y.matrix, val)
-											.then(function(outcome)
-											{
-												logger.info('updateAll::' + outcome.result + '::' + item.name, {module: 'doWork'});	
-											})
-											.then(function()
-											{
-												if(resultItems===array.length)
-												{
-													logger.info('Metrics application complete for ' + item.name, {module: 'dowork'});
-												}
-											})
-											.catch(function(error)
-											{
-												logger.error('updateAll::' + error, {module: 'doWork'});
-												reject(error);
-											});	
-										});
+										logger.error('' + error, {module: 'doWork', method: 'updateAll'});
+										reject(error);
+									});	
+									if(appCount == array.length)
+									{
+										//we are all done processing all metrics through all apps.
+										var res = {
+											result: 'All apps processed.'
+										};
+										resolve(res);
 									}
-								})
-								.catch(function(error)
-								{
-									logger.error('updateAll::qrsInteract::' + error, {module: 'doWork'});
-									reject(error);
 								});
-								
-								if(subjectAreaCount == array.length)
-								{
-									var res = 
-									{
-										result: 'Metric Application Complete'
-									};
-									resolve(res);
-								}
-							});
+							})
+							.catch(function(error)
+							{
+								logger.error(error, {module: 'doWork', method: 'updateAll'});
+								reject(error);
+							});	
 						})
 						.catch(function(error)
 						{
-							logger.error('updateAll::getSubjectAreas::' + error, {module: 'doWork'});
+							logger.error('getSubjectAreas::' + error, {module: 'doWork', method: 'updateAll'});
 							reject(error);
 						});
 					})
 					.catch(function(error)
 					{
-						logger.error('updateAll::getMetricsTable::' + error, {module: 'doWork'});
+						logger.error('getMetricsTable::' + error, {module: 'doWork', method: 'updateAll'});
 						reject(error);
 					});
 				}
@@ -185,7 +168,7 @@ var doWork = {
 					message: 'No custom property named ' + config.customPropName,
 					customProperty: config.customPropName
 				};
-				logger.error('updateAll::' + JSON.stringify(rejection), {module: 'doWork'});
+				logger.error(JSON.stringify(rejection), {module: 'doWork', method: 'updateAll'});
 				reject(JSON.stringify(rejection));
 			});
 		});		
@@ -222,6 +205,22 @@ var doWork = {
 				logger.error('reloadMetricsApp::getAppReference::' + JSON.stringify(error), {module: 'doWork'});
 			});
 		});
+	},
+	changeOwner : function(body)
+	{
+		return new Promise(function(resolve, reject)
+		{
+			qrsCO.changeOwner(body.appId, body.appObjectIds, body.ownerId)
+			.then(function()
+			{
+				resolve('Entries Updated');
+			})
+			.catch(function(error)
+			{
+				reject(error);
+			});			
+		});
+
 	}			
 };
 

@@ -149,6 +149,26 @@ router.route('/reload')
 		});			
 	});
 
+router.route('/changeOwner')
+	.post(parseUrlencoded, function(request,response)
+	{
+		logger.info('POST changeOwner' ,{module: 'routes'});
+		worker.changeOwner(request.body)
+		.then(function(result)
+		{
+			response.status(200).json(result);
+		})
+		.catch(function(error)
+		{
+			response.status(400).json(error);
+		});
+	});
+
+router.route('/notifyme')
+	.post(parseUrlencoded, function(request, response)
+	{
+		logger.info(request.body, {module: 'routes'});
+	});
 
 function isEmpty(obj){
 	for(var prop in obj){
