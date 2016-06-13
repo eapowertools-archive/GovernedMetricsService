@@ -210,7 +210,7 @@ var doWork = {
 	{
 		return new Promise(function(resolve, reject)
 		{
-			qrsCO.changeOwner(body.appId, body.appObjectIds, body.ownerId)
+			qrsCO.changeOwner(body.appObjectIds, body.ownerId)
 			.then(function()
 			{
 				resolve('Entries Updated');

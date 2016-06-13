@@ -13,7 +13,7 @@ var logger = new (winston.Logger)({
 });
 
 var qrsNotify = {
-    setNotification: function(appRef)
+    setNotification: function()
     {
         //This method creates the notification service entry that will tell the sausage machine when the app objects have been added
         //to the repository.
@@ -21,9 +21,10 @@ var qrsNotify = {
         {
             var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/notification";
             path += "?xrfkey=ABCDEFG123456789";
-            path += "&name=appobject&filter=app.id eq " + appRef.id;
+            path += "&name=appobject&changetype=Add";
+            path += "&filter=owner.userId eq '" + config.repoAccountUserId + "' and owner.userDirectory eq '" + config.repoAccountUserDirectory + "'";
             var body = "http://" + config.hostname + ":" + config.port + "/masterlib/notifyme";
-            logger.debug('Creating notification service entry for ' + appRef.name + ' with id:' + appRef.id, {module: 'qrsNotifyCreation', method: 'setNotification'});
+            logger.debug('Creating notification service entry.', {module: 'qrsNotifyCreation', method: 'setNotification'});
             qrsInteract.post(path, body,'json')
             .then(function(result)
             {

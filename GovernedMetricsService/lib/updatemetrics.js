@@ -86,91 +86,71 @@ var updateMetrics =
 			.then(function(appSubjectAreas)
 			{
 				x.appSubjectAreas = appSubjectAreas;
-				qrsNotify.setNotification(appRef)
-				.then(function(result)
+				updateMetrics.config(appId)
+				.then(function(qConfig)
 				{
-					global.notificationHandle = result;
-					x.notificationHandle = result;
-					updateMetrics.config(appId)
-					.then(function(qConfig)
+					qsocks.Connect(qConfig)
+					.then(function(global)
 					{
-						qsocks.Connect(qConfig)
-						.then(function(global)
+						x.global = global;
+						logger.info('opening ' + appRef.name + ' without data', {module: 'updateMetrics', method: 'updateMetrics'});
+						global.openDoc(appId,'','','',true)
+						.then(function(app)
 						{
-							x.global = global;
-							logger.info('opening ' + appRef.name + ' without data', {module: 'updateMetrics', method: 'updateMetrics'});
-							global.openDoc(appId,'','','',true)
-							.then(function(app)
-							{
-								logger.debug('' + appRef.name + ' opened without data', {module: 'updateMetrics', method: 'updateMetrics'});
-								x.app = app;
-								x.runDate = buildModDate();
-								logger.debug(x.runDate + ' is my run date for this run', {module: 'updateMetrics', method: 'updateMetrics'});
-								var dataCount = 0;
-								//var reducedData = data.filter(v => v.item[3].qText == subjectArea);
-								var reducedData = data.filter(filterMetrics(x.appSubjectAreas));
-								return reducedData;
-							})
-							.then(function(reducedData)
-							{
-								return popMeas.popMeas(x, appId, reducedData);
-							})
-							.then(function(arrMetrics)
-							{
-								x.arrMetrics = arrMetrics;
-								logger.info('' + appRef.name + ' with id:' + appId + ' master library updated', {module: 'updateMetrics', method: 'updateMetrics'});
-								logger.info('Closing the connection to the app', {module: 'updateMetrics', method: 'updateMetrics'});
-								return x.global.connection.close();
-								
-							})
-							.then(function()
-							{
-								var res = {
-									result: 'finished applying metrics to ' + appRef.name + ' with id:' + appId,
-									notificationHandle: x.notificationHandle	
-								};
-								return res;
-							})
-							.then(function(res)
-							{
-								resolve(res);
-							})
-							.catch(function(error)
-							{
-								logger.error('openDoc::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
-								reject(new Error(error));
-							});
+							logger.debug('' + appRef.name + ' opened without data', {module: 'updateMetrics', method: 'updateMetrics'});
+							x.app = app;
+							x.runDate = buildModDate();
+							logger.debug(x.runDate + ' is my run date for this run', {module: 'updateMetrics', method: 'updateMetrics'});
+							var dataCount = 0;
+							//var reducedData = data.filter(v => v.item[3].qText == subjectArea);
+							var reducedData = data.filter(filterMetrics(x.appSubjectAreas));
+							return reducedData;
+						})
+						.then(function(reducedData)
+						{
+							return popMeas.popMeas(x, appId, reducedData);
+						})
+						.then(function(arrMetrics)
+						{
+							x.arrMetrics = arrMetrics;
+							logger.info('' + appRef.name + ' with id:' + appId + ' master library updated', {module: 'updateMetrics', method: 'updateMetrics'});
+							logger.info('Closing the connection to the app', {module: 'updateMetrics', method: 'updateMetrics'});
+							return x.global.connection.close();
+							
+						})
+						.then(function()
+						{
+							var res = {
+								result: 'finished applying metrics to ' + appRef.name + ' with id:' + appId,
+								notificationHandle: x.notificationHandle	
+							};
+							return res;
+						})
+						.then(function(res)
+						{
+							resolve(res);
 						})
 						.catch(function(error)
 						{
-							logger.error('qSocks::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
+							logger.error('openDoc::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
 							reject(new Error(error));
 						});
 					})
 					.catch(function(error)
 					{
-						logger.error('Config::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
+						logger.error('qSocks::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
 						reject(new Error(error));
 					});
 				})
 				.catch(function(error)
 				{
-					logger.error('setNotification::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
+					logger.error('Config::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
 					reject(new Error(error));
 				});
 			})
 			.catch(function(error)
 			{
-				qrsNotify.delNotification(x.notificationHandle)
-				.then(function(result)
-				{
-					logger.error('appSubjectAreas::' + error, {module: 'updateMetrics', method: 'updateMetrics'});
-					reject(new Error(error));
-				})
-				.catch(function(error)
-				{
-					reject(new Error(error));
-				});
+				reject(new Error(error));
 			});
 		});
 	}

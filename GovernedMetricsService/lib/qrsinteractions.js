@@ -90,7 +90,7 @@ var qrsInteract =
 				if(sCode==200 || sCode==201)
 				{
 					logger.debug('data is of type: ' + typeof data, {module: 'qrsinteractions'});
-					logger.debug('post::Response from QRS::' + sCode + '::' + JSON.stringify(data), {module: 'qrsinteraction'});
+					logger.debug('post::Response from QRS::' + sCode, {module: 'qrsinteraction'});
 					resolve(JSON.parse(data));
 				}
 				else

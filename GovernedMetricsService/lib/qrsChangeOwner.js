@@ -14,78 +14,8 @@ var logger = new (winston.Logger)({
     ]
 });
 
-function inRepo(appId, subjectArea, arrMetrics, attempts, callback)
-{
-    if(attempts <= config.repoAttempts)
-    {
-        attempts++;
-        logger.debug('getRepoIDs attempt ' + attempts, {module: 'qrsChangeOwner'});
-        var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/object";
-        path +=  "?xrfkey=ABCDEFG123456789&filter=engineObjectId sw '" + subjectArea + "' and app.id eq " + appId;
-        logger.debug('getRepoIDs path::' + path, {module: 'qrsChangeOwner'});
-        
-        qrsInteract.get(path)
-        .then(function(result)
-        {
-            if(result.length==arrMetrics.length)
-            {
-                logger.debug('getrepoIDs returned a result on attempt ' + attempts, {module: 'qrsChangeOwner'});
-                callback(null,result);                
-            }
-            else
-            {
-                var count = config.repoAttempts - attempts;
-                logger.debug('getRepoIDs returned no values.  Trying again ' , count  , ' times.', {module: 'qrsChangeOwner'});
-                inRepo(appId, subjectArea, arrMetrics, attempts, callback);        
-            }
-        })
-        .catch(function(error)
-        {
-            logger.error(error,{module: 'qrsChangeOwner'});
-            callback(error);
-        });
-    }
-    else
-    {
-        logger.error('Did not find the new metric in ' + attempts + ' attempts',{module: 'qrsChangeOwner'});
-        callback('Did not find the new metric in ' + attempts + ' attempts');
-    }
-}
-
 var qrsChangeOwner = 
 {
-    
-    getRepoIDs: function(appRef, runDate, arrMetrics)
-    {
-        return new Promise(function(resolve, reject)
-        {
-            var resultArray= [];
-            var idCount = 0;
-
-            var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/object";
-            path += "?xrfkey=ABCDEFG123456789&filter=app.id eq " + appRef.id + " and modifiedDate ge '" + runDate + "'";
-            path += " and modifiedByUserName eq '" + config.repoAccountUserDirectory + '\\' + config.repoAccountUserId + "'";
-            logger.debug(path, {module: 'qrsChangeOwner', method: 'getRepoIDs'});
-            qrsInteract.get(path)
-            .then(function(result)
-            {
-                logger.info('Returned ' + result.length + ' ids from the QRS request', {module: 'qrsChangeOwner', method: 'getRepoIDs'});
-                return result.map(function(obj)
-                {
-                    return obj.id;
-                });                    
-            })
-            .then(function(objectIds)
-            {
-                resolve(objectIds);
-            })
-            .catch(function(error)
-            {
-                logger.error(error, {module: 'qrsChangeOwner', method: 'getRepoIDs'});
-                reject(error);
-            });
-        });
-    },
     readNotification: function(arrObjects)
     {
         return new Promise(function(resolve, reject)
@@ -96,11 +26,7 @@ var qrsChangeOwner =
             sequence = sequence
             .then(function()
             {
-                //delete the notification handle
-                return qrsNotify.delNotification(global.notificationHandle);
-            })
-            .then(function()
-            {
+                logger.debug('getting appobject IDs from the notification agent', {module:'qrsChangeOwner',method:'readNotification'});
                 return arrObjects.map(function(obj)
                 {
                     return obj.objectID;
@@ -114,6 +40,7 @@ var qrsChangeOwner =
             })
             .then(function(body)
             {
+                logger.debug('Create selection on app objects')
                 var postPath = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection";
                 postPath +=  "?xrfkey=ABCDEFG123456789";
                 logger.debug('qrsInteract.post on path:' + postPath, {module:'qrsChangeOwner',method:'readNotification'});
@@ -124,63 +51,36 @@ var qrsChangeOwner =
                 //get the full information of the objects and reduce to the app.
                 var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/selection";
                 path += "/" + selection.id + "/app/object/full";
-                path +=  "?xrfkey=ABCDEFG123456789";
+                path += "?xrfkey=ABCDEFG123456789";
+                path += "&orderby=app.id";
                 logger.debug('qrsInteract.get on path:'+ path, {module:'qrsChangeOwner',method:'readNotification'});
                 return qrsInteract.get(path); 
             })
             .then(function(objInfo)
             {
-                return objInfo.filter(getOwnerItems);
-            })
-            .then(function(objInfo)
-            {
-                //These are the objectIds to change ownership on
+                logger.debug('Result of getting selection of appobjects: ' + JSON.stringify(objInfo), {module:'qrsChangeOwner',method:'readNotification'});
+                //These are the objectIds to change ownership on sorted by app
                 //logger.debug('these items are currently owned by ', item.owner.userDirectory ,'\\', config.repoAccountUserDirectory, {module:'qrsChangeOwner',method:'readNotification'});
-                x.objInfo = objInfo
-                return objInfo.map(function(obj)
-                {
-                    return obj.app.id;
-                })
+                return segregateAppObjects(objInfo);
             })
-            .then(function(appList)
+            .then(function(arrObjectsByApp)
             {
-                return appList.filter(function(item, pos)
+                logger.debug('Show me the formatted array of objects:', JSON.stringify(arrObjectsByApp),{module:'qrsChangeOwner',method:'readNotification'});
+                var objectRuns = 0;
+                arrObjectsByApp.forEach(function(item,index,array)
                 {
-                    return appList.indexOf(item)==pos;
+                    objectRuns++;
+                    x.ownerId = item.ownerId;
+                    x.objects = item.appObjects;
+                    qrsChangeOwner.changeOwner(x.objects, x.ownerId)
+                    .then(function()
+                    {
+                        if(objectRuns==array.length)
+                        {
+                            return;   
+                        }                        
+                    });
                 });
-            })
-            .then(function(uniqueApps)
-            {
-                if(uniqueApps.length == 1)
-                {
-                    logger.debug('Found 1 app!', {module:'qrsChangeOwner',method:'readNotification'});
-                    x.appId = uniqueApps[0];
-                    //get the app information
-                    var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full";
-                    path +=  "?xrfkey=ABCDEFG123456789";
-                    path += "&filter=id eq " + uniqueApps[0];
-                    return qrsInteract.get(path);
-                }
-                else
-                {
-                    reject('More than one app found')
-                }
-            })
-            .then(function(appInfo)
-            {
-                return x.ownerId = appInfo[0].owner.id; 
-            })
-            .then(function()
-            {
-                // get the objectIds we are going to change
-                return x.objInfo.map(function(obj)
-                {
-                    return obj.id;
-                })
-            })
-            .then(function(objects)
-            {
-                return qrsChangeOwner.changeOwner(x.appId,objects, x.ownerId);
             })
             .then(function()
             {
@@ -193,7 +93,7 @@ var qrsChangeOwner =
             });            
         });     
     },
-    changeOwner: function(appid, arrObjects, ownerId)
+    changeOwner: function(arrObjects, ownerId)
     {
         return new Promise(function(resolve, reject)
         {
@@ -273,13 +173,97 @@ var qrsChangeOwner =
     }
 };
 
-function getOwnerItems(obj)
+function segregateAppObjects(appObjects)
 {
-    if(obj.owner.userId == config.repoAccountUserId && obj.owner.userDirectory == config.repoAccountUserDirectory)
-    {
-        return true;
-    }
+   return new Promise(function(resolve,reject)
+   {
+        var newObject = [];
+        var appCount = 0;
+        
+            //AppIds
+        var sequence = Promise.resolve();
+        var appList = appObjects.map(function(obj)
+        {
+            return obj.app.id;    
+        });
+        
+        var uniqueApps = appList.filter(function(item, pos)
+        {
+            return appList.indexOf(item)==pos; 
+        });
+        
+        logger.debug('UniqueApps result:' + JSON.stringify(uniqueApps), {module: 'qrsChangeOwner', method: 'segregateAppObjects'});    
+        
+        uniqueApps.forEach(function(item, index, array)
+        {
+            var x = {};
+            appCount++;
+            logger.debug(appCount, ' of ', array.length,  {module: 'qrsChangeOwner', method: 'segregateAppObjects'});
+            sequence = sequence
+            .then(function()
+            {
+                return getOwnerId(item);
+            })
+            .then(function(owner)
+            {
+                logger.debug('Owner is: ' + owner, {module: 'qrsChangeOwner', method: 'segregateAppObjects'} );
+                return x.ownerId = owner;
+            })
+            .then(function()
+            {
+                return objectsPerApp = appObjects.filter(function(obj)
+                {
+                    return obj.app.id==item;
+                });
+            })
+            .then(function(objectsPerApp)
+            {
+                var arrObjects = objectsPerApp.map(function(obj)
+                {
+                    return obj.id;  
+                });
+                
+                logger.debug('appObjects for app: ' + item + ': ' + JSON.stringify(arrObjects), {module: 'qrsChangeOwner', method: 'segregateAppObjects'});
+                
+                var changeObject =                 
+                {
+                    "appId": item,
+                    "appObjects": arrObjects,
+                    "ownerId": x.ownerId
+                };
+                
+                newObject.push(changeObject);
+                if(appCount===array.length)
+                {
+                    logger.debug('array for changing:' + JSON.stringify(newObject), {module: 'qrsChangeOwner', method: 'segregateAppObjects'});
+                    resolve(newObject);
+                }         
+            });
+        });       
+   });
+ 
 }
+
+function getOwnerId(appId)
+{
+    return new Promise(function(resolve)
+    {
+        var path = "https://" + config.hostname + ":" + config.qrsPort + "/qrs/app/full";
+        path +=  "?xrfkey=ABCDEFG123456789";
+        path += "&filter=id eq " + appId;
+        qrsInteract.get(path)
+        .then(function(result)
+        {
+            logger.debug('Owner is: ', result[0].owner.id, {module: 'qrsChangeOwner', method: 'segregateAppObjects'});
+            resolve(result[0].owner.id);
+        });        
+    });
+     //get the app information
+
+}
+
+
+
 
 function createBody(arrObjects)
 {
