@@ -19,7 +19,7 @@ var objCreators =
         return new Promise(function(resolve, reject)
         {
             var dim = objCreators.dim(data,tags);
-            
+            var changeObject = {};
             app.getDimension(objId)
             .then(function(result)
             {
@@ -31,76 +31,106 @@ var objCreators =
                         app.getDimension(objId)
                         .then(function(ready)
                         {
-                            logger.debug('Got the new measure!::', {module: 'objCreator'});
+                            logger.debug('Got the new measure!::', {module: 'objCreator', method: 'dimCreator'});
                             //Only run this if the app is published.
                             if(boolPublishedApp)
                             {
                                 ready.publish()
                                 .then(function()
                                 {
-                                    logger.debug('popMeas::Created Dimension ' + data[2].qText, {module: 'objCreators'});
-                                    resolve(objId);
+                                    logger.debug('Created Dimension ' + data[2].qText, {module: 'objCreators', method: 'dimCreator'});
+                                    changeObject.changed = true;
+                                    changeObject.objId = objId;
+                                    resolve(changeObject);
                                 })
                                 .catch(function(error)
                                 {
-                                    logger.error('popMeas::publish::' + error, {module: 'objCreators'});
+                                    logger.error('publish::' + error, {module: 'objCreators', method: 'dimCreator'});
                                     reject(new Error(error));
                                 });
                             }
                             else
                             {
-                                logger.debug('popMeas::Created Dimension ' + data[2].qText, {module: 'objCreators'});
-                                resolve(objId);
+                                logger.debug('Created Dimension ' + data[2].qText, {module: 'objCreators', method: 'dimCreator'});
+                                changeObject.changed = true;
+                                changeObject.objId = objId;
+                                resolve(changeObject);
                             }
                         })
                         .catch(function(error)
                         {
-                            logger.error('popMeas::getDimension::' + error, {module: 'objCreators'});
+                            logger.error('getDimension::' + error, {module: 'objCreators', method: 'dimCreator'});
                             reject(new Error(error));
                         });
                     })
                     .catch(function(error)
                     {
-                        logger.error('popMeas::createDimension::' + error, {module: 'objCreators'});
+                        logger.error('createDimension::' + error, {module: 'objCreators', method: 'dimCreator'});
                         reject(new Error(error));							
                     });
                 }
                 else
                 {
-                    
-                    result.setProperties(dim)
-                    .then(function(ready)
+                    logger.debug('I exist!' + objId, {module: 'objCreators', method: 'dimCreator'});
+                    //logger.debug(result, {module: 'objCreators'});
+                    result.getProperties()
+                    .then(function(currentProps)
                     {
-                        if(boolPublishedApp)
+                        logger.debug('I have props', {module: 'objCreators', method: 'dimCreator'});
+                        logger.debug(currentProps.qInfo, {module: 'objCreators', method: 'dimCreator'});
+                        if(JSON.stringify(currentProps)==JSON.stringify(dim))
                         {
-                            result.publish()
-                            .then(function()
-                            {
-                                logger.debug('popMeas::Updated Dimension ' + data[2].qText, {module: 'objCreators'});
-                                resolve(objId);        
-                            })
-                            .catch(function(error)
-                            {
-                                logger.error('popMeas::publish::' + error, {module: 'objCreators'});
-                                reject(new Error(error));
-                            });
+                            logger.debug('These are the same.  No processing will be performed on this metric.', {module: 'objCreators', method: 'dimCreator'});
+                            changeObject.changed = false;
+                            changeObject.objId = objId;
+                            resolve(changeObject);
                         }
                         else
                         {
-                            logger.debug('popMeas::Updated Dimension ' + data[2].qText, {module: 'objCreators'});
-                            resolve(objId);   
+                            result.setProperties(dim)
+                            .then(function(ready)
+                            {
+                                if(boolPublishedApp)
+                                {
+                                    result.publish()
+                                    .then(function()
+                                    {
+                                        logger.debug('Updated Dimension ' + data[2].qText, {module: 'objCreators', method: 'dimCreator'});
+                                        changeObject.changed = true;
+                                        changeObject.objId = objId;
+                                        resolve(changeObject);        
+                                    })
+                                    .catch(function(error)
+                                    {
+                                        logger.error('publish::' + error, {module: 'objCreators', method: 'dimCreator'});
+                                        reject(new Error(error));
+                                    });
+                                }
+                                else
+                                {
+                                    logger.debug('Updated Dimension ' + data[2].qText, {module: 'objCreators', method: 'dimCreator'});
+                                    changeObject.changed = false;
+                                    changeObject.objId = objId;
+                                    resolve(changeObject);   
+                                }
+                            })
+                            .catch(function(error)
+                            {
+                                logger.error('setProperties::' + error, {module: 'objCreators', method: 'dimCreator'});
+                                reject(new Error(error));                           
+                            });
                         }
                     })
                     .catch(function(error)
                     {
-                        logger.error('popMeas::setProperties::' + error, {module: 'objCreators'});
-                        reject(new Error(error));							
+                        logger.error('getProperties::' + error, {module: 'objCreators', method: 'dimCreator'});
+                        reject(new Error(error));
                     });
                 }	
             })
             .catch(function(error)
             {
-                logger.error('popMeas::getDimension::' + error, {module: 'objCreators'});
+                logger.error('popMeas::getDimension::' + error, {module: 'objCreators', method: 'dimCreator'});
                 reject(new Error(error));
             });    
         });
@@ -110,7 +140,7 @@ var objCreators =
         return new Promise(function(resolve, reject)
         {
             var meas = objCreators.meas(data,tags);
-            
+            var changeObject = {};
             app.getMeasure(objId)
             .then(function(result)
             {
@@ -122,7 +152,7 @@ var objCreators =
                         app.getMeasure(objId)
                         .then(function(ready)
                         {
-                            logger.debug('Got the new measure!::', {module: 'objCreator'});
+                            logger.debug('Got the new measure!::', {module: 'objCreator', method: 'measCreator'});
                             
                             //Only run this if the app is published.
                             if(boolPublishedApp)
@@ -130,68 +160,99 @@ var objCreators =
                                 ready.publish()
                                 .then(function()
                                 {
-                                    logger.debug('popMeas::Created Measure ' + data[2].qText, {module: 'objCreators'});
-                                    resolve(objId);
+                                    logger.debug('Created Measure ' + data[2].qText, {module: 'objCreators', method: 'measCreator'});
+                                    changeObject.changed = true;
+                                    changeObject.objId = objId;
+                                    resolve(changeObject);
                                 })
                                 .catch(function(error)
                                 {
-                                    logger.error('popMeas::publish::' + error, {module: 'objCreators'});
+                                    logger.error('publish::' + error, {module: 'objCreators', method: 'measCreator'});
                                     reject(new Error(error));
                                 });
                             }
                             else
                             {
-                                logger.debug('popMeas::Created Measure ' + data[2].qText, {module: 'objCreators'});
-                                resolve(objId);
+                                logger.debug('Created Measure ' + data[2].qText, {module: 'objCreators', method: 'measCreator'});
+                                changeObject.changed = true;
+                                changeObject.objId = objId;
+                                resolve(changeObject);
                             }
                         })
                         .catch(function(error)
                         {
-                            logger.error('popMeas::getMeasure::' + error, {module: 'objCreators'});
+                            logger.error('getMeasure::' + error, {module: 'objCreators', method: 'measCreator'});
                             reject(new Error(error));
                         });
                     })
                     .catch(function(error)
                     {
-                        logger.error('popMeas::createMeasure::' + error, {module: 'objCreators'});
+                        logger.error('createMeasure::' + error, {module: 'objCreators', method: 'measCreator'});
                         reject(new Error(error));							
                     });
                 }
                 else
                 {
-                    result.setProperties(meas)
-                    .then(function(ready)
+                    logger.debug('I exist!' + objId, {module: 'objCreators', method: 'measCreator'});
+                    //logger.debug(result, {module: 'objCreators'});
+                    result.getProperties()
+                    .then(function(currentProps)
                     {
-                        if(boolPublishedApp)
+                        logger.debug('I have props', {module: 'objCreators', method: 'measCreator'});
+                        logger.debug(currentProps.qInfo, {module: 'objCreators', method: 'measCreator'});
+                        if(JSON.stringify(currentProps)==JSON.stringify(meas))
                         {
-                            result.publish()
-                            .then(function()
-                            {
-                                logger.debug('popMeas::Updated Measure ' + data[2].qText, {module: 'objCreators'});
-                                resolve(objId);
-                            })
-                            .catch(function(error)
-                            {
-                                logger.error('popMeas::publish::' + error, {module: 'objCreators'});
-                                reject(new Error(error));
-                            });
+                            logger.debug('These are the same.  No processing will be performed on this metric.', {module: 'objCreators', method: 'measCreator'});
+                            changeObject.changed = false;
+                            changeObject.objId = objId;
+                            resolve(changeObject);
                         }
                         else
                         {
-                            logger.debug('popMeas::Updated Measure ' + data[2].qText, {module: 'objCreators'});
-                            resolve(objId);
+                            result.setProperties(meas)
+                            .then(function(ready)
+                            {
+                                if(boolPublishedApp)
+                                {
+                                    result.publish()
+                                    .then(function()
+                                    {
+                                        logger.debug('Updated Measure ' + data[2].qText, {module: 'objCreators', method: 'measCreator'});
+                                        changeObject.changed = true;
+                                        changeObject.objId = objId;
+                                        resolve(changeObject);
+                                    })
+                                    .catch(function(error)
+                                    {
+                                        logger.error('publish::' + error, {module: 'objCreators', method: 'measCreator'});
+                                        reject(new Error(error));
+                                    });
+                                }
+                                else
+                                {
+                                    logger.debug('Updated Measure ' + data[2].qText, {module: 'objCreators', method: 'measCreator'});
+                                    changeObject.changed = true;
+                                    changeObject.objId = objId;
+                                    resolve(changeObject);
+                                }
+                            })
+                            .catch(function(error)
+                            {
+                                logger.error('setProperties::' + error, {module: 'objCreators', method: 'measCreator'});
+                                reject(new Error(error));                           
+                            }); 
                         }
                     })
                     .catch(function(error)
                     {
-                        logger.error('popMeas::setProperties::' + error, {module: 'objCreators'});
-                        reject(new Error(error));							
+                        logger.error('setProperties::' + error, {module: 'objCreators', method: 'measCreator'});
+                        reject(new Error(error)); 
                     });
                 }	
             })
             .catch(function(error)
             {
-                logger.error('popMeas::getMeasure::' + error, {module: 'objCreators'});
+                logger.error('getMeasure::' + error, {module: 'objCreators', method: 'measCreator'});
                 reject(new Error(error));
             });    
         });
@@ -231,8 +292,8 @@ var objCreators =
 			qDim: {
 				qGrouping: "N",
 				qFieldDefs: [data[6].qText],
-				title: data[2].qText,
-				qFieldLabels: [data[6].qText]
+				qFieldLabels: [data[6].qText],
+                title: data[2].qText
 			},
 			qMetaDef: {
 				title: data[2].qText,

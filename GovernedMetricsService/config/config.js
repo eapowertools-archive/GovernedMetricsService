@@ -22,6 +22,9 @@ var config = extend(true, {
 	userDirectory: 'masterlib',
 	userId: 'qvadmin',
 	repoAccount: 'UserDirectory=Internal;UserId=sa_repository',
+	repoAccountUserDirectory: 'INTERNAL',
+	repoAccountUserId: 'sa_repository',
+	changeInterval: 15,
 	certificates: {
 		client: path.resolve(certPath, 'client.pem'),
 		client_key: path.resolve(certPath,'client_key.pem'),

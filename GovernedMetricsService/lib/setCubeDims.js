@@ -143,7 +143,7 @@ setCubeDefault : function(){
 			qInitialDataFetch: [
 				{
 					qTop: 0,
-					qHeight: 50,
+					qHeight: 1000,
 					qLeft: 0,
 					qWidth: 7
 				}
