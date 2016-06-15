@@ -222,11 +222,14 @@ var doWork = {
 		});
 
 	},
-	bulkchangeOwner	: function(body)
+	bulkchangeOwner	: function()
 	{
-		logger.info('bulkChangeOwner called', {module:'doWork',method:'bulkChangeOwner'});
-		logger.debug(body, {module:'doWork',method:'bulkChangeOwner'})
-		return qrsCO.readNotification(body);
+	        logger.info('bulkChangeOwner called', {module:'doWork',method:'bulkChangeOwner'});
+	        return qrsCO.changeAgent()
+	        .then(function(message)
+	        {
+	            return message;
+	        });
 	}		
 };
 

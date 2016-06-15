@@ -163,20 +163,6 @@ router.route('/changeOwner')
 		});
 	});
 
-router.route('/notifyme')
-	.post(parseUrlencoded, function(request, response)
-	{
-		worker.bulkchangeOwner(request.body)
-		.then(function(result)
-		{
-			response.status(200).json(result);
-		})
-		.catch(function(error)
-		{
-			response.status(400).json(error);
-		});
-	});
-
 function isEmpty(obj){
 	for(var prop in obj){
 		if(obj.hasOwnProperty(prop))

@@ -10,8 +10,8 @@ var app = express();
 var bodyParser = require('body-parser');
 var winston = require('winston');
 var config = require('./config/config');
-var qrsNotify = require('./lib/qrsNotify');
 var Promise = require('bluebird');
+var doWork = require('./lib/dowork');
 
 //set up logging
   var logger = new (winston.Logger)({
@@ -49,36 +49,33 @@ sequence = sequence.then(function()
   //Start the server
   var server = app.listen(port);
   
-  logger.info('masterlib started',{module:'server'});
+  logger.info('Governed Metrics Service started',{module:'server'});
   return server;
 })
 .then(function(server)
 {
 	x.server = server;
-    qrsNotify.setNotification()
-    .then(function(result)
+  var timeInterval = config.changeInterval * 1000;
+  var intervalTimer = setInterval(function()
+  {
+    doWork.bulkchangeOwner()
+    .then(function(message)
     {
-      logger.info('notification agent setup with handle:' + result, {module:'server'});
-      x.notificationHandle = result;
-    })
-    .catch(function(error)
-    {
-      logger.error(error);
-      logger.error('Notification agent setup failed', {module:'server'});
-      logger.info('Shutting down server.', {module:'server'})
-      server.close();
+      logger.info(message, {module: 'server'});
     });
+  }
+  ,timeInterval);
+  //var result = doWork.bulkchangeOwner();
+  //console.log(result);
+  
 });
 
 process.on('SIGINT', function()
 {
   logger.info('Terminating Governed Metrics Service API', {module:'server'});
   logger.info('Removing notification agent:' + x.notificationHandle, {module:'server'});
-  qrsNotify.delNotification(x.notificationHandle)
-  .then(function()
-  {
- 		x.server.close();
-  });
+  x.server.close();
 });
+
 
 
