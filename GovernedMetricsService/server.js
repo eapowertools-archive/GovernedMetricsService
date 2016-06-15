@@ -24,6 +24,7 @@ logger.info('Firing up the masterlib ReST API',{module:'server'});
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
+app.use('/masterlib/public', express.static(config.publicPath));
 
 logger.info('Setting port',{module:'server'});
 

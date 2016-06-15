@@ -50,6 +50,22 @@ router.route('/')
 		response.status(200).json(result);
 	});
 
+router.route('/testpage')
+	.get(function(request,response)
+	{
+		var options = {
+			root: config.appPath
+		};
+		response.sendFile('index.htm', options, function(err)
+		{
+			if(err)
+			{
+				console.log(err);
+				response.status(err.status).end();
+			}
+		});
+	});
+
 //for testing getDocId method
 router.route('/getdocid')
 	.get(function(request,response)

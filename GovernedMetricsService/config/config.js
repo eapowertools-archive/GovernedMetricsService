@@ -7,9 +7,10 @@ var extend = require('extend');
 //var certPath = 'C:/masterlib/certs/masterlib';
 
 var certPath = 'C:/ProgramData/Qlik/Sense/Repository/Exported Certificates/.Local Certificates';
-var routePath = path.join(__dirname, 'server/routes/');
-var publicPath = path.join(__dirname, 'public/');
+var routePath = path.join(__dirname, '/../routes/');
+var publicPath = path.join(__dirname, '/../public/');
 var logPath = path.join(__dirname,'/../log/');
+var appPath = path.join(__dirname, '/../app/');
 
 var logFile = logPath + 'masterlib.log';
 
@@ -31,6 +32,7 @@ var config = extend(true, {
 	},
 	routePath: routePath,
 	publicPath: publicPath,
+	appPath: appPath,
 	logPath: logPath,
 	logFile: logFile,
 	logLevel: 'info',
