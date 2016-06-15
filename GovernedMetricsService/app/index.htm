@@ -8,7 +8,7 @@
 		<link rel="stylesheet" href="public/style.css" type="text/css"/>
 		<script src="public/js/jquery/1.11.3/jquery.min.js"></script>
 
-		<title>Governed Self-Service test page</title>
+		<title>Governed Metrics Service</title>
 		<script type="text/javascript">
 
 		function writeToStatus(someString)
@@ -42,7 +42,7 @@
 			{
 				if(xhr.status==200)
 				{
-					writeToStatus('\n...reloading app was successful.');
+					writeToStatus('\n...' + result);
 				}
 				else
 				{
@@ -58,7 +58,7 @@
 			{
 				if(xhr.status==200)
 				{
-					writeToStatus('\n...completed updating metrics in apps.');
+					writeToStatus('\n...' + result);
 				}
 				else
 				{
@@ -75,18 +75,25 @@
 			{
 				if(xhr.status==200)
 				{
-					writeToStatus('\n...reloading app was successful, now updating the master library...');
-					$.post("http://localhost:8590/masterlib/update/all", function(result,strStatus,xhr)
+					if (result.startsWith("Task Completed in"))
 					{
-						if(xhr.status==200)
+						writeToStatus('\n...reloading app was successful, now updating the master library...');
+						$.post("http://localhost:8590/masterlib/update/all", function(result,strStatus,xhr)
 						{
-							writeToStatus('\n...reloading app was successful, now updating the master library. Completed updating metrics in apps.');
-						}
-						else
-						{
-							writeToStatus('\n...reloading app was successful, now updating the master library. Could not update metrics in app.');
-						}
-					});
+							if(xhr.status==200)
+							{
+								writeToStatus('\n...'+result);
+							}
+							else
+							{
+								writeToStatus('\n...'+result);
+							}
+						});
+					}
+					else
+					{
+						writeToStatus('\n...reloading app failed.');
+					}
 				}
 				else
 				{
@@ -128,7 +135,7 @@
 		<def>
 		</def>
 		<div id="header" class="frame">
-			<div id="header-text"><h1 style='color: #FFFFFF; font-size: 23pt; font-weight: bold; font-family: Arial;'>Governed Self-Service Test Page</h1></div>
+			<div id="header-text"><h1 style='color: #FFFFFF; font-size: 23pt; font-weight: bold; font-family: Arial;'>Governed Metrics Service</h1></div>
 		</div>
 
 		<div id=main-body>
