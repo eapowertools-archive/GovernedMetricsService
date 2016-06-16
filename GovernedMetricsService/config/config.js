@@ -15,6 +15,34 @@ var appPath = path.join(__dirname, '/../app/');
 var logFile = logPath + 'masterlib.log';
 
 var config = extend(true, {
+<<<<<<< HEAD
+	port: 8590,
+	enginePort: 4747,
+	qrsPort: 4242,
+	repoAttempts: 4000,
+	hostname: 'masterlib.112adams.local',
+	userDirectory: 'masterlib',
+	userId: 'qvadmin',
+	repoAccount: 'UserDirectory=Internal;UserId=sa_repository',
+	repoAccountUserDirectory: 'INTERNAL',
+	repoAccountUserId: 'sa_repository',
+	changeInterval: 15,
+	certificates: {
+		client: path.resolve(certPath, 'client.pem'),
+		client_key: path.resolve(certPath,'client_key.pem'),
+		server: path.resolve(certPath, 'server.pem'),
+		server_key: path.resolve(certPath, 'server_key.pem'),
+		root: path.resolve(certPath,'root.pem')
+	},
+	routePath: routePath,
+	publicPath: publicPath,
+	logPath: logPath,
+	logFile: logFile,
+	logLevel: 'info',
+	appName: 'Metrics Library',
+	customPropName: 'ManagedMasterItems',
+	taskName: 'Reload Metrics Library'
+=======
     port: 8590,
     enginePort: 4747,
     qrsPort: 4242,
@@ -42,6 +70,7 @@ var config = extend(true, {
     appName: 'Metrics Library',
     customPropName: 'ManagedMasterItems',
     taskName: 'Manually triggered reload of Metrics Library',
+>>>>>>> simpleUI
 });
 
 function convertDate() {

@@ -18,8 +18,6 @@ var logger = new (winston.Logger)({
     ]
 });
 
-
-
 router.use(function(req,res,next){
 	res.header("Access-Control-Allow-Origin","*");
 	res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
@@ -126,6 +124,7 @@ router.route('/update/all')
 		worker.updateAll()
 		.then(function(result)
 		{
+			notificationHandle = result.notificationHandle;
 			logger.info('POST update/all success::' + result.result, {module: 'routes'});
 				response.status(200).json(result.result + '\n');
 		})
@@ -165,6 +164,20 @@ router.route('/reload')
 		});			
 	});
 
+router.route('/changeOwner')
+	.post(parseUrlencoded, function(request,response)
+	{
+		logger.info('POST changeOwner' ,{module: 'routes'});
+		worker.changeOwner(request.body)
+		.then(function(result)
+		{
+			response.status(200).json(result);
+		})
+		.catch(function(error)
+		{
+			response.status(400).json(error);
+		});
+	});
 
 function isEmpty(obj){
 	for(var prop in obj){
