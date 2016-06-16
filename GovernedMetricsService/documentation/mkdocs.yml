@@ -1,0 +1,11 @@
+site_name: EA Powertools Governed Metrics Service
+pages:
+- Home: 'index.md'
+- User-Guide: 
+     - 'Installation' : 'user-guide/install.md'
+     - 'Qlik Sense Configuration' : 'user-guide/qsconfig.md'
+     - 'Demonstration' : 'user-guide/demo.md'
+     - 'Troubleshooting' : 'user-guide/troubleshoot.md'
+- Governed Metrics Service API: 'gmsapi.md'
+- About: 'about.md'
+theme: spacelab
