@@ -69,39 +69,3 @@ sequence = sequence.then(function()
   //console.log(result);
   
 });
-
-<<<<<<< HEAD
-process.on('SIGINT', function()
-{
-  logger.info('Terminating Governed Metrics Service API', {module:'server'});
-  logger.info('Removing notification agent:' + x.notificationHandle, {module:'server'});
-  x.server.close();
-});
-=======
-logger.info('Firing up the masterlib ReST API',{module:'server'});
-
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(bodyParser.json());
-app.use('/masterlib/public', express.static(config.publicPath));
-
-logger.info('Setting port',{module:'server'});
-
-var port = config.port || 8590;
-
-logger.info('Setting route',{module:'server'});
-
-var popmasterlib = require('./routes/routes');
-
-
-//Register routes
-//all routes will be prefixed with api
-app.use('/masterlib',popmasterlib);
-
-//Start the server
-app.listen(port);
-
-logger.info('masterlib started',{module:'server'});
->>>>>>> simpleUI
-
-
-
