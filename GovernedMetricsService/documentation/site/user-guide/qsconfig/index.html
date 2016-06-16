@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        
+        
+        <link rel="shortcut icon" href="../../img/favicon.ico">
+
+	<title>Qlik Sense Configuration - EA Powertools Governed Metrics Service</title>
+
+        <link href="../../css/bootstrap-custom.min.css" rel="stylesheet">
+        <link href="../../css/font-awesome-4.0.3.css" rel="stylesheet">
+        <link rel="stylesheet" href="../../css/highlight.css">
+        <link href="../../css/base.css" rel="stylesheet">
+
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+            <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+            <script src="https://oss.maxcdn.com/libs/respond.js/1.3.0/respond.min.js"></script>
+        <![endif]-->
+
+        
+    </head>
+
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+
+            <!-- Main title -->
+            <a class="navbar-brand" href="../..">EA Powertools Governed Metrics Service</a>
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+            <!-- Main navigation -->
+            <ul class="nav navbar-nav">
+            
+            
+                <li >
+                    <a href="../..">Home</a>
+                </li>
+            
+            
+            
+                <li class="dropdown active">
+                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">User-Guide <b class="caret"></b></a>
+                    <ul class="dropdown-menu">
+                    
+                        
+<li >
+    <a href="../install/">Installation</a>
+</li>
+
+                    
+                        
+<li class="active">
+    <a href="./">Qlik Sense Configuration</a>
+</li>
+
+                    
+                        
+<li >
+    <a href="../demo/">Demonstration</a>
+</li>
+
+                    
+                        
+<li >
+    <a href="../troubleshoot/">Troubleshooting</a>
+</li>
+
+                    
+                    </ul>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../gmsapi/">Governed Metrics Service API</a>
+                </li>
+            
+            
+            
+                <li >
+                    <a href="../../about/">About</a>
+                </li>
+            
+            
+            </ul>
+
+            <!-- Search, Navigation and Repo links -->
+            <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a href="#" data-toggle="modal" data-target="#mkdocs_search_modal">
+                        <i class="fa fa-search"></i> Search
+                    </a>
+                </li>
+                <li >
+                    <a rel="next" href="../install/">
+                        <i class="fa fa-arrow-left"></i> Previous
+                    </a>
+                </li>
+                <li >
+                    <a rel="prev" href="../demo/">
+                        Next <i class="fa fa-arrow-right"></i>
+                    </a>
+                </li>
+                
+            </ul>
+        </div>
+    </div>
+</div>
+
+        <div class="container">
+            <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+    
+        <li class="main active"><a href="#qlik-sense-server-configuration-for-governed-metrics-service">Qlik Sense Server Configuration for Governed Metrics Service</a></li>
+        
+            <li><a href="#create-the-metrics-library-app">Create the Metrics Library App</a></li>
+        
+            <li><a href="#create-a-reload-task-for-the-metrics-library-app">Create a reload task for the Metrics Library app</a></li>
+        
+            <li><a href="#create-the-managedmasteritems-custom-property-and-add-values">Create the ManagedMasterItems custom property and add values</a></li>
+        
+            <li><a href="#apply-the-managedmasteritems-custom-property-values-to-apps">Apply the ManagedMasterItems custom property values to apps</a></li>
+        
+            <li><a href="#next-steps">Next Steps</a></li>
+        
+    
+    </ul>
+</div></div>
+            <div class="col-md-9" role="main">
+
+<h1 id="qlik-sense-server-configuration-for-governed-metrics-service">Qlik Sense Server Configuration for Governed Metrics Service</h1>
+<p>Configuring Qlik Sense Server to use the Governed Metrics Service is a snap.  To begin distributing dimensions and measures to Qlik Sense applications, complete the tasks below.</p>
+<ul>
+<li><a href="./#create-the-metrics-library-app">Create the Metrics Library app</a>.</li>
+<li><a href="./#create-a-reload-task-for-the-metrics-library-app">Create a reload task for the Metrics Library app</a>.</li>
+<li><a href="./#create-the-managedmasteritems-custom-property-and-add-values">Create the ManagedMasterItems custom property and add values</a></li>
+<li><a href="./#apply-the-managedmasteritems-custom-property-values-to-apps">Apply the ManagedMasterItems custom property values to apps</a>.</li>
+</ul>
+<h2 id="create-the-metrics-library-app">Create the Metrics Library App</h2>
+<p>To begin configuration, log into Qlik Sense as a user who can create applications.  From the my work stream, click Create new app and enter a name for the app that corresponds to the application name entered during the Governed Metrics Service installation.</p>
+<p><img alt="InstallConfigScreen" src="../../img/install/8.png" /> </p>
+<p><img alt="createNewApp" src="../../img/app/createnewapp.png" /></p>
+<h3 id="metrics-library-app-field-names">Metrics Library App Field Names</h3>
+<p>The Metrics Library app is the main application the Governed Metrics Service reads during the update process to apply dimensions and measures to applications specified using a custom property.  The app requires specific named fields to work in its default state.  Custom fields are possible, but not exposed through the REST API in the initial release.</p>
+<p>The source data for the Metrics Library app - the central list of metrics - can be loaded from any data source.  However, when loading the data, the field names must conform to the following and contain the specified information. </p>
+<p>Let's define the field names for the Metrics Library App.</p>
+<ul>
+<li>
+<p><strong>MetricSubject</strong> - The MetricSubject == ManagedMasterItems custom property value.  When the Governed Metrics Service reads the Metrics Library app tables, this field is used to identify which apps will receive the dimension or measure.</p>
+</li>
+<li>
+<p><strong>MetricType</strong> - This field identifies where in the Master Library a metric will be added.</p>
+</li>
+<li>
+<p><strong>MetricName</strong> - The MetricName field contains the friendly name displayed in the Master Library for the dimension or measure.</p>
+</li>
+<li>
+<p><strong>MetricDescription</strong> - This field contains a description for the dimension or measure.  When a user clicks on a Master Library item, the description will appear in the pop user interface.</p>
+</li>
+<li>
+<p><strong>MetricFormula</strong> - The MetricFormula contains the dimension field name or the expression to be used for the dimension or measure.</p>
+</li>
+<li>
+<p><strong>MetricOwner</strong> - This field identifies who owns the metric for informational purposes.</p>
+</li>
+<li>
+<p><strong>MetricTags</strong> - The MetricTags page is a semicolon delimited list of descriptive tags to be added to the dimension or measure Master Library item to aid search.</p>
+</li>
+</ul>
+<h3 id="sample-metrics-library-table">Sample Metrics Library Table</h3>
+<table>
+<thead>
+<tr>
+<th>MetricSubject</th>
+<th>MetricType</th>
+<th>MetricName</th>
+<th>MetricDescription</th>
+<th>Metric Formula</th>
+<th>MetricOwner</th>
+<th>MetricTags</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Customer Service</td>
+<td>Measure</td>
+<td>% Resolved in SLA</td>
+<td>Percentage of Tickets handled within SLA</td>
+<td>Sum({&lt; [Call Ctr Days to Resolve] = {'0', '1', '2', '3', '4', '5', '6'} &gt; } [Call Ctr Call #])/sum([Call Ctr Call #])</td>
+<td>Linda Lee</td>
+<td>Key KPI;Call</td>
+</tr>
+<tr>
+<td>Sales</td>
+<td>Dimension</td>
+<td>Country</td>
+<td>Customer Country</td>
+<td>Customer Country</td>
+<td>Chad Johnson</td>
+<td>Customer</td>
+</tr>
+<tr>
+<td>Finance</td>
+<td>Measure</td>
+<td>Costs</td>
+<td>Cost Amount</td>
+<td>sum([Sales Costs])</td>
+<td>Gordon Wyse</td>
+<td>Cost</td>
+</tr>
+</tbody>
+</table>
+<h2 id="create-a-reload-task-for-the-metrics-library-app">Create a reload task for the Metrics Library app</h2>
+<p>After creating the Metrics Library app, a reload task needs to be created for it so the Governed Metrics Service can request updated metrics before applying them to apps.</p>
+<p>To create the reload task, log into the Qlik Management Console (QMC) and go to the Apps section.  Highlight the Metrics Library App and click More actions.  Click on the Create new reload task option.</p>
+<p><img alt="AppList" src="../../img/reload/applist.png" /> <img alt="ReloadButton" src="../../img/reload/reloadtaskbutton.png" /></p>
+<p>When the task creation screen appears, name the task the same value entered in the task name provided during the installation of the Governed Metrics Service.</p>
+<p><img alt="Task Creation Dialog" src="../../img/reload/reloadtask.png" /></p>
+<h2 id="create-the-managedmasteritems-custom-property-and-add-values">Create the ManagedMasterItems custom property and add values</h2>
+<p>In order to identify the applications that will receive metrics, the ManagedMasterItems custom property (or whatever you choose to call it during the GMS install) contains the values to be applied to apps.</p>
+<p>Looking back on the sample metrics library table above, observe the MetricsSubject column.  This column corresponds to the values entered into the ManagedMasterItems custom property.  For the different metrics supplied from the data source, a MetricsSubject identifies the apps that will receive the dimension or measure in the master library.</p>
+<p>To create the ManagedMasterItems custom property navigate to the Custom properties menu item in the QMC.  Click Create new and provide a name for the custom property that matches the value entered in the configuration page of the Governed Metrics Service install.</p>
+<p>Select the App resource checkbox.
+Add values to the custom property that match values in the MetricsSubject field and click apply.</p>
+<p><img alt="customprop" src="../../img/customprop/customprop.png" /></p>
+<h2 id="apply-the-managedmasteritems-custom-property-values-to-apps">Apply the ManagedMasterItems custom property values to apps</h2>
+<p>Now that the custom property for populating metrics to applications exists, the values need to be set on applications for when the Governed Metrics Service performs an update.</p>
+<p>To add a custom property value to an app:</p>
+<ol>
+<li>
+<p>Go back to the Apps section of the QMC and double click on an App reference in the list.<br />
+<img alt="AppList" src="../../img/reload/applist.png" /></p>
+</li>
+<li>
+<p>When the app screen appears, activate the Custom properties section by clicking on the term located on the right side of the screen.  <br />
+<img alt="AppList" src="../../img/app/applyprop1.png" /></p>
+</li>
+<li>
+<p>Click on the dialog box next to ManagedMasterItems (or the custom property created for GMS) and type or select the custom property values to apply to the app.  <br />
+<img alt="AppList" src="../../img/app/applyprop2.png" /></p>
+</li>
+</ol>
+<h2 id="next-steps">Next Steps</h2>
+<p>Time to test out the Governed Metrics Service in the <a href="../demo/"><strong>next section</strong></a>!</p></div>
+        </div>
+
+        <footer class="col-md-12">
+            <hr>
+            
+            <center>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</center>
+        </footer>
+
+        <script src="../../js/jquery-1.10.2.min.js"></script>
+        <script src="../../js/bootstrap-3.0.3.min.js"></script>
+        <script src="../../js/highlight.pack.js"></script>
+        <script>var base_url = '../..';</script>
+        <script data-main="../../mkdocs/js/search.js" src="../../mkdocs/js/require.js"></script>
+        <script src="../../js/base.js"></script>
+
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                        <h4 class="modal-title" id="exampleModalLabel">Search</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>
+                            From here you can search these documents. Enter
+                            your search terms below.
+                        </p>
+                        <form role="form">
+                            <div class="form-group">
+                                <input type="text" class="form-control" placeholder="Search..." id="mkdocs-search-query">
+                            </div>
+                        </form>
+                        <div id="mkdocs-search-results"></div>
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
