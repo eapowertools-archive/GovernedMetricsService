@@ -1,17 +1,5 @@
-# Welcome to MkDocs
+# Welcome to EA Powertools Governed Metrics Service documentation
 
-For full documentation visit [mkdocs.org](http://mkdocs.org).
+To access the Governed Metrics Service project go here: [GitHub:QSGovernedMetricsService](https://github.com/eapowertools/QSGovernedMetrics).
 
-## Commands
-
-* `mkdocs new [dir-name]` - Create a new project.
-* `mkdocs serve` - Start the live-reloading docs server.
-* `mkdocs build` - Build the documentation site.
-* `mkdocs help` - Print this help message.
-
-## Project layout
-
-    mkdocs.yml    # The configuration file.
-    docs/
-        index.md  # The documentation homepage.
-        ...       # Other markdown pages, images and other files.
+Use the menu at the top to access the installation and user guides for the Governed Metrics Service.
