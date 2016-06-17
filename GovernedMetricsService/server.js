@@ -32,6 +32,8 @@ sequence = sequence.then(function()
 
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
+  app.use('/masterlib/public', express.static(config.publicPath));
+
 
   logger.info('Setting port',{module:'server'});
 
