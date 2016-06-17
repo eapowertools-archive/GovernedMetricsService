@@ -11,12 +11,12 @@ This capability enables users to create visualizations with trusted dimensions a
 The Qlik Governed Metrics Service (GMS) Power Tool builds upon this capability by allowing metrics that are defined externally to Qlik Sense to be loaded and applied to one or more applications. The metrics that are loaded to each application are configurable and managed through the Qlik Management Console via custom properties.
 
 <div style="overflow-x:auto;">
-<table style="border-color: none;">
+<table>
 <tr>
-<td>
+<td style="border:none;">
 <img src="https://github.com/eapowertools/QSGovernedMetrics/blob/master/img/workflow.png">
 </td>
-<td>
+<td style="border:none;">
 <ul>
 <li>Metrics defined in an external database or XLS.</li>
 <li>Metrics extracted into a Metrics Library QVF application.</li>
