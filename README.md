@@ -10,12 +10,19 @@ This capability enables users to create visualizations with trusted dimensions a
  
 The Qlik Governed Metrics Service (GMS) Power Tool builds upon this capability by allowing metrics that are defined externally to Qlik Sense to be loaded and applied to one or more applications. The metrics that are loaded to each application are configurable and managed through the Qlik Management Console via custom properties.
 
-![workflow.png](https://github.com/eapowertools/QSGovernedMetrics/blob/master/img/workflow.png)
-
-* Metrics defined in an external database or XLS.
-
-* Metrics extracted into a Metrics Library QVF application.
- 
-* GMS Power Tool reads the Metrics Library QVF and applies metrics to one or more applications.
- 
+<div style="overflow-x:auto;">
+<table style="border-color: none;">
+<tr>
+<td>
+<img src="https://github.com/eapowertools/QSGovernedMetrics/blob/master/img/workflow.png">
+</td>
+<td>
+<ul>
+<li>Metrics defined in an external database or XLS.</li>
+<li>Metrics extracted into a Metrics Library QVF application.</li>
+<li>GMS Power Tool reads the Metrics Library QVF and applies metrics to one or more applications.</li>
+</ul>
+</td>
+</table>
+</div>
 GMS Power Tool is a node.js based module that plugs into the existing Qlik Service Dispatcher framework.
