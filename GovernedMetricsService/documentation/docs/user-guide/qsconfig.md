@@ -8,9 +8,7 @@ Configuring Qlik Sense Server to use the Governed Metrics Service is a snap.  To
 * [Apply the ManagedMasterItems custom property values to apps](qsconfig.md#apply-the-managedmasteritems-custom-property-values-to-apps).
 
 ##Create the Metrics Library App
-To begin configuration, log into Qlik Sense as a user who can create applications.  From the my work stream, click Create new app and enter a name for the app that corresponds to the application name entered during the Governed Metrics Service installation.
-
-![InstallConfigScreen](../img/install/8.png) 
+To begin configuration, log into Qlik Sense as a user who can create applications.  From the my work stream, click Create new app and enter a name for the app that represents your metrics library.  You may want to call it "Metrics Library".  That's a good name.  Call it that.
 
 ![createNewApp](../img/app/createnewapp.png)
  
@@ -80,4 +78,4 @@ To add a custom property value to an app:
 ![AppList](../img/app/applyprop2.png)
 
 ##Next Steps
-Time to test out the Governed Metrics Service in the [__next section__](../user-guide/demo.md)!
+Time to install the Governed Metrics Service in the [__next section__](../user-guide/install.md)!
