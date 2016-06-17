@@ -35,6 +35,7 @@ var config = extend(true, {
 	},
 	routePath: routePath,
 	publicPath: publicPath,
+	appPath: appPath,
 	logPath: logPath,
 	logFile: logFile,
 	logLevel: 'info',
