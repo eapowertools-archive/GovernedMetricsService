@@ -3,4 +3,4 @@ Qlik Sense Metrics Manager - Deploy centralized metric definitions to specific a
 
 More information on this solution coming soon!
 
-Download the installer from here: [GovernedMetrics.exe](https://github.com/eapowertools/QSGovernedMetrics/releases/download/RC5/GovernedMetrics.exe)
+Download the installer from here: [GovernedMetrics.exe](https://github.com/eapowertools/QSGovernedMetrics/releases/download/RC5/GovernedMetricsService.exe)
