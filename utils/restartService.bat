@@ -1,2 +1,0 @@
-net stop QlikSenseServiceDispatcher
-net start QlikSenseServiceDispatcher
