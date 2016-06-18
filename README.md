@@ -12,6 +12,8 @@ For now, the Governed Metrics Service requires a licensed Qlik Sense server site
 
 Please do not install for use with Qlik Sense desktop.  The Governed Metrics Service will not work.
 
+Before installing the Governed Metrics Service, **we highly recommend** going through the Qlik Sense server QMC configuration instructions in the documentation.  Application, custom property, and task names will be requested during the install and it's easier on your memory if you have created them in advance.  [Direct Link to QMC configuration section in docs](http://eapowertools.github.io/GovernedMetricsService/user-guide/qsconfig/) 
+
 ##Install
 To install the Governed Metrics Service, use the **[installer](https://github.com/eapowertools/GovernedMetricsService/releases/download/RC6/GovernedMetricsService.exe)**.
 
