@@ -4,7 +4,7 @@
 Please read the Governed Metrics Service **[documentation](http://eapowertools.github.io/GovernedMetricsService/)** before installing the Governed Metrics Service.
 
 ##Minimum Requirements:
-The Governed Metrics Service uses the Qlik Sense Service Dispatcher to launch a REST api as a background service for updating metrics in Qlik Sense applications.  Therefore, the Governed Metrics Service requires Qlik Sense Server.
+The Governed Metrics Service uses the Qlik Sense Service Dispatcher and Nodejs to launch a REST api as a background service for updating metrics in Qlik Sense applications.  Therefore, the Governed Metrics Service requires Qlik Sense Server.
 
 The Governed Metrics Service has been tested with Qlik Sense 2.2.4.  Testing with Qlik Sense 3.0 is underway. 
 
@@ -39,4 +39,6 @@ The Qlik Governed Metrics Service (GMS) Power Tool builds upon this capability b
 </td>
 </table>
 </div>
-The GMS Power Tool is a node.js based module that plugs into the existing Qlik Service Dispatcher framework.
+
+##Promotion
+The Governed Metrics Service is part of the EA Team Governed Self-Service Reference Deployment.  To learn more about governed self-service and how to centrally manage master library dimensions and measures in your Qlik Sense site, visit the **[Governed Self-Service](https://community.qlik.com/community/qlik-sense/qlik-sense-governed-self-service)** space on **[Qlik Community](community.qlik.com)**.  
