@@ -1,0 +1,49 @@
+{
+  "name": "masterlib",
+  "version": "1.0.0",
+  "description": "a ReST api for updating dimensions and measures in the master library of apps with specific custom property values.",
+  "main": "server.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "bluebird": "^3.1.5",
+    "body-parser": "^1.14.2",
+    "express": "^4.13.4",
+    "extend": "^3.0.0",
+    "fs": "^0.0.2",
+    "https": "^1.0.0",
+    "path": "^0.12.7",
+    "qrs": "^2.0.2",
+    "qsocks": "^3.0.0",
+    "request": "^2.69.0",
+    "winston": "^2.2.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/goldbergjeffrey/masterlib.git"
+  },
+  "keywords": [
+    "governed",
+    "metrics",
+    "library",
+    "master",
+    "dimension",
+    "measure",
+    "dimensions",
+    "measures",
+    "qlik",
+    "sense"
+  ],
+  "author": "Jeffrey P Goldberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/goldbergjeffrey/masterlib/issues"
+  },
+  "homepage": "https://github.com/goldbergjeffrey/masterlib#readme"
+}
