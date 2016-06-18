@@ -4,7 +4,7 @@ Please read the Governed Metrics Service **[documentation](http://eapowertools.g
 
 To install the Governed Metrics Service, use the **[installer](https://github.com/eapowertools/QSGovernedMetrics/releases/download/RC5/GovernedMetricsService.exe)**.
 
-Qlik Sense enables self-service visualization with a balance of control and agility that gives IT confidence that the visualizations that users are empowered to create are correct.  One way this is enabled is through the use of ![masteritems.png](https://github.com/eapowertools/QSGovernedMetrics/blob/master/img/masteritems.png) Master Items.  A Master Item is a dimension or measure that is defined by a central IT or BI team or line of business analyst and deployed to users in conjunction with a Qlik Sense application.
+Qlik Sense enables self-service visualization with a balance of control and agility that gives IT confidence that the visualizations that users are empowered to create are correct.  One way this is enabled is through the use of ![masteritems.png](https://github.com/eapowertools/GovernedMetricsService/blob/master/img/masteritems.png) Master Items.  A Master Item is a dimension or measure that is defined by a central IT or BI team or line of business analyst and deployed to users in conjunction with a Qlik Sense application.
  
 This capability enables users to create visualizations with trusted dimensions and measures without having to author or understand the underlying business logic.  This is an important requirement of modern self-service analytics platforms.
  
@@ -14,7 +14,7 @@ The Qlik Governed Metrics Service (GMS) Power Tool builds upon this capability b
 <table style="border: none;">
 <tr>
 <td style="border: none;">
-<img src="https://github.com/eapowertools/QSGovernedMetrics/blob/master/img/workflow.png">
+<img src="https://github.com/eapowertools/GovernedMetricsService/blob/master/img/workflow.png">
 </td>
 <td style="border: none;">
 <ul>
