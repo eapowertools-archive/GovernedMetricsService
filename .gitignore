@@ -27,7 +27,7 @@ build/Release
 # Dependency directory
 # https://docs.npmjs.com/misc/faq#should-i-check-my-node-modules-folder-into-git
 node_modules
-certs/
+
 
 # =========================
 # Operating System Files
@@ -81,7 +81,6 @@ $RECYCLE.BIN/
 *.lnk
 
 #Backup files
-GovernedMetricsService/backup/
-
-GovernedMetricsService/Set-MLAConfig.ps1
-MetricsLibraryEditor/ExternalMetrics.bat
+backup/
+Deprecated/
+examples/
