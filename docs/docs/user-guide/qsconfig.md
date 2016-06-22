@@ -34,7 +34,7 @@ Let's define the field names for the Metrics Library App.
 * __MetricTags__ - The MetricTags page is a semicolon delimited list of descriptive tags to be added to the dimension or measure Master Library item to aid search.
 
 ###Sample Metrics Library Table
-| MetricSubject | MetricType | MetricName | MetricDescription | Metric Formula | MetricOwner | MetricTags |
+| MetricSubject | MetricType | MetricName | MetricDescription | MetricFormula | MetricOwner | MetricTags |
 | ------------- | ---------- | ---------- | ----------------- | -------------- | ----------- | ---------- |
 | Customer Service | Measure | % Resolved in SLA | Percentage of Tickets handled within SLA | Sum({< [Call Ctr Days to Resolve] = {'0', '1', '2', '3', '4', '5', '6'} > } [Call Ctr Call #])/sum([Call Ctr Call #]) | Linda Lee | Key KPI;Call |
 | Sales | Dimension | Country | Customer Country | Customer Country | Chad Johnson | Customer |
