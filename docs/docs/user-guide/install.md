@@ -43,11 +43,6 @@ To install the Governed Metrics Service, click on this link below.
 ![9](../img/install/9.png)  
 13. When the installer completes, click the finish button.
 
-##Next Steps
-With the configurations steps complete and the Governed Metrics Service installed, it's time to test the service to make sure it's running.  There are two methods for testing we will cover in the next section:
-
-1. A test page to confirm the GMS is active.  It is accessible via the browser at [http://QlikSenseServerName:8590/masterlib/testpage](http://QlikSenseServerName:8590/masterlib/testpage) where QlikSenseServerName is the hostname for your Qlik Sense server.
-
-2. If you use Postman, it is possible to contact the GMS using it.  If you are unfamiliar with Postman and want to become acquainted go here: **[Postman](https://www.getpostman.com/)**.
+##Next Steps - Testing Governed Metrics Service. 
 
 
