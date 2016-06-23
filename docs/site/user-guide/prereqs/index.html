@@ -8,7 +8,7 @@
   
   
   
-  <title>Demonstration - EA Powertools Governed Metrics Service</title>
+  <title>Governed Metrics Service Prerequisites - EA Powertools Governed Metrics Service</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Demonstration";
-    var mkdocs_page_input_path = "user-guide\demo.md";
-    var mkdocs_page_url = "/user-guide/demo/";
+    var mkdocs_page_name = "Governed Metrics Service Prerequisites";
+    var mkdocs_page_input_path = "user-guide\prereqs.md";
+    var mkdocs_page_url = "/user-guide/prereqs/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -68,6 +68,27 @@
         
             
     <li class="toctree-l1 ">
+        <a class="" href="../intro/">Governed Metrics Service Introduction</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Governed Metrics Service Prerequisites</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#gms-prerequisites">GMS Prerequisites</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
         <a class="" href="../qsconfig/">Qlik Sense Configuration</a>
         
     </li>
@@ -81,22 +102,8 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Demonstration</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#demonstration">Demonstration</a></li>
-                
-            
-            </ul>
-        
-    </li>
-
-        
-            
     <li class="toctree-l1 ">
-        <a class="" href="../troubleshoot/">Troubleshooting</a>
+        <a class="" href="../interface/">Testing Goverened Metrics Service</a>
         
     </li>
 
@@ -144,7 +151,7 @@
         
       
     
-    <li>Demonstration</li>
+    <li>Governed Metrics Service Prerequisites</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -154,7 +161,16 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="demonstration">Demonstration</h1>
+                <h1 id="gms-prerequisites">GMS Prerequisites</h1>
+<p>Minimum Requirements:</p>
+<ul>
+<li>The Governed Metrics Service requires Qlik Sense Server.</li>
+<li>The Governed Metrics Service has been tested with Qlik Sense 2.2.4 - 3.0</li>
+<li>A data source that can be accessed via Data Connection in Qlik Sense (Excel, ODBC etc.)</li>
+<li>The Governed Metrics Service requires a licensed Qlik Sense server.</li>
+<li>Please do not install for use with Qlik Sense desktop.  The Governed Metrics Service will not work.</li>
+</ul>
+<p>Before installing the Governed Metrics Service, <strong>we highly recommend</strong> going through the Qlik Sense server QMC configuration instructions in the documentation.  Application, custom property, and task names will be requested during the install and it's easier on your memory if you have created them in advance.</p>
               
             </div>
           </div>
@@ -162,10 +178,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../troubleshoot/" class="btn btn-neutral float-right" title="Troubleshooting">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../qsconfig/" class="btn btn-neutral float-right" title="Qlik Sense Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../install/" class="btn btn-neutral" title="Installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../intro/" class="btn btn-neutral" title="Governed Metrics Service Introduction"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -191,10 +207,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../install/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../intro/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../troubleshoot/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../qsconfig/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
