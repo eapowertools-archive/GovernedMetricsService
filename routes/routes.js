@@ -136,10 +136,10 @@ router.route('/update/all')
 		
 	});
 
-router.route('/delete/all')
+router.route('/delete/fromapp')
 	.post(parseUrlencoded, function(request,response){
-		logger.info('POST delete/all for ' + request.body.appname, {module: 'routes'});
-		worker.deleteAll(request.body)
+		logger.info('POST delete/fromapp for ' + request.body.appname, {module: 'routes'});
+		worker.deleteFromApp(request.body)
 		.then(function(result)
 		{
 			logger.info('POST delete/all success::' + result.result, {module: 'routes'});

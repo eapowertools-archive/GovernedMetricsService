@@ -106,7 +106,10 @@
 		{
 			var appName = document.getElementById("textInput").value;
 			writeToStatus('\n\nDeleting metrics from app: ' + appName + "...");
-			$.post("http://localhost:8590/masterlib/delete/all", '{"appname":"'+appName+'""}', function(result,strStatus,xhr)
+			var body = {
+				"appname":appName
+			};
+			$.post("http://localhost:8590/masterlib/delete/fromapp", body, function(result,strStatus,xhr)
 			{
 				if(xhr.status==200)
 				{
@@ -157,7 +160,8 @@
 				</div>
 				<br/>
 				<div class="frame  lui-bg-default">
-					<textarea class="lui-textarea" id="textInput"></textarea>
+					<label class="labels" for="textInput">Enter the Qlik Sense application name here:</label>	
+					<input class="lui-input" id="textInput">
 				</div>
 			</div>
 			<div style"clear:both"></div>
