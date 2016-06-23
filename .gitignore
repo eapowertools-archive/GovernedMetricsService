@@ -1,3 +1,6 @@
+#ignore site files
+docs/site/*
+
 # Logs
 logs
 *.log
