@@ -55,3 +55,10 @@
     padding-right: 5%;
 }
 
+input {
+  font-family:Consolas;
+}
+
+.labels {
+  font-family: Arial;
+}
