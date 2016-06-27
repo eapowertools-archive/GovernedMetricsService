@@ -15,7 +15,7 @@ Please do not install for use with Qlik Sense desktop.  The Governed Metrics Ser
 Before installing the Governed Metrics Service, **we highly recommend** going through the Qlik Sense server QMC configuration instructions in the documentation.  Application, custom property, and task names will be requested during the install and it's easier on your memory if you have created them in advance.  [Direct Link to QMC configuration section in docs](http://eapowertools.github.io/GovernedMetricsService/user-guide/qsconfig/) 
 
 ##Install
-To install the Governed Metrics Service, use the **[installer](https://github.com/eapowertools/GovernedMetricsService/releases/download/RC7/GovernedMetricsService.exe)**.
+To install the Governed Metrics Service, use the **[installer](https://github.com/eapowertools/GovernedMetricsService/releases/download/Latest/GovernedMetricsService.exe)**.
 
 ##Description
 Qlik Sense enables self-service visualization with a balance of control and agility that gives IT confidence that the visualizations that users are empowered to create are correct.  One way this is enabled is through the use of ![masteritems.png](https://github.com/eapowertools/GovernedMetricsService/blob/master/img/masteritems.png) Master Items.  A Master Item is a dimension or measure that is defined by a central IT or BI team or line of business analyst and deployed to users in conjunction with a Qlik Sense application.
