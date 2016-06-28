@@ -1,5 +1,6 @@
 #ignore site files
 docs/site/
+demo/
 
 # Logs
 logs
