@@ -7,7 +7,7 @@ pages:
      - 'Qlik Sense Configuration' : 'user-guide/qsconfig.md'
      - 'Installation' : 'user-guide/install.md'
      - 'Testing Goverened Metrics Service' : 'user-guide/interface.md'
-     - 'GMS Example' : 'user-guide/validation.md'
+     - 'GMS - GSS Example' : 'user-guide/validation.md'
 - Governed Metrics Service API: 'gmsapi.md'
 - About: 'about.md'
 theme: readthedocs
