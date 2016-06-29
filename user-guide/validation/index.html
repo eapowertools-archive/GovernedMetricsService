@@ -8,7 +8,7 @@
   
   
   
-  <title>Governed Metrics Service Introduction - EA Powertools Governed Metrics Service</title>
+  <title>GMS Example - EA Powertools Governed Metrics Service</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Governed Metrics Service Introduction";
-    var mkdocs_page_input_path = "user-guide\intro.md";
-    var mkdocs_page_url = "/user-guide/intro/";
+    var mkdocs_page_name = "GMS Example";
+    var mkdocs_page_input_path = "user-guide\validation.md";
+    var mkdocs_page_url = "/user-guide/validation/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -67,17 +67,8 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Governed Metrics Service Introduction</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#introduction-to-governed-metrics-service">Introduction to Governed Metrics Service</a></li>
-                
-                    <li><a class="toctree-l4" href="#how-does-it-work">How does it work?</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../intro/">Governed Metrics Service Introduction</a>
         
     </li>
 
@@ -111,8 +102,15 @@
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../validation/">GMS Example</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">GMS Example</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#gms-example-walkthrough">GMS Example Walkthrough</a></li>
+                
+            
+            </ul>
         
     </li>
 
@@ -160,7 +158,7 @@
         
       
     
-    <li>Governed Metrics Service Introduction</li>
+    <li>GMS Example</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -170,12 +168,29 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="introduction-to-governed-metrics-service">Introduction to Governed Metrics Service</h1>
-<p><a href="https://community.qlik.com/community/qlik-sense/ea-powertools"><img src="/img/PowerToolsLogoNew.png"></a> </p>
-<p>The Governed Metrics Service (GMS) Powertool provides the ability to control and provision the use of governed Master Items. Master Items are defined as dimensions or measures located in an app's Master Library. </p>
-<h2 id="how-does-it-work">How does it work?</h2>
-<p>GMS loads externally defined metrics and applies them to one or more designated applications. Complete with an installation and test page, GMS will quickly have you on the right track to governed self-service. </p>
-<p>GMS is a REST api + node.js-based module that plugs into the existing Qlik Service Dispatcher framework.</p>
+                <h1 id="gms-example-walkthrough">GMS Example Walkthrough</h1>
+<p>The Governed Metrics Service installs with a sample data source that can be used with the Metrics Library application and one of the GSS example applications (Executive Dashboard.qvf). To use the sample data source and application, do the following steps:</p>
+<ol>
+<li>Locate the Executive Dashboard.qvf and GMS.xlsx files that were installed with the Governed Metrics Service. Both are located in the "C:\Program Files\Qlik\Sense\EAPowerTools\GovernedMetricsService\demo" directories by default. </li>
+<li>In the QMC, import the Executive Dashboard.qvf to the QMC and assign the Custom Property attribute "<strong>Sales</strong>" for the <strong>ManagedMasterItems</strong> property. </li>
+<li>Open the Metrics Library application &gt; Data Manager </li>
+<li>Select "Add Data" 
+<img alt="Add Data" src="../../img/test/GMS_AddData.png" /></li>
+<li>Select "Attach files and drag and drop the GMS.xlsx spreadsheet into the window. 
+<img alt="Add Data" src="../../img/test/GMS_AttachFiles.png" /></li>
+<li>"Load Data and Finish". Save and close the Metrics Library application.
+<img alt="Add Data" src="../../img/test/GMS_LoadandFinish.png" /></li>
+<li>Ensure a task has been created for the Metrics Library application <a href="../qsconfig/#Step3">here</a> if you have not done so. </li>
+<li>Run the task and ensure the Metrics Library application has reloaded. </li>
+<li>Open the Executive Dashboard application in the Hub and verify the KPI Dashboard sheet is all "Incomplete Visualations". This is basically a sheet of objects tied into governed metrics that have to be pushed out from the Governed Metrics Service. 
+<img alt="Add Data" src="../../img/test/GMS_IncompleteViz.png" /></li>
+<li>In a new tab, navigate to the GMS test page: http://localhost:8590/masterlib/testpage</li>
+<li>Test the connection. If successful hit the "Reload Metrics Library and Update Apps" button. 
+<img alt="Add Data" src="../../img/test/GMS_ReloadandUpdate.png" /></li>
+<li>It may take a few seconds to run, but after confirmation navigate back over to the Executive Dashboard &gt; KPI Dashboard sheet. Refresh the page and you should see all objects now rendered utilizing governed metrics that were updated into the master items list by the GMS. 
+<img alt="Add Data" src="../../img/test/GMS_FinalResult.png" /></li>
+</ol>
+<p>***Please note that it may take up to 15 seconds for new items to show up in an app.</p>
               
             </div>
           </div>
@@ -183,10 +198,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../prereqs/" class="btn btn-neutral float-right" title="Governed Metrics Service Prerequisites">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../gmsapi/" class="btn btn-neutral float-right" title="Governed Metrics Service API">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../.." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../interface/" class="btn btn-neutral" title="Testing Goverened Metrics Service"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -212,10 +227,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../interface/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../prereqs/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../gmsapi/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

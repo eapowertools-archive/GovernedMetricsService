@@ -112,6 +112,13 @@
     </li>
 
         
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../validation/">GMS Example</a>
+        
+    </li>
+
+        
     </ul>
 <li>
           
@@ -167,26 +174,28 @@
               
                 <h1 id="using-the-gms-test-page">Using the GMS Test Page</h1>
 <p><img alt="WebInterface" src="../../img/webint/GMS_TestConnection.png" /></p>
-<p>It is accessible via the browser at <a href="http://localhost:8590/masterlib/testpage">http://QlikSenseServerName:8590/masterlib/testpage</a> </p>
+<p>It is accessible via the browser at <a href="http://localhost:8590/masterlib/testpage">http://localhost:8590/masterlib/testpage</a> </p>
 <h2 id="test-page-components">Test Page Components:</h2>
 <ol>
 <li><strong>Test Connection </strong>: This button verifies that the Governed Metrics Service is connected to Qlik Sense.</li>
 <li><strong>Reload Metrics Library App</strong>: This button will reload your Metrics Library application and output confirmation of task completion. </li>
 <li><strong>Update Metrics in Apps</strong>: This button will push all designated governed metrics to any/all corresponding Qlik Sense application(s).</li>
 <li><strong>Reload Metrics Library and Update Apps</strong>: This button comines the Reload and Update button functions into one task. </li>
-<li><strong>Delete Metics from an App</strong>: TBD</li>
+<li><strong>Delete Metics from an App</strong>: Enter the application name on the bottom right input box you wish to delete the metrics from, then apply. </li>
 </ol>
 <p>There are two methods for testing:</p>
 <ol>
 <li>
-<p>A test page to confirm the GMS is active.  It is accessible via the browser at <a href="http://QlikSenseServerName:8590/masterlib/testpage">http://QlikSenseServerName:8590/masterlib/testpage</a> where QlikSenseServerName is the hostname for your Qlik Sense server.</p>
+<p>A test page to confirm the GMS is active.  It is accessible via the browser at <a href="http://localhost:8590/masterlib/testpage">http://localhost:8590/masterlib/testpage</a> where localhost is the hostname for your Qlik Sense server.</p>
 </li>
 <li>
 <p>If you use Postman, it is possible to contact the GMS using it.  If you are unfamiliar with Postman and want to become acquainted go here: <strong><a href="https://www.getpostman.com/">Postman</a></strong>.</p>
 </li>
 </ol>
 <h2 id="next-steps-validation">Next Steps - Validation</h2>
-<p>Time to verify and test! If you have completed the steps above, click the "Reload Metrics library and Update Apps" button and wait for the confirmation message. Please note that it may take up to 15 seconds for new items to show up in an app. </p>
+<p>Time to verify and test! If you have completed the steps above, click the "Reload Metrics library and Update Apps" button and wait for the confirmation message. </p>
+<p>If you would like to use the GMS sample data and example that were included in installation then please proceed to the next page. </p>
+<p>**Please note that it may take up to 15 seconds for new items to show up in an app. </p>
               
             </div>
           </div>
@@ -194,7 +203,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../gmsapi/" class="btn btn-neutral float-right" title="Governed Metrics Service API">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../validation/" class="btn btn-neutral float-right" title="GMS Example">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../install/" class="btn btn-neutral" title="Installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -226,7 +235,7 @@
         <span><a href="../install/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../gmsapi/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../validation/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
