@@ -3,7 +3,7 @@
 Configuring Qlik Sense Server to use the Governed Metrics Service is a snap.  To begin distributing dimensions and measures to Qlik Sense applications, complete the tasks below.
 
 * [Create the Metrics Library app](qsconfig.md#Step1).
-* [Create and verify Metrics Library Field Names](qsconfig.md#Step2).
+* [Create Metrics Library Field Names & Data Connection](qsconfig.md#Step2).
 * [Create a reload task for the Metrics Library app](qsconfig.md#Step3).
 * [Create the ManagedMasterItems custom property and add values](qsconfig.md#Step4)
 * [Apply the ManagedMasterItems custom property values to apps](qsconfig.md#Step5).
@@ -20,9 +20,11 @@ Configuring Qlik Sense Server to use the Governed Metrics Service is a snap.  To
 
 
 <a name="Step2"></a> 
-## Step 2: Metrics Library App Field Names
+## Step 2: Create Metrics Library App Field Names & Data Connection
 
 The Metrics Library app is the main application the Governed Metrics Service reads during the update process to apply dimensions and measures to all associated applications.  __<u>The app requires specific named fields to work properly.</u>__ 
+
+You must create a Data Connection to the data source in the Metrics Library app using the specifications below. The data source can be created manually or you can use the example data that was included in the installation. Please see the [example](/user-guide/validation.md) after reviewing the configuration requirements. 
 
 The source data for the Metrics Library app - the central list of metrics - can be loaded from any data source.  However, when loading the data, the field names must conform to the following and contain the specified information. 
 
