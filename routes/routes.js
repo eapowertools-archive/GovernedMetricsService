@@ -11,10 +11,10 @@ var config = require('../config/config');
 
 //set up logging
 var logger = new (winston.Logger)({
-	level: config.logLevel,
+	level: config.default.logLevel,
 	transports: [
       new (winston.transports.Console)(),
-      new (winston.transports.File)({ filename: config.logFile})
+      new (winston.transports.File)({ filename: config.default.logFile})
     ]
 });
 
@@ -52,7 +52,7 @@ router.route('/testpage')
 	.get(function(request,response)
 	{
 		var options = {
-			root: config.appPath
+			root: config.default.appPath
 		};
 		response.sendFile('index.htm', options, function(err)
 		{
@@ -68,8 +68,8 @@ router.route('/testpage')
 router.route('/getdocid')
 	.get(function(request,response)
 	{
-		logger.info('GET getdocid for '+  config.appName, {module: 'routes'});
-		worker.getDoc(config.appName)
+		logger.info('GET getdocid for '+  config.default.appName, {module: 'routes'});
+		worker.getDoc(config.default.appName)
 		.then(function(result)
 		{
 			logger.info('GET getdocid success::' + result, {module: 'routes'});

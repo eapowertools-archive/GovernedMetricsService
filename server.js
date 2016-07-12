@@ -15,10 +15,10 @@ var doWork = require('./lib/dowork');
 
 //set up logging
   var logger = new (winston.Logger)({
-    level: config.logLevel,
+    level: config.default.logLevel,
     transports: [
         new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: config.logFile})
+        new (winston.transports.File)({ filename: config.default.logFile})
       ]
   });
 
@@ -32,12 +32,12 @@ sequence = sequence.then(function()
 
   app.use(bodyParser.urlencoded({extended: true}));
   app.use(bodyParser.json());
-  app.use('/masterlib/public', express.static(config.publicPath));
+  app.use('/masterlib/public', express.static(config.default.publicPath));
 
 
   logger.info('Setting port',{module:'server'});
 
-  var port = config.port || 8590;
+  var port = config.default.port || 8590;
 
   logger.info('Setting route',{module:'server'});
 
@@ -57,7 +57,7 @@ sequence = sequence.then(function()
 .then(function(server)
 {
 	x.server = server;
-  var timeInterval = config.changeInterval * 1000;
+  var timeInterval = config.default.changeInterval * 1000;
   var intervalTimer = setInterval(function()
   {
     doWork.bulkchangeOwner()
