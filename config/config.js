@@ -36,7 +36,9 @@ var config = {
 			taskName: 'Reload Metrics Library'
 		}),
 	qrs: {
-		hostname: globalHostname
+		hostname: globalHostname,
+		repoAccountUserDirectory: 'INTERNAL',
+		repoAccountUserId: 'sa_repository'
 	}
 };
 
