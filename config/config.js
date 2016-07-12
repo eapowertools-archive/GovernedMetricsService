@@ -6,6 +6,7 @@ var extend = require('extend');
 
 //var certPath = 'C:/masterlib/certs/masterlib';
 
+var certPath = path.join(process.env.programdata, '/Qlik/Sense/Repository/Exported Certificates/.Local Certificates');
 var routePath = path.join(__dirname, '/../routes/');
 var publicPath = path.join(__dirname, '/../public/');
 var logPath = path.join(__dirname,'/../log/');
@@ -33,9 +34,17 @@ var config = {
 			logLevel: 'info',
 			appName: 'Metrics Library',
 			customPropName: 'ManagedMasterItems',
-			taskName: 'Reload Metrics Library'
+			taskName: 'Reload Metrics Library',
+			certificates: {
+				client: path.resolve(certPath, 'client.pem'),
+				client_key: path.resolve(certPath,'client_key.pem'),
+				server: path.resolve(certPath, 'server.pem'),
+				server_key: path.resolve(certPath, 'server_key.pem'),
+				root: path.resolve(certPath,'root.pem')
+			}
 		}),
 	qrs: {
+		localCertPath: certPath,
 		hostname: globalHostname,
 		repoAccountUserDirectory: 'INTERNAL',
 		repoAccountUserId: 'sa_repository'
