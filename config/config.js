@@ -16,7 +16,7 @@ var logFile = logPath + 'masterlib.log';
 var globalHostname = 'masterlib.112adams.local';
 
 var config = {
-	other: 
+	default: 
 		extend(true, {
 			port: 8590,
 			enginePort: 4747,
