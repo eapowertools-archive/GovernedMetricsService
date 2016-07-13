@@ -1,6 +1,7 @@
 #ignore site files
 docs/site/
 demo/
+GSSSampleApps.zip
 
 # Logs
 logs
