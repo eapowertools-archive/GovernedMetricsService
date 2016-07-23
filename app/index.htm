@@ -22,7 +22,7 @@
 		function testConnection()
 		{
 						writeToStatus("\n\nTesting connection...");
-			$.get("http://localhost:8590/masterlib/getdocid", function(result,strStatus,xhr)
+			$.get("../masterlib/getdocid", function(result,strStatus,xhr)
 			{
 				if(xhr.status==200)
 				{
@@ -38,7 +38,7 @@
 		function reloadMetricsLibraryApp()
 		{
 			writeToStatus('\n\nStarting metrics library reload...');
-			$.post("http://localhost:8590/masterlib/reload", function(result,strStatus,xhr)
+			$.post("../masterlib/reload", function(result,strStatus,xhr)
 			{
 				if(xhr.status==200)
 				{
@@ -54,7 +54,7 @@
 		function updateMetricsInApp()
 		{
 			writeToStatus('\n\nUpdating metrics in all the apps...');
-			$.post("http://localhost:8590/masterlib/update/all", function(result,strStatus,xhr)
+			$.post("../masterlib/update/all", function(result,strStatus,xhr)
 			{
 				if(xhr.status==200)
 				{
@@ -71,14 +71,14 @@
 		{
 			writeToStatus("\n\nReloading metrics library and update apps started...");
 
-			$.post("http://localhost:8590/masterlib/reload", function(result,strStatus,xhr)
+			$.post("../masterlib/reload", function(result,strStatus,xhr)
 			{
 				if(xhr.status==200)
 				{
 					if (result.startsWith("Task Completed in"))
 					{
 						writeToStatus('\n...reloading app was successful, now updating the master library...');
-						$.post("http://localhost:8590/masterlib/update/all", function(result,strStatus,xhr)
+						$.post("../masterlib/update/all", function(result,strStatus,xhr)
 						{
 							if(xhr.status==200)
 							{
@@ -109,7 +109,7 @@
 			var body = {
 				"appname":appName
 			};
-			$.post("http://localhost:8590/masterlib/delete/fromapp", body, function(result,strStatus,xhr)
+			$.post("../masterlib/delete/fromapp", body, function(result,strStatus,xhr)
 			{
 				if(xhr.status==200)
 				{
