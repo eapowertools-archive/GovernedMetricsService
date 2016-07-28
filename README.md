@@ -6,16 +6,16 @@ Please read the Governed Metrics Service **[documentation](http://eapowertools.g
 ##Minimum Requirements:
 The Governed Metrics Service uses the Qlik Sense Service Dispatcher and Nodejs to launch a REST api as a background service for updating metrics in Qlik Sense applications.  Therefore, the Governed Metrics Service requires Qlik Sense Server.
 
-The Governed Metrics Service has been tested with Qlik Sense 2.2.4.  Testing with Qlik Sense 3.0 is underway. 
+The Governed Metrics Service has been tested with Qlik Sense 2.2.4 and Qlik Sense 3.0.   
 
-For now, the Governed Metrics Service requires a licensed Qlik Sense server site running version 2.2.4.
+For now, the Governed Metrics Service requires a licensed Qlik Sense server site running version 2.2.4 or higher.
 
 Please do not install for use with Qlik Sense desktop.  The Governed Metrics Service will not work.
 
 Before installing the Governed Metrics Service, **we highly recommend** going through the Qlik Sense server QMC configuration instructions in the documentation.  Application, custom property, and task names will be requested during the install and it's easier on your memory if you have created them in advance.  [Direct Link to QMC configuration section in docs](http://eapowertools.github.io/GovernedMetricsService/user-guide/qsconfig/) 
 
 ##Install
-To install the Governed Metrics Service, use the **[installer](https://github.com/eapowertools/GovernedMetricsService/releases/download/Latest/GovernedMetricsService.exe)**.
+To install the Governed Metrics Service, use the **[installer](https://github.com/eapowertools/GovernedMetricsService/releases/download/1.1.0/GovernedMetricsService.exe)**.
 
 ##Description
 Qlik Sense enables self-service visualization with a balance of control and agility that gives IT confidence that the visualizations that users are empowered to create are correct.  One way this is enabled is through the use of ![masteritems.png](https://github.com/eapowertools/GovernedMetricsService/blob/master/img/masteritems.png) Master Items.  A Master Item is a dimension or measure that is defined by a central IT or BI team or line of business analyst and deployed to users in conjunction with a Qlik Sense application.
