@@ -1,5 +1,5 @@
 #ignore site files
-docs/site/
+docs/site/*
 demo/
 GSSSampleApps.zip
 
