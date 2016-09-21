@@ -12,6 +12,7 @@ var globalHostname = 'masterlib.112adams.local';
 
 var config = {
 	certificates: {
+		certPath: certPath,
 		client: path.resolve(certPath, 'client.pem'),
 		client_key: path.resolve(certPath,'client_key.pem'),
 		server: path.resolve(certPath, 'server.pem'),

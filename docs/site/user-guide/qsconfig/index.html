@@ -90,7 +90,7 @@
                 
                     <li><a class="toctree-l4" href="#step-1-create-the-metrics-library-app">Step 1: Create the Metrics Library App</a></li>
                 
-                    <li><a class="toctree-l4" href="#step-2-metrics-library-app-field-names">Step 2: Metrics Library App Field Names</a></li>
+                    <li><a class="toctree-l4" href="#step-2-create-metrics-library-app-field-names-data-connection">Step 2: Create Metrics Library App Field Names &amp; Data Connection</a></li>
                 
                     <li><a class="toctree-l4" href="#step-3-create-a-reload-task-for-the-metrics-library-app">Step 3: Create a reload task for the Metrics Library app</a></li>
                 
@@ -116,6 +116,13 @@
             
     <li class="toctree-l1 ">
         <a class="" href="../interface/">Testing Goverened Metrics Service</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../validation/">GMS Example</a>
         
     </li>
 
@@ -177,7 +184,7 @@
 <p>Configuring Qlik Sense Server to use the Governed Metrics Service is a snap.  To begin distributing dimensions and measures to Qlik Sense applications, complete the tasks below.</p>
 <ul>
 <li><a href="./#Step1">Create the Metrics Library app</a>.</li>
-<li><a href="./#Step2">Create and verify Metrics Library Field Names</a>.</li>
+<li><a href="./#Step2">Create Metrics Library Field Names &amp; Data Connection</a>.</li>
 <li><a href="./#Step3">Create a reload task for the Metrics Library app</a>.</li>
 <li><a href="./#Step4">Create the ManagedMasterItems custom property and add values</a></li>
 <li><a href="./#Step5">Apply the ManagedMasterItems custom property values to apps</a>.</li>
@@ -192,8 +199,9 @@
 </ol>
 <p><img alt="createNewApp" src="../../img/app/createnewapp.png" /></p>
 <p><a name="Step2"></a> </p>
-<h2 id="step-2-metrics-library-app-field-names">Step 2: Metrics Library App Field Names</h2>
+<h2 id="step-2-create-metrics-library-app-field-names-data-connection">Step 2: Create Metrics Library App Field Names &amp; Data Connection</h2>
 <p>The Metrics Library app is the main application the Governed Metrics Service reads during the update process to apply dimensions and measures to all associated applications.  <strong><u>The app requires specific named fields to work properly.</u></strong> </p>
+<p>You must create a Data Connection to the data source in the Metrics Library app using the specifications below. The data source can be created manually or you can use the example data that was included in the installation. Please see the <a href="../validation/">example</a> after reviewing the configuration requirements. </p>
 <p>The source data for the Metrics Library app - the central list of metrics - can be loaded from any data source.  However, when loading the data, the field names must conform to the following and contain the specified information. </p>
 <p>Field Name definitions for the Metrics Library data source:</p>
 <ul>
