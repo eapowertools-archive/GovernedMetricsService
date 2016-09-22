@@ -5,7 +5,7 @@ var Promise = require('bluebird');
 var itemCount = require('./checkRepoTest');
 var createDimension = require('./createDimension');
 var createMeasure = require('./createMeasure');
-var createObjects = require('./createObjects');
+var objectMgmt = require('./objectManagementTest');
 
 var appId = '831bc2ea-a43b-46f7-9ad2-d843cb9c4764'
 var app2Connect = qsocksInstance(appId);
@@ -15,7 +15,7 @@ var file = fs.readFileSync('hcube.json');
 
 var data = JSON.parse(file.toString());
 
-return createObjects.createObjects(appId,data);
+return objectMgmt.manageObjects(appId,data);
 
 
 // var x = {};

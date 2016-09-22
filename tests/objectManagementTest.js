@@ -7,9 +7,9 @@ var createDimension = require('./createDimension');
 var createMeasure = require('./createMeasure');
 
 
-var createObjects =
+var manageObjects =
 {
-    createObjects : function(appId, data)
+    manageObjects : function(appId, data)
     {
         var app2Connect = qsocksInstance(appId);
         var x = {};
@@ -43,7 +43,7 @@ var createObjects =
             })
             .then(function(resultArray)
             {
-                console.log('result of obj creation: ' + resultArray.length);
+                console.log('result of obj management: ' + resultArray.length);
                 var metVals = resultArray.length;
                 var repoVals = 0;
                 promiseWhile(function() {
@@ -63,7 +63,9 @@ var createObjects =
                             {
                                 console.log('Timeout getting information from repo.');
                             });
-                }).then(function() {
+                })
+                .timeout(30000)
+                .then(function() {
                     // Notice we can chain it because it's a Promise, 
                     // this will run after completion of the promiseWhile Promise!
                     console.log("Done");
@@ -85,7 +87,7 @@ var createObjects =
     }
 }; 
 
-module.exports = createObjects;
+module.exports = manageObjects;
 
 function createTags(data)
 {

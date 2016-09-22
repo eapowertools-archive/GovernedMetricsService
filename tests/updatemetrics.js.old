@@ -3,9 +3,9 @@ var qsocks = require('qsocks');
 var Promise = require('bluebird')
 var config = require('../config/config');
 var winston = require('winston');
-var objectMgmt = require('./objectManagement');
-var changeOwner = require('./changeOwner');
-var publishMetrics = require('./publishMetrics');
+var popMeas = require('./popmeasures');
+var qrsNotify = require('./qrsNotify');
+var qrsCO = require('./qrsChangeOwner');
 var fs = require('fs');
 
 //set up logging

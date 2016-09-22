@@ -64,7 +64,7 @@ getOwnedAppObjects.getOwnedAppObjects("INTERNAL","sa_repository", appId)
             return result;
         })
         .catch(function(error) {
-            logger.error('qrsChangeOwner::delete selection::' + JSON.stringify(error) , {module: 'qrsChangeOwner'});
+            //logger.error('qrsChangeOwner::delete selection::' + JSON.stringify(error) , {module: 'qrsChangeOwner'});
             reject(new Error(error));
         });        
     }

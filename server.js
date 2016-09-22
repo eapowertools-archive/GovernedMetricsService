@@ -23,51 +23,29 @@ var doWork = require('./lib/dowork');
   });
 
 
-var sequence = Promise.resolve();
 var x={};
-sequence = sequence.then(function()
-{
   
-  logger.info('Firing up the Governed Metrics Service ReST API',{module:'server'});
+logger.info('Firing up the Governed Metrics Service ReST API',{module:'server'});
 
-  app.use(bodyParser.urlencoded({extended: true}));
-  app.use(bodyParser.json());
-  app.use('/masterlib/public', express.static(config.gms.publicPath));
-
-
-  logger.info('Setting port',{module:'server'});
-
-  var port = config.gms.port || 8590;
-
-  logger.info('Setting route',{module:'server'});
-
-  var popmasterlib = require('./routes/routes');
+app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json());
+app.use('/gms/public', express.static(config.gms.publicPath));
 
 
-  //Register routes
-  //all routes will be prefixed with api
-  app.use('/masterlib',popmasterlib);
+logger.info('Setting port',{module:'server'});
 
-  //Start the server
-  var server = app.listen(port);
+var port = config.gms.port || 8590;
+
+logger.info('Setting route',{module:'server'});
+
+var popmasterlib = require('./routes/routes');
+
+
+//Register routes
+//all routes will be prefixed with api
+app.use('/gms',popmasterlib);
+
+//Start the server
+app.listen(port);
   
-  logger.info('Governed Metrics Service started',{module:'server'});
-  return server;
-})
-.then(function(server)
-{
-	x.server = server;
-  var timeInterval = config.qrs.changeInterval * 1000;
-  var intervalTimer = setInterval(function()
-  {
-    doWork.bulkchangeOwner()
-    .then(function(message)
-    {
-      logger.info(message, {module: 'server'});
-    });
-  }
-  ,timeInterval);
-  //var result = doWork.bulkchangeOwner();
-  //console.log(result);
-  
-});
+logger.info('Governed Metrics Service started',{module:'server'});
