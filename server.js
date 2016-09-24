@@ -14,6 +14,7 @@ var Promise = require('bluebird');
 var doWork = require('./lib/dowork');
 
 //set up logging
+  winston.add(require('winston-daily-rotate-file'));
   var logger = new (winston.Logger)({
     level: config.logging.logLevel,
     transports: [

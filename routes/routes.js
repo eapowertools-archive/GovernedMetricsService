@@ -10,6 +10,7 @@ var winston = require('winston');
 var config = require('../config/config');
 
 //set up logging
+winston.add(require('winston-daily-rotate-file'));  
 var logger = new (winston.Logger)({
 	level: config.logging.logLevel,
 	transports: [
@@ -124,7 +125,6 @@ router.route('/update/all')
 		worker.updateAll()
 		.then(function(result)
 		{
-			notificationHandle = result.notificationHandle;
 			logger.info('POST update/all success::' + result.result, {module: 'routes'});
 				response.status(200).json(result.result + '\n');
 		})
