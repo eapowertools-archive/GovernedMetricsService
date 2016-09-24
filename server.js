@@ -12,17 +12,16 @@ var winston = require('winston');
 var config = require('./config/config');
 var Promise = require('bluebird');
 var doWork = require('./lib/dowork');
+require('winston-daily-rotate-file');
 
 //set up logging
-  winston.add(require('winston-daily-rotate-file'));
-  var logger = new (winston.Logger)({
-    level: config.logging.logLevel,
-    transports: [
-        new (winston.transports.Console)(),
-        new (winston.transports.File)({ filename: config.logging.logFile})
-      ]
-  });
-
+var logger = new (winston.Logger)({
+	level: config.logging.logLevel,
+	transports: [
+      new (winston.transports.Console)(),
+      new (winston.transports.DailyRotateFile)({ filename: config.logging.logFile, prepend:true})
+    ]
+});
 
 var x={};
   
@@ -30,7 +29,7 @@ logger.info('Firing up the Governed Metrics Service ReST API',{module:'server'})
 
 app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json());
-app.use('/gms/public', express.static(config.gms.publicPath));
+app.use('/masterlib/public', express.static(config.gms.publicPath));
 
 
 logger.info('Setting port',{module:'server'});
@@ -44,7 +43,7 @@ var popmasterlib = require('./routes/routes');
 
 //Register routes
 //all routes will be prefixed with api
-app.use('/gms',popmasterlib);
+app.use('/masterlib',popmasterlib);
 
 //Start the server
 app.listen(port);
