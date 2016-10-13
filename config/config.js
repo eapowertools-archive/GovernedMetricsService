@@ -27,7 +27,8 @@ var config = {
 		appPath: path.join(__dirname, '/../app/'),
 		appName: 'Metrics Library',
 		customPropName: 'ManagedMasterItems',
-		taskName: 'Reload Metrics Library'
+		taskName: 'Reload Metrics Library',
+		objectManagementTimeout: 60000
 	},
 	engine: {
 		enginePort: 4747,
