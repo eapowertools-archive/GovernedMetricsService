@@ -8,13 +8,14 @@ var getdoc = require('../lib/getdocid');
 var gethypercube = require('../lib/getmetricshypercube');
 var winston = require('winston');
 var config = require('../config/config');
+require('winston-daily-rotate-file');
 
 //set up logging
 var logger = new (winston.Logger)({
 	level: config.logging.logLevel,
 	transports: [
       new (winston.transports.Console)(),
-      new (winston.transports.File)({ filename: config.logging.logFile})
+      new (winston.transports.DailyRotateFile)({ filename: config.logging.logFile, prepend: true})
     ]
 });
 
@@ -124,7 +125,6 @@ router.route('/update/all')
 		worker.updateAll()
 		.then(function(result)
 		{
-			notificationHandle = result.notificationHandle;
 			logger.info('POST update/all success::' + result.result, {module: 'routes'});
 				response.status(200).json(result.result + '\n');
 		})

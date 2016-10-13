@@ -1,5 +1,5 @@
 {
-  "name": "masterlib",
+  "name": "governed-metrics-service",
   "version": "1.0.0",
   "description": "a ReST api for updating dimensions and measures in the master library of apps with specific custom property values.",
   "main": "server.js",
@@ -13,10 +13,11 @@
     "fs": "^0.0.2",
     "https": "^1.0.0",
     "path": "^0.12.7",
-    "qrs-interact": "^1.0.0",
+    "qrs-interact": "^2.1.0",
     "qsocks": "^3.0.0",
     "request": "^2.69.0",
-    "winston": "^2.2.0"
+    "winston": "^2.2.0",
+    "winston-daily-rotate-file": "^1.3.1"
   },
   "devDependencies": {},
   "scripts": {
