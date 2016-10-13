@@ -14,7 +14,7 @@ var getDocId =
 			qrsInteract.Get(path)
 			.then(function(result)
 			{
-				resolve(result[0].id);
+				resolve(result.body[0].id);
 			})
 			.catch(function(error)
 			{
@@ -31,7 +31,7 @@ var getDocId =
 			qrsInteract.Get(path)
 			.then(function(result)
 			{
-				resolve(result[0]);
+				resolve(result.body[0]);
 			})
 			.catch(function(error)
 			{

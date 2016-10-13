@@ -3,8 +3,8 @@ var qsocksInstance = require('./qsocksInstance');
 var fs = require('fs');
 var Promise = require('bluebird');
 var itemCount = require('./checkRepoTest');
-var createDimension = require('./createDimension');
-var createMeasure = require('./createMeasure');
+var createDimension = require('./createDimensionTest');
+var createMeasure = require('./createMeasureTest');
 var objectMgmt = require('./objectManagementTest');
 
 var appId = '831bc2ea-a43b-46f7-9ad2-d843cb9c4764'

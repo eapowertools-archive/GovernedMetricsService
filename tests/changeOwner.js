@@ -1,7 +1,7 @@
 var qrsInteract = require('./qrsInstance');
 var config = require('../config/config');
-var bluebird = require('bluebird');
-var getOwnedAppObjects = require('./getOwnedAppObjects');
+var Promise = require('bluebird');
+var getOwnedAppObjects = require('./getOwnedAppObjectsTest');
 var getAppOwner = require('./getAppOwner');
 
 
@@ -17,10 +17,20 @@ var changeOwner =
             return qrsInteract.Post(postPath, body, 'json');
         })
         .then(function(selection)
-        {
-            x.selectionId = selection.id;
-            return getAppOwner.getAppOwner(appId);
-        })
+            {
+                x.selectionId = selection.body.id;
+                var tagPath = "/tag?filter=name eq 'gms'";
+                return qrsInteract.Get(tagPath);
+            }).then(function(tags)
+            {
+                if(tags.body.length == 0)
+                {
+                    reject("Tag does not exist");
+                } 
+                
+                x.tagId = tags.body[0].id;
+                return getAppOwner.getAppOwner(appId);
+            })
         .then(function(owner)
         {
             var body = 
@@ -32,6 +42,15 @@ var changeOwner =
                     "value": owner.id,
                     "valueIsDifferent": false,
                     "valueIsModified": true
+                },
+                {
+                    "name": "refList_Tag",
+                    "value": {
+                        "added": [x.tagId],
+                        "removed": []
+                    },
+                    "valueIsDifferent": false,
+                    "valueIsModified": true
                 }]
             };
             
@@ -40,7 +59,7 @@ var changeOwner =
             return qrsInteract.Put(putPath, body)
             .then(function(sCode)
             {
-                return sCode;
+                return sCode.statusCode;
             });
 
         })

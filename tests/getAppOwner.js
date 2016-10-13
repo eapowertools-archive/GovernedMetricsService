@@ -1,5 +1,5 @@
 var qrsInteract = require('./qrsInstance');
-var bluebird = require('bluebird');
+var Promise = require('bluebird');
 
 
 var getAppOwner = 
@@ -13,7 +13,7 @@ var getAppOwner =
             return qrsInteract.Get(path)
             .then(function(result)
             {
-                resolve(result[0].owner);
+                resolve(result.body[0].owner);
             })
             .catch(function(error)
             {

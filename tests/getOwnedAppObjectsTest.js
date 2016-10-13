@@ -1,6 +1,6 @@
 var qrsInteract = require('./qrsInstance');
 var config = require('./testConfig');
-var bluebird = require('bluebird');
+var Promise = require('bluebird');
 
 
 var getOwnedAppObjects = {
@@ -15,7 +15,7 @@ var getOwnedAppObjects = {
             qrsInteract.Get(path)
             .then(function(appObjects) {
                 //logger.debug('AppObjects returned:', JSON.stringify(appObjects) , {module:'qrsChangeOwner',method:'changeAgent'});
-                return Promise.all(appObjects.map(function(appObject)
+                return Promise.all(appObjects.body.map(function(appObject)
                 {
                     return appObject.id;
                 }));

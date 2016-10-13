@@ -18,7 +18,7 @@ var repoCount =
             qrsInteract.Get(path)
             .then(function(result)
             {
-                resolve(result.value);
+                resolve(result.body[0].value);
             })
         })
     }

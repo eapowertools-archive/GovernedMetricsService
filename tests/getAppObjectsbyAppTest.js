@@ -1,6 +1,6 @@
 var qrsInteract = require('./qrsInstance');
 var config = require('./testConfig');
-var bluebird = require('bluebird');
+var Promise = require('bluebird');
 var getOwnedAppObjects = require('./getOwnedAppObjectsTest');
 var getAppOwner = require('./getAppOwner');
 //var segregateAppObjects = require('./segregateAppObjects');
@@ -27,7 +27,7 @@ getOwnedAppObjects.getOwnedAppObjects("INTERNAL","sa_repository", appId)
 })
 .then(function(selection)
 {
-    x.selectionId = selection.id;
+    x.selectionId = selection.body.id;
     return getAppOwner.getAppOwner(appId);
 })
 .then(function(owner)
@@ -49,7 +49,7 @@ getOwnedAppObjects.getOwnedAppObjects("INTERNAL","sa_repository", appId)
     return qrsInteract.Put(putPath, body)
     .then(function(sCode)
     {
-        return sCode;
+        return sCode.statusCode;
     });
 
 })
