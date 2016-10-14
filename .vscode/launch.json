@@ -22,6 +22,26 @@
 			"outDir": null
 		},
 		{
+			"name": "publishTest",
+			"type": "node",
+			"request": "launch",
+			"program": "${workspaceRoot}/tests/publishMetricTest.js",
+			"stopOnEntry": false,
+			"args": [],
+			"cwd": "${workspaceRoot}",
+			"preLaunchTask": null,
+			"runtimeExecutable": null,
+			"runtimeArgs": [
+				"--nolazy"
+			],
+			"env": {
+				"NODE_ENV": "development"
+			},
+			"externalConsole": false,
+			"sourceMaps": false,
+			"outDir": null
+		},
+		{
 			"name": "Attach",
 			"type": "node",
 			"request": "attach",

@@ -8,10 +8,11 @@ var certPath = path.join(process.env.programdata, '/Qlik/Sense/Repository/Export
 var logPath = path.join(__dirname,'/../log/');
 var logFile = logPath + 'masterlib.log';
 
-var globalHostname = 'masterlib.112adams.local';
+var globalHostname = 'localhost';
 
 var config = {
 	certificates: {
+		certPath: certPath,
 		client: path.resolve(certPath, 'client.pem'),
 		client_key: path.resolve(certPath,'client_key.pem'),
 		server: path.resolve(certPath, 'server.pem'),
@@ -26,7 +27,8 @@ var config = {
 		appPath: path.join(__dirname, '/../app/'),
 		appName: 'Metrics Library',
 		customPropName: 'ManagedMasterItems',
-		taskName: 'Reload Metrics Library'
+		taskName: 'Reload Metrics Library',
+		objectManagementTimeout: 60000
 	},
 	engine: {
 		enginePort: 4747,
@@ -36,7 +38,7 @@ var config = {
 	logging: {
 		logPath: logPath,
 		logFile: logFile,
-		logLevel: 'info'
+		logLevel: 'debug'
 	},
 	qrs: {
 		localCertPath: certPath,
