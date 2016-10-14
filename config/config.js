@@ -3,12 +3,12 @@ var path = require('path');
 //For production
 
 //var certPath = 'C:/masterlib/certs/masterlib';
-var certPath = 'F:/My Documents/_Git/QlikSenseQMCUtility/certs';//path.join(process.env.programdata, '/Qlik/Sense/Repository/Exported Certificates/.Local Certificates');
+var certPath = path.join(process.env.programdata, '/Qlik/Sense/Repository/Exported Certificates/.Local Certificates');
 
 var logPath = path.join(__dirname,'/../log/');
 var logFile = logPath + 'masterlib.log';
 
-var globalHostname = 'sense3.112adams.local';
+var globalHostname = 'localhost';
 
 var config = {
 	certificates: {
