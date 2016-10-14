@@ -12,6 +12,8 @@ var winston = require('winston');
 var config = require('./config/config');
 var Promise = require('bluebird');
 var doWork = require('./lib/dowork');
+var fs = require('fs');
+var https = require('https');
 require('winston-daily-rotate-file');
 
 //set up logging
@@ -46,6 +48,31 @@ var popmasterlib = require('./routes/routes');
 app.use('/masterlib',popmasterlib);
 
 //Start the server
-app.listen(port);
-  
-logger.info('Governed Metrics Service started',{module:'server'});
+ var httpsOptions = {}
+
+  if(config.gms.hasOwnProperty("certificates"))
+  {
+      if(config.gms.certificates.server !== undefined)
+      {
+        //pem files in use
+        httpsOptions.cert = fs.readFileSync(config.gms.certificates.server);
+        httpsOptions.key = fs.readFileSync(config.gms.certificates.server_key);
+      }
+
+      if(config.gms.certificates.pfx !== undefined)
+      {
+        httpsOptions.pfx = fs.readFileSync(config.gms.certificates.pfx);
+        httpsOptions.passphrase = config.gms.certificates.passphrase;
+      }
+  }
+  else
+  {
+    httpsOptions.cert = fs.readFileSync(config.certificates.server),
+    httpsOptions.key = fs.readFileSync(config.certificates.server_key)
+  }
+ 
+var server = https.createServer(httpsOptions, app);
+server.listen(config.gms.port, function()
+{
+    logger.info('Governed Metrics Service started',{module:'server'});
+});
