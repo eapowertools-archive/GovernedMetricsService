@@ -94,9 +94,11 @@
                 
                     <li><a class="toctree-l4" href="#step-3-create-a-reload-task-for-the-metrics-library-app">Step 3: Create a reload task for the Metrics Library app</a></li>
                 
-                    <li><a class="toctree-l4" href="#step-4-create-the-managedmasteritems-custom-property-and-add-values">Step 4: Create the ManagedMasterItems custom property and add values</a></li>
+                    <li><a class="toctree-l4" href="#step-4-create-a-gms-tag-to-mark-dimensions-and-measures">Step 4: Create a gms tag to mark dimensions and measures.</a></li>
                 
-                    <li><a class="toctree-l4" href="#step-5-apply-the-managedmasteritems-custom-property-values-to-apps">Step 5: Apply the ManagedMasterItems custom property values to apps</a></li>
+                    <li><a class="toctree-l4" href="#step-5-create-the-managedmasteritems-custom-property-and-add-values">Step 5: Create the ManagedMasterItems custom property and add values</a></li>
+                
+                    <li><a class="toctree-l4" href="#step-6-apply-the-managedmasteritems-custom-property-values-to-apps">Step 6: Apply the ManagedMasterItems custom property values to apps</a></li>
                 
                     <li><a class="toctree-l4" href="#next-steps-installing-the-governed-metrics-service-click-next-to-proceed">Next Steps - Installing the Governed Metrics Service. Click Next to proceed.</a></li>
                 
@@ -197,7 +199,7 @@
 <li>Reload the Metrics Library app to verify you are connected and loading in the correct data. </li>
 <li>Save and close the app (it is okay to leave in the My Work stream)</li>
 </ol>
-<p><img alt="createNewApp" src="../../img/app/createnewapp.png" /></p>
+<p><img alt="createNewApp" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/createnewapp.png" /></p>
 <p><a name="Step2"></a> </p>
 <h2 id="step-2-create-metrics-library-app-field-names-data-connection">Step 2: Create Metrics Library App Field Names &amp; Data Connection</h2>
 <p>The Metrics Library app is the main application the Governed Metrics Service reads during the update process to apply dimensions and measures to all associated applications.  <strong><u>The app requires specific named fields to work properly.</u></strong> </p>
@@ -302,10 +304,21 @@
 <li>Name the task the same value entered in the task name provided during the installation of the GMS itself. "Reload task of Metrics Library" is the default.</li>
 <li>Save the task and exit.</li>
 </ol>
-<p><img alt="AppList" src="../../img/reload/applist.png" /> <img alt="ReloadButton" src="../../img/reload/reloadtaskbutton.png" /></p>
-<p><img alt="Task Creation Dialog" src="../../img/reload/reloadtask.png" /></p>
+<p><img alt="AppList" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/applist.png" /> <img alt="ReloadButton" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reloadtaskbutton.png" /></p>
+<p><img alt="Task Creation Dialog" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reloadtask.png" /></p>
 <p><a name="Step4"></a></p>
-<h2 id="step-4-create-the-managedmasteritems-custom-property-and-add-values">Step 4: Create the ManagedMasterItems custom property and add values</h2>
+<h2 id="step-4-create-a-gms-tag-to-mark-dimensions-and-measures">Step 4: Create a gms tag to mark dimensions and measures.</h2>
+<p>To assist the creation, modification, and deletion of dimensions and measures using the Governed Metrics Service, the process applies a tag to created items.  This tag needs to be created in the QMC before it can be used by the process.</p>
+<p>To create the gms tag:</p>
+<ol>
+<li>Navigate to the Tags menu item in the QMC.</li>
+<li>Click the "Create New" button.</li>
+<li>Enter <strong><em>gms</em></strong> into the Name field.</li>
+<li>Click Apply.</li>
+</ol>
+<p><img alt="tag" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/tag/tag.png" /></p>
+<p><a name="Step5"></a></p>
+<h2 id="step-5-create-the-managedmasteritems-custom-property-and-add-values">Step 5: Create the ManagedMasterItems custom property and add values</h2>
 <p>In order to identify the applications that will receive metrics, the ManagedMasterItems custom property contains the values to be applied to apps.</p>
 <p>Looking back on the sample source data table above, observe the MetricsSubject column.  This column directly corresponds to the values entered into the ManagedMasterItems custom property.  For the different metrics supplied from the data source, a MetricsSubject identifies the apps that will receive the dimension or measure in the master library.</p>
 <p>To create the ManagedMasterItems custom property:</p>
@@ -315,24 +328,24 @@
 <li>Select the "Apps" resource checkbox.</li>
 <li>Add values to the custom property that match values in the MetricsSubject field and click apply.</li>
 </ol>
-<p><img alt="customprop" src="../../img/customprop/customprop.png" /></p>
-<p><a name="Step5"></a></p>
-<h2 id="step-5-apply-the-managedmasteritems-custom-property-values-to-apps">Step 5: Apply the ManagedMasterItems custom property values to apps</h2>
+<p><img alt="customprop" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/customprop/customprop.png" /></p>
+<p><a name="Step6"></a></p>
+<h2 id="step-6-apply-the-managedmasteritems-custom-property-values-to-apps">Step 6: Apply the ManagedMasterItems custom property values to apps</h2>
 <p>Now that the custom property for populating metrics to applications exists, the values need to be set on applications for when the Governed Metrics Service performs an update.</p>
 <p><strong>Do not apply ManagedMasterItems custom property values to the Metrics Library application.</strong></p>
 <p>To add a custom property value to an app:</p>
 <ol>
 <li>
 <p>Go back to the Apps section of the QMC and double click on an App reference in the list.<br />
-<img alt="AppList" src="../../img/reload/applist.png" /></p>
+<img alt="AppList" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/applist.png" /></p>
 </li>
 <li>
 <p>When the app screen appears, activate the Custom properties section by clicking on the term located on the right side of the screen.  <br />
-<img alt="AppList" src="../../img/app/applyprop1.png" /></p>
+<img alt="AppList" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/applyprop1.png" /></p>
 </li>
 <li>
 <p>Click on the dialog box next to ManagedMasterItems (or the custom property created for GMS) and type or select the custom property values to apply to the app.  <br />
-<img alt="AppList" src="../../img/app/applyprop2.png" /></p>
+<img alt="AppList" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/applyprop2.png" /></p>
 </li>
 </ol>
 <h2 id="next-steps-installing-the-governed-metrics-service-click-next-to-proceed">Next Steps - Installing the Governed Metrics Service. Click Next to proceed.</h2>

@@ -1,6 +1,6 @@
 #Introduction to Governed Metrics Service
 
-[<img src="/img/PowerToolsLogoNew.png">](https://community.qlik.com/community/qlik-sense/ea-powertools) 
+[<img src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/PowerToolsLogoNew.png">](https://community.qlik.com/community/qlik-sense/ea-powertools) 
 
 The Governed Metrics Service (GMS) Powertool provides the ability to control and provision the use of governed Master Items. Master Items are defined as dimensions or measures located in an app's Master Library. 
 
