@@ -8,7 +8,7 @@
   
   
   
-  <title>Governed Metrics Service Introduction - EA Powertools Governed Metrics Service</title>
+  <title>Uninstall - EA Powertools Governed Metrics Service</title>
   
 
   <link rel="shortcut icon" href="../../img/favicon.ico">
@@ -23,9 +23,9 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Governed Metrics Service Introduction";
-    var mkdocs_page_input_path = "user-guide\intro.md";
-    var mkdocs_page_url = "/user-guide/intro/";
+    var mkdocs_page_name = "Uninstall";
+    var mkdocs_page_input_path = "user-guide\uninstall.md";
+    var mkdocs_page_url = "/user-guide/uninstall/";
   </script>
   
   <script src="../../js/jquery-2.1.1.min.js"></script>
@@ -67,17 +67,8 @@
 
         
             
-    <li class="toctree-l1 current">
-        <a class="current" href="./">Governed Metrics Service Introduction</a>
-        
-            <ul>
-            
-                <li class="toctree-l3"><a href="#introduction-to-governed-metrics-service">Introduction to Governed Metrics Service</a></li>
-                
-                    <li><a class="toctree-l4" href="#how-does-it-work">How does it work?</a></li>
-                
-            
-            </ul>
+    <li class="toctree-l1 ">
+        <a class="" href="../intro/">Governed Metrics Service Introduction</a>
         
     </li>
 
@@ -104,8 +95,17 @@
 
         
             
-    <li class="toctree-l1 ">
-        <a class="" href="../uninstall/">Uninstall</a>
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Uninstall</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#governed-metrics-service-uninstallation">Governed Metrics Service Uninstallation</a></li>
+                
+                    <li><a class="toctree-l4" href="#to-uninstall-the-governed-metrics-service">To Uninstall the Governed Metrics Service</a></li>
+                
+            
+            </ul>
         
     </li>
 
@@ -167,7 +167,7 @@
         
       
     
-    <li>Governed Metrics Service Introduction</li>
+    <li>Uninstall</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -177,12 +177,17 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="introduction-to-governed-metrics-service">Introduction to Governed Metrics Service</h1>
-<p><a href="https://community.qlik.com/community/qlik-sense/ea-powertools"><img src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/PowerToolsLogoNew.png"></a> </p>
-<p>The Governed Metrics Service (GMS) Powertool provides the ability to control and provision the use of governed Master Items. Master Items are defined as dimensions or measures located in an app's Master Library. </p>
-<h2 id="how-does-it-work">How does it work?</h2>
-<p>GMS loads externally defined metrics and applies them to one or more designated applications. Complete with an installation and test page, GMS will quickly have you on the right track to governed self-service. </p>
-<p>GMS is a REST api + node.js-based module that plugs into the existing Qlik Service Dispatcher framework.</p>
+                <h1 id="governed-metrics-service-uninstallation">Governed Metrics Service Uninstallation</h1>
+<p>Before uninstalling the Governed Metrics Service, it is recommended if you are not going to use it anymore that you perform a delete on the apps that have metrics provisioned by the solution first.  Please review the <strong><a href="user-guide/interface.md">GMS Test Page</a></strong> page for how to delete metrics from apps.</p>
+<h2 id="to-uninstall-the-governed-metrics-service">To Uninstall the Governed Metrics Service</h2>
+<ol>
+<li>Browse to the folder where the Governed Metrics Service is installed. (Default: C:\Program Files\Qlik\Sense\EAPowerTools\GovernedMetricsService)</li>
+<li>Open the Uninstall folder.</li>
+<li>Double click the file named <strong>unins000.exe</strong>.</li>
+<li>Follow the prompts for uninstalling the Governed Metrics Service.</li>
+<li>Please leave feedback on <strong><a href="https://community.qlik.com/community/qlik-sense/ea-powertools">Community</a></strong> regarding your experience and why you uninstalled.</li>
+</ol>
+<h3 id="cheers">Cheers!</h3>
               
             </div>
           </div>
@@ -190,10 +195,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../prereqs/" class="btn btn-neutral float-right" title="Governed Metrics Service Prerequisites">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../interface/" class="btn btn-neutral float-right" title="Testing Goverened Metrics Service">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../.." class="btn btn-neutral" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../install/" class="btn btn-neutral" title="Installation"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -219,10 +224,10 @@
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
-        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../install/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../prereqs/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../interface/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
