@@ -6,6 +6,7 @@ pages:
      - 'Governed Metrics Service Prerequisites' : 'user-guide/prereqs.md'
      - 'Qlik Sense Configuration' : 'user-guide/qsconfig.md'
      - 'Installation' : 'user-guide/install.md'
+     - 'Uninstall' : 'user-guide/uninstall.md'
      - 'Testing Goverened Metrics Service' : 'user-guide/interface.md'
      - 'GMS Example' : 'user-guide/validation.md'
 - Governed Metrics Service API: 'gmsapi.md'

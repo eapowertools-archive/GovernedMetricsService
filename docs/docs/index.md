@@ -15,5 +15,6 @@ Instructions:
  	 + [Create Custom Property](user-guide/qsconfig.md#create-the-managedmasteritems-custom-property-and-add-values)
  	 + [Apply Custom Property](user-guide/qsconfig.md#apply-the-managedmasteritems-custom-property-values-to-apps)
 - [Installation](user-guide/install.md)
+- [Uninstall](user-guide/uninstall.md)
 - [GMS Web Interface](user-guide/interface.md)
 - [API](gmsapi.md)
