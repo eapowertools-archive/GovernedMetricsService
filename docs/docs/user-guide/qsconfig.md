@@ -16,7 +16,7 @@ Configuring Qlik Sense Server to use the Governed Metrics Service is a snap.  To
   3. Reload the Metrics Library app to verify you are connected and loading in the correct data. 
   4. Save and close the app (it is okay to leave in the My Work stream)
 
-![createNewApp](../img/app/createnewapp.png)
+![createNewApp](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/createnewapp.png)
 
 
 <a name="Step2"></a> 
@@ -82,13 +82,27 @@ After creating the Metrics Library app, a reload task needs to be created for it
 
 
 
-![AppList](../img/reload/applist.png) ![ReloadButton](../img/reload/reloadtaskbutton.png)
+![AppList](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/applist.png) ![ReloadButton](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reloadtaskbutton.png)
 
 
-![Task Creation Dialog](../img/reload/reloadtask.png)
+![Task Creation Dialog](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reloadtask.png)
 
 <a name="Step4"></a>
-## Step 4: Create the ManagedMasterItems custom property and add values
+## Step 4: Create a gms tag to mark dimensions and measures.
+
+To assist the creation, modification, and deletion of dimensions and measures using the Governed Metrics Service, the process applies a tag to created items.  This tag needs to be created in the QMC before it can be used by the process.
+
+To create the gms tag:
+
+  1. Navigate to the Tags menu item in the QMC.
+  2. Click the "Create New" button.
+  3. Enter ***gms*** into the Name field.
+  4. Click Apply.
+
+![tag](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/tag/tag.png)
+
+<a name="Step5"></a>
+## Step 5: Create the ManagedMasterItems custom property and add values
 
 In order to identify the applications that will receive metrics, the ManagedMasterItems custom property contains the values to be applied to apps.
 
@@ -101,10 +115,10 @@ To create the ManagedMasterItems custom property:
   3. Select the "Apps" resource checkbox.
   4. Add values to the custom property that match values in the MetricsSubject field and click apply.
 
-![customprop](../img/customprop/customprop.png)
+![customprop](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/customprop/customprop.png)
 
-<a name="Step5"></a>
-## Step 5: Apply the ManagedMasterItems custom property values to apps
+<a name="Step6"></a>
+## Step 6: Apply the ManagedMasterItems custom property values to apps
 
 
 Now that the custom property for populating metrics to applications exists, the values need to be set on applications for when the Governed Metrics Service performs an update.
@@ -115,12 +129,12 @@ __Do not apply ManagedMasterItems custom property values to the Metrics Library 
 To add a custom property value to an app:
 
 1. Go back to the Apps section of the QMC and double click on an App reference in the list.  
-![AppList](../img/reload/applist.png)
+![AppList](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/applist.png)
 
 2. When the app screen appears, activate the Custom properties section by clicking on the term located on the right side of the screen.    
-![AppList](../img/app/applyprop1.png)
+![AppList](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/applyprop1.png)
 
 3. Click on the dialog box next to ManagedMasterItems (or the custom property created for GMS) and type or select the custom property values to apply to the app.    
-![AppList](../img/app/applyprop2.png)
+![AppList](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/applyprop2.png)
 
 ##Next Steps - Installing the Governed Metrics Service. Click Next to proceed.

@@ -54,11 +54,11 @@ The following endpoints are available for use with the Governed Metrics Service.
 >>####Response
 
 ---
-##/delete/all
+##/delete/fromapp
 > Deletes all of the master library items applied by GMS for the supplied application name.
 >###POST
 >>####Request
-    http://senseHostname:gmsPort/masterlib/delete/all
+    http://senseHostname:gmsPort/masterlib/delete/fromapp
 >>####Headers
     Content-Type: application/json
 >>####Body

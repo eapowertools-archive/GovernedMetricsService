@@ -4,7 +4,7 @@
 Minimum Requirements:
 
 - The Governed Metrics Service requires Qlik Sense Server.
-- The Governed Metrics Service has been tested with Qlik Sense 2.2.4 - 3.0
+- The Governed Metrics Service has been tested with Qlik Sense 3.x.x
 - A data source that can be accessed via Data Connection in Qlik Sense (Excel, ODBC etc.)
 - The Governed Metrics Service requires a licensed Qlik Sense server.
 - Please do not install for use with Qlik Sense desktop.  The Governed Metrics Service will not work.

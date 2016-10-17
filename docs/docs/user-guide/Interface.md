@@ -1,6 +1,6 @@
 #Using the GMS Test Page
 
-![WebInterface](/img/webint/GMS_TestConnection.png)
+![WebInterface](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/webint/GMS_TestConnection.png)
 
 
 It is accessible via the browser at [http://localhost:8590/masterlib/testpage](http://localhost:8590/masterlib/testpage) 

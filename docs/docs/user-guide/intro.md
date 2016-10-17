@@ -12,5 +12,5 @@ GMS loads externally defined metrics and applies them to one or more designated 
 
 GMS is a REST api + node.js-based module that plugs into the existing Qlik Service Dispatcher framework.
 
-[comment]: <> (![EA Power Tools](/img/PowerToolsLogoNew.png "EA Power Tools") 
+[comment]: <> (![EA Power Tools](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/PowerToolsLogoNew.png "EA Power Tools") 
 
