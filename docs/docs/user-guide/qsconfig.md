@@ -5,8 +5,9 @@ Configuring Qlik Sense Server to use the Governed Metrics Service is a snap.  To
 * [Create the Metrics Library app](qsconfig.md#Step1).
 * [Create Metrics Library Field Names & Data Connection](qsconfig.md#Step2).
 * [Create a reload task for the Metrics Library app](qsconfig.md#Step3).
-* [Create the ManagedMasterItems custom property and add values](qsconfig.md#Step4)
-* [Apply the ManagedMasterItems custom property values to apps](qsconfig.md#Step5).
+* [Create a tag for marking governed dimensions and measures](qsconfig.md#Step4)
+* [Create the ManagedMasterItems custom property and add values](qsconfig.md#Step5)
+* [Apply the ManagedMasterItems custom property values to apps](qsconfig.md#Step6).
 
 <a name="Step1"></a> 
 ## Step 1: Create the Metrics Library App

@@ -2,7 +2,7 @@
 
 To install the Governed Metrics Service, click on this link below.
 
-###[Download Governed Metrics Service Powertool](https://github.com/eapowertools/QSGovernedMetrics)
+###[Download Governed Metrics Service Powertool](https://s3.amazonaws.com/eapowertools/governedmetricsservice/bin/GovernedMetricsService.exe)
 
 ##Installation Steps
 
