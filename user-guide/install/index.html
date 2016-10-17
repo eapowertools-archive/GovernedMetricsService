@@ -178,40 +178,51 @@
 <p>To install the Governed Metrics Service, click on this link below.</p>
 <h3 id="download-governed-metrics-service-powertool"><a href="https://github.com/eapowertools/QSGovernedMetrics">Download Governed Metrics Service Powertool</a></h3>
 <h2 id="installation-steps">Installation Steps</h2>
-<p><img alt="thumb" src="../../img/install/thumb.png" /><br />
+<p><img alt="thumb" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/thumb.png" /><br />
 1. Double click the installation executable downloaded from github. <strong><a href="https://github.com/eapowertools/QSGovernedMetrics">Link</a></strong>  </p>
 <hr />
-<p><img alt="1" src="../../img/install/1.png" /><br />
+<p><img alt="1" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/2.png" /><br />
 2. The Governed Metrics Service install starts and presents the Welcome screen.  </p>
 <hr />
-<p><img alt="2" src="../../img/install/2.png" /><br />
-3. The installer will identifiy the location where Qlik Sense is installed and create an EAPowerTools folder with the application folder inside.  If the path exists dialog box appears, this is a good thing!  Please click Yes to continue with the installation. </p>
+<p><img alt="2" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/3.png" /><br />
+3. The installer sets the default install directory as <strong>C:\Program Files\Qlik\Sense\EAPowertools</strong>.  If Qlik Sense is installed in a different drive or location, browse and specify that location.  Please click Yes to continue with the installation. </p>
 <hr />
-<p><img alt="4" src="../../img/install/4.png" /><br />
-4. The Installing screen shows the progress for file installation of the Governed Metrics Service.  <strong>This is the last point of the installer where it is possible to cancel the install.</strong> </p>
+<p><img alt="4" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/4.png" /><br />
+4. The Statement of Support communicates how to obtain support for the Governed Metrics Service.  Click Next. </p>
 <hr />
-<p><img alt="5" src="../../img/install/5.png" /><br />
-6. The configuration screen for the installer allows you to set the configuration for the Governed Metrics Service REST API.  This includes the following:  </p>
+<p><img alt="5" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/5.png" /><br />
+5. The configuration screen for the installer allows you to set the configuration for the Governed Metrics Service REST API.  This includes the following:  </p>
 <ul>
-<li><strong>GMS Port:</strong> The TCP port for the GMS REST API.  </li>
-<li><strong>Engine Port:</strong> The port the Qlik Engine runs on (default is 4747).  </li>
-<li><strong>Repository service port:</strong> The port the Qlik Repository Service API runs on (default is 4242).  </li>
-<li><strong>Qlik Sense hostname:</strong> The name of the Qlik Sense server the Governed Metrics Service will run.  This can be a central node or a rim node.  </li>
-<li><strong>Metrics Library Application Name:</strong> The name of the application that stores the metrics definitions the Governed Metrics Service will read from to create Master Library entries.  Enter the name of the application created during the configuration steps.    </li>
-<li><strong>Metrics Library Custom Property Name:</strong> The name of the custom property containing values that will be applied to applications in a Qlik Sense site that will receive metrics definitions from the Governed Metrics Service.  Enter the name of the custom property created during the configuration steps.  </li>
-<li><strong>Metrics Library Data Refresh Task Name:</strong> The Metrics Library application (name provided above) needs a refresh task so that the Governed Metrics Service may reload the Metrics Library App when updates are made to the metrics.  Enter the name of the task created during the configuration steps.  </li>
+<li><strong>Governed Metrics Service Port:</strong> The TCP port for the Governed Metrics Service REST API.  </li>
+<li><strong>Qlik Sense Node hostname:</strong> The name of the Qlik Sense server node the Governed Metrics Service will run.  This can be a central node or a rim node, but needs to be the hostname supplied during Qlik Sense installation.  </li>
+<li><strong>Metrics Library Application Name:</strong> The name of the application that stores the metrics definitions the Governed Metrics Service will read from to create Master Library entries.  Enter the name of the application created during the configuration steps. <strong>(Default: Metrics Library)</strong>    </li>
+<li><strong>Metrics Library Custom Property Name:</strong> The name of the custom property containing values that will be applied to applications in a Qlik Sense site that will receive metrics definitions from the Governed Metrics Service.  Enter the name of the custom property created during the configuration steps.  <strong>(Default: ManagedMasterItems)</strong>  </li>
+<li><strong>Metrics Library Data Refresh Task Name:</strong> The Metrics Library application (name provided above) needs a refresh task so that the Governed Metrics Service may reload the Metrics Library App when updates are made to the metrics.  Enter the name of the task created during the configuration steps.  <strong>(Reload Metrics Library)</strong></li>
 </ul>
+<p><strong><em>It is highly encouraged that the Metrics Library items (app, custom property, tag, and task) are defined in the QMC before completing this installation.</em></strong></p>
 <hr />
-<p><img alt="6" src="../../img/install/6.png" /><br />
-7. The services.conf file adds the installed applications to run through Qlik Sense Service Dispatcher.  Confirm this path and click Next to add entries to the file.</p>
+<p><img alt="6" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/6.png" /><br />
+6. The second configuration screen handles the use of a common (friendly) hostname used to connect to Qlik Sense externally.  If a different hostname (e.g. a hostname associated with a trusted certificate) is going to be used to connect to Qlik Sense, check the check box and enter the hostname that will be used in the text box.  Click the Next button to provide references to the certificate to use this hostname.</p>
 <hr />
-<p><img alt="7" src="../../img/install/7.png" /><br />
-11. The installer will stop...</p>
-<p><img alt="8" src="../../img/install/8.png" /><br />
-12. and then start the Service Dispatcher.</p>
+<p><img alt="7b" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/7.png" /><br />
+7. If the check box on the previous screen is checked, a trusted certificate is necessary to make a secure connection to the integration with the common hostname entered.  This screen prompts for certificate file references.
+The certificate file location box accepts PEM or PFX file certificates.  When a PEM file is selected, a subsequent box will appear requiring a key file.</p>
+<p>If a pfx file is selected, a passphrase is required to open the certificate file and read the private key.
+<img alt="7b" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/8.png" /></p>
+<p>Click the Next button to proceed with the installation.</p>
 <hr />
-<p><img alt="9" src="../../img/install/9.png" /><br />
-13. When the installer completes, click the finish button.</p>
+<p><img alt="8" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/9.png" />  <br />
+8. The installer is ready to place files on the system.  Click Install to begin the installation.</p>
+<hr />
+<p><img alt="9" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/10.png" />  <br />
+9. Once the installer places files on the system, the installer adds the configuration information entered earlier into the tool.  Click the Next button to continue. </p>
+<hr />
+<p><img alt="10" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/11.png" />  <br />
+10. The Service Dispatcher message dialog explains how the Governed Metrics Service uses the Qlik Sense Service Dispatcher to run.  The Service Dispatcher services.conf file will be updated during this step.  Click Next to continue.</p>
+<hr />
+<p><img alt="11" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/12.png" />  <br />
+11. Click the Finish button to complete the installation.</p>
+<hr />
 <h2 id="next-steps-testing-governed-metrics-service">Next Steps - Testing Governed Metrics Service.</h2>
               
             </div>
