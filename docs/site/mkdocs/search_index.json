@@ -2,12 +2,12 @@
     "docs": [
         {
             "location": "/", 
-            "text": "Welcome to EA Powertools Governed Metrics Service documentation\n\n\nTo access the Governed Metrics Service project go here: \nGitHub:QSGovernedMetricsService\n.\n\n\nUse the menu sidebar on the left to access the installation and user guides for the Governed Metrics Service.\n\n\nInstructions:\n\n\n\n\nIntro\n\n\nPrerequisites\n\n\nConfiguration\n\n\nCreate Metrics Library app\n\n\nCreate Reload Task\n\n\nCreate the gms tag\n\n\nCreate Custom Property\n\n\nApply Custom Property\n\n\n\n\n\n\nInstallation\n\n\nGMS Web Interface\n\n\nAPI", 
+            "text": "Welcome to EA Powertools Governed Metrics Service documentation\n\n\nTo access the Governed Metrics Service project go here: \nGitHub:QSGovernedMetricsService\n.\n\n\nUse the menu sidebar on the left to access the installation and user guides for the Governed Metrics Service.\n\n\nInstructions:\n\n\n\n\nIntro\n\n\nPrerequisites\n\n\nConfiguration\n\n\nCreate Metrics Library app\n\n\nCreate Reload Task\n\n\nCreate the gms tag\n\n\nCreate Custom Property\n\n\nApply Custom Property\n\n\n\n\n\n\nInstallation\n\n\nUninstall\n\n\nGMS Web Interface\n\n\nAPI", 
             "title": "Home"
         }, 
         {
             "location": "/#welcome-to-ea-powertools-governed-metrics-service-documentation", 
-            "text": "To access the Governed Metrics Service project go here:  GitHub:QSGovernedMetricsService .  Use the menu sidebar on the left to access the installation and user guides for the Governed Metrics Service.  Instructions:   Intro  Prerequisites  Configuration  Create Metrics Library app  Create Reload Task  Create the gms tag  Create Custom Property  Apply Custom Property    Installation  GMS Web Interface  API", 
+            "text": "To access the Governed Metrics Service project go here:  GitHub:QSGovernedMetricsService .  Use the menu sidebar on the left to access the installation and user guides for the Governed Metrics Service.  Instructions:   Intro  Prerequisites  Configuration  Create Metrics Library app  Create Reload Task  Create the gms tag  Create Custom Property  Apply Custom Property    Installation  Uninstall  GMS Web Interface  API", 
             "title": "Welcome to EA Powertools Governed Metrics Service documentation"
         }, 
         {
@@ -109,6 +109,26 @@
             "location": "/user-guide/install/#next-steps-testing-governed-metrics-service", 
             "text": "", 
             "title": "Next Steps - Testing Governed Metrics Service."
+        }, 
+        {
+            "location": "/user-guide/uninstall/", 
+            "text": "Governed Metrics Service Uninstallation\n\n\nBefore uninstalling the Governed Metrics Service, it is recommended if you are not going to use it anymore that you perform a delete on the apps that have metrics provisioned by the solution first.  Please review the \nGMS Test Page\n page for how to delete metrics from apps.\n\n\nTo Uninstall the Governed Metrics Service\n\n\n\n\nBrowse to the folder where the Governed Metrics Service is installed. (Default: C:\\Program Files\\Qlik\\Sense\\EAPowerTools\\GovernedMetricsService)\n\n\nOpen the Uninstall folder.\n\n\nDouble click the file named \nunins000.exe\n.\n\n\nFollow the prompts for uninstalling the Governed Metrics Service.\n\n\nPlease leave feedback on \nCommunity\n regarding your experience and why you uninstalled.\n\n\n\n\nCheers!", 
+            "title": "Uninstall"
+        }, 
+        {
+            "location": "/user-guide/uninstall/#governed-metrics-service-uninstallation", 
+            "text": "Before uninstalling the Governed Metrics Service, it is recommended if you are not going to use it anymore that you perform a delete on the apps that have metrics provisioned by the solution first.  Please review the  GMS Test Page  page for how to delete metrics from apps.", 
+            "title": "Governed Metrics Service Uninstallation"
+        }, 
+        {
+            "location": "/user-guide/uninstall/#to-uninstall-the-governed-metrics-service", 
+            "text": "Browse to the folder where the Governed Metrics Service is installed. (Default: C:\\Program Files\\Qlik\\Sense\\EAPowerTools\\GovernedMetricsService)  Open the Uninstall folder.  Double click the file named  unins000.exe .  Follow the prompts for uninstalling the Governed Metrics Service.  Please leave feedback on  Community  regarding your experience and why you uninstalled.", 
+            "title": "To Uninstall the Governed Metrics Service"
+        }, 
+        {
+            "location": "/user-guide/uninstall/#cheers", 
+            "text": "", 
+            "title": "Cheers!"
         }, 
         {
             "location": "/user-guide/interface/", 
