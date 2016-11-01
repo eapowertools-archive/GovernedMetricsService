@@ -131,7 +131,12 @@ router.route('/update/all')
 		.catch(function(error)
 		{
 			logger.error('POST update/all failure::' + error, {module: 'routes'});
-			response.status(400).json(error);
+
+			var foo = {
+				result: 'POST update/all failure::' + error
+			};
+
+			response.status(200).json(foo.result);
 		});			
 		
 	});
