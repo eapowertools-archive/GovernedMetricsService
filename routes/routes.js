@@ -184,6 +184,12 @@ router.route('/changeOwner')
 		});
 	});
 
+router.route("/version")
+	.get(function(request, response)
+	{
+		response.status(200).send(config.gms.version);
+	});
+
 function isEmpty(obj){
 	for(var prop in obj){
 		if(obj.hasOwnProperty(prop))

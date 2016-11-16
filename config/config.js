@@ -37,6 +37,7 @@ var config = {
 		root: path.resolve(certPath,'root.pem')
 	},
 	gms: {
+		version: '1.5.3.0',
 		port: 8590,
 		hostname: friendlyHostname !== undefined ? friendlyHostname : globalHostname,
         routePath: path.join(__dirname, '/../routes/'),

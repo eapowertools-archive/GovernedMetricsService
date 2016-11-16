@@ -74,5 +74,5 @@ app.use('/masterlib',popmasterlib);
 var server = https.createServer(httpsOptions, app);
 server.listen(config.gms.port, function()
 {
-    logger.info('Governed Metrics Service started',{module:'server'});
+    logger.info('Governed Metrics Service version ' + config.gms.version + ' started',{module:'server'});
 });
