@@ -131,17 +131,29 @@
 
 
 		};
+
+		function getVersion()
+		{
+			$.get("../masterlib/version", function(result,strStatus,xhr)
+			{
+				if(xhr.status==200)
+				{
+					$("#gmsTitle").text("Governed Metrics Service " + result);  
+				}
+			})
+		};
+
 		</script>
 	</head>
 
-	<body>
+	<body onload="getVersion()">
 		<def>
 		</def>
 		<div id="header" class="frame">
-			<div id="header-text"><h1 style='color: #FFFFFF; font-size: 23pt; font-weight: bold; font-family: Arial;'>Governed Metrics Service</h1></div>
+			<div id="header-text"><h1 id="gmsTitle" style="color: #FFFFFF; font-size: 23pt; font-weight: bold; font-family: Arial;">Governed Metrics Service</h1></div>
 		</div>
 
-		<div id=main-body>
+		<div id="main-body">
 			<div id="left-buttons">
 				<button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="testConnection()">Test Connection</button>
 				<br/>
