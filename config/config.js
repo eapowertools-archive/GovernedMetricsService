@@ -45,6 +45,7 @@ var config = {
 		appPath: path.join(__dirname, '/../app/'),
 		appName: 'Metrics Library',
 		customPropName: 'ManagedMasterItems',
+    metricLibraryInputPropName: 'metrics_library_input',
 		taskName: 'Reload Metrics Library',
 		objectManagementTimeout: 60000
 	},
