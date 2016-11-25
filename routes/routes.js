@@ -114,8 +114,8 @@ router.route('/add/all')
 		{
 			logger.error('POST add/all failure::' + error, {module: 'routes'});
 			response.status(400).json(error);
-		});			
-		
+		});
+
 	});
 
 router.route('/update/all')
@@ -137,8 +137,8 @@ router.route('/update/all')
 			};
 
 			response.status(200).json(foo.result);
-		});			
-		
+		});
+
 	});
 
 router.route('/delete/fromapp')
@@ -166,7 +166,7 @@ router.route('/reload')
 		{
 			logger.error('POST reload failure::' + error, {module: 'routes'});
 			response.status(400).json(error);
-		});			
+		});
 	});
 
 router.route('/changeOwner')
@@ -189,6 +189,31 @@ router.route("/version")
 	{
 		response.status(200).send(config.gms.version);
 	});
+
+//  Provide Master Data Items from specfic Qlik Sense applications, as an input
+//  to the metrics library. Hitting this endpoint should return all master data
+// 	items from the relevant Apps (either identified by name or tag in the
+//  mangement console).
+router.route("/getAllMDI")
+	.get(function(request, response)
+	{
+		var filter = !req.query.filter ? "mdi" : req.query.filter;
+		logger.info('GET getAllMdi with filer:' + filter, {module: 'routes'});
+		worker.getAllMdi(filter.toLowerCase()))
+		.then(function(result)
+		{
+			response.set({'Content-Type': 'application/json'})
+			logger.info('GET getAllMdi success::' + result, {module: 'routes'});
+			response.status(200).json(result + '\n');
+		})
+		.catch(function(error)
+		{
+			logger.error('POST getAllMdi failure::' + error, {module: 'routes'});
+			response.status(400).json(error);
+		})
+
+	});
+
 
 function isEmpty(obj){
 	for(var prop in obj){
