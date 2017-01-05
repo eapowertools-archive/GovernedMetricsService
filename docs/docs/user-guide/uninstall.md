@@ -1,6 +1,6 @@
 #Governed Metrics Service Uninstallation
 
-Before uninstalling the Governed Metrics Service, it is recommended if you are not going to use it anymore that you perform a delete on the apps that have metrics provisioned by the solution first.  Please review the **[GMS Test Page](user-guide/interface.md)** page for how to delete metrics from apps.
+Before uninstalling the Governed Metrics Service, it is recommended if you are not going to use it anymore that you perform a delete on the apps that have metrics provisioned by the solution first.  Please review the **[GMS Test Page](./interface.md)** page for how to delete metrics from apps.
 
 ##To Uninstall the Governed Metrics Service
 
