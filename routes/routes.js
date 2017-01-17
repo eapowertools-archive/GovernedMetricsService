@@ -173,8 +173,8 @@ router.route("/getAllMDI")
         worker.getAllMdi()
             .then(function(result) {
                 response.set({ 'Content-Type': 'application/json' })
-                logger.info('GET getAllMdi success::' + result, { module: 'routes' });
-                response.status(200).json(result + '\n');
+                logger.info('GET getAllMdi success::' + JSON.stringify(result), { module: 'routes' });
+                response.status(200).json(result);
             })
             .catch(function(error) {
                 logger.error('GET getAllMdi failure::' + error, { module: 'routes' });
