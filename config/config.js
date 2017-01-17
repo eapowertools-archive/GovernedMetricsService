@@ -44,7 +44,7 @@ var config = {
         customPropName: 'ManagedMasterItems',
         taskName: 'Reload Metrics Library',
         objectManagementTimeout: 60000,
-        tagRestrict: true
+        tagRestrict: false
     },
     engine: {
         enginePort: 4747,
