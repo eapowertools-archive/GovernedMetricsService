@@ -50,7 +50,7 @@ var config = {
     engine: {
         enginePort: 4747,
         hostname: qrsHostname !== undefined ? qrsHostname : globalHostname,
-        repoAccount: 'UserDirectory=Internal;UserId=sa_repository'
+        repoAccount: 'UserDirectory=Internal;UserId=sa_api'
     },
     logging: {
         logPath: logPath,
@@ -61,7 +61,7 @@ var config = {
         localCertPath: certPath,
         hostname: qrsHostname !== undefined ? qrsHostname : globalHostname,
         repoAccountUserDirectory: 'INTERNAL',
-        repoAccountUserId: 'sa_repository',
+        repoAccountUserId: 'sa_api',
         changeInterval: 15
     }
 };

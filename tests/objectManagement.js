@@ -49,28 +49,43 @@ var manageObjects = {
                         })
                         .then(function(resultArray) {
                             var createObjects = resultMetrics(resultArray);
-                            var same, created, updated = 0;
-
                             if (createObjects.length == 0) {
                                 logger.info("No new dimensions or measures created", { module: "objectManagement", app: appRef.name });
                                 return;
                             }
-                            createObjects.forEach(function(item) {
-                                switch (item) {
-                                    case "SAME":
-                                        same += 1;
-                                    case "CREATED":
-                                        created += 1;
-                                    case "UPDATED":
-                                        updated += 1;
-                                }
-                            });
-                            logger.info('Result of object creation: ' +
-                                'Not Changed: ' + same + "\r\nCreated: " +
-                                created + "\r\nUpdated: " + updated, { module: "objectManagement", app: appRef.name });
-                            logger.info('Objects have been added to the repo!', { module: "objectManagement", app: appRef.name });
-                            logger.info('Now please wait until the repo catches up and we can change ownership.', { module: "objectManagement", app: appRef.name });
-                            return ('Done!');
+                            logger.info('Result of object creation: ' + createObjects.length, { module: "objectManagement", app: appRef.name });
+                            var metVals = createObjects.length;
+                            var repoVals = 0;
+                            return promiseWhile(function() {
+                                    // Condition for stopping
+                                    return repoVals < metVals;
+                                }, function() {
+                                    // Action to run, should return a promise
+                                    return itemCount.count(appRef, appId)
+                                        .then(function(result) {
+                                            repoVals = result
+                                            logger.info("Checking repository for the addition of objects: " + repoVals, { module: "objectManagement", app: appRef.name });
+                                            return repoVals;
+                                        })
+                                        .catch(function(error) {
+                                            logger.error(error, { module: "objectManagement", method: "During While Loop", app: appRef.name });
+                                        });
+                                })
+                                .timeout(timeout)
+                                .then(function() {
+                                    logger.info('Objects have been added to the repo!', { module: "objectManagement", app: appRef.name });
+                                    logger.info('yay!');
+                                    return ('Done!');
+
+                                    //let's tag in the repo what we just created
+
+
+                                })
+                                .catch(Promise.TimeoutError, function(error) {
+                                    logger.info("I timed out.  ", { module: "objectManagement", app: appRef.name });
+                                    logger.error(error, { module: "objectManagement", app: appRef.name });
+                                    reject(error);
+                                });
                         })
                         .catch(function(error) {
                             logger.error(error, { module: "objectManagement", app: appRef.name });

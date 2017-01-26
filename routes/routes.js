@@ -6,6 +6,7 @@ var hypercube = require('../lib/setCubeDims');
 var worker = require('../lib/dowork');
 var getdoc = require('../lib/getdocid');
 var gethypercube = require('../lib/getmetricshypercube');
+var notifiedByRepo = require('../lib/notifiedByRepo');
 var winston = require('winston');
 var config = require('../config/config');
 require('winston-daily-rotate-file');
@@ -180,6 +181,19 @@ router.route("/getAllMDI")
                 logger.error('GET getAllMdi failure::' + error, { module: 'routes' });
                 response.status(400).json(error);
             })
+    });
+
+router.route("/notifyme")
+    .post(parseUrlencoded, function(request, response) {
+        notifiedByRepo.updateRepo(request.body)
+            .then(function(result) {
+                logger.info(result, { module: 'routes' })
+                response.status(200).json(result);
+            })
+            .catch(function(error) {
+                logger.error("updating repo failed " + JSON.stringify(error), { module: 'routes' });
+                response.status(400).json(error);
+            });
     });
 
 
