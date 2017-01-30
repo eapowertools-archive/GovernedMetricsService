@@ -1,0 +1,36 @@
+{
+    "name": "winston-socket.io",
+    "version": "0.1.0",
+    "description": "A winston transport that will emit logs to a socket.io server.",
+    "main": "lib/winston-socketio.js",
+    "scripts": {
+        "test": "vows --spec --isolate"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/jbass86/winston-socket.io.git"
+    },
+    "keywords": [
+        "winstonjs",
+        "socket.io",
+        "log"
+    ],
+    "author": "Josh Bass",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/jbass86/winston-socket.io/issues"
+    },
+    "homepage": "https://github.com/jbass86/winston-socket.io#readme",
+    "dependencies": {
+        "socket.io-client": "^1.4.8",
+        "winston": "^2.2.0"
+    },
+    "devDependencies": {
+        "socket.io": "^1.4.8",
+        "express": "^4.14.0",
+        "vows": "^0.8.1"
+    },
+    "engines": {
+        "node": ">= 0.10.0"
+    }
+}

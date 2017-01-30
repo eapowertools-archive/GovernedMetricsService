@@ -7,18 +7,9 @@ var worker = require('../lib/dowork');
 var getdoc = require('../lib/getdocid');
 var gethypercube = require('../lib/getmetricshypercube');
 var notifiedByRepo = require('../lib/notifiedByRepo');
-var winston = require('winston');
 var config = require('../config/config');
-require('winston-daily-rotate-file');
+var logger = require('../lib/logger');
 
-//set up logging
-var logger = new(winston.Logger)({
-    level: config.logging.logLevel,
-    transports: [
-        new(winston.transports.Console)(),
-        new(winston.transports.DailyRotateFile)({ filename: config.logging.logFile, prepend: true })
-    ]
-});
 
 router.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");

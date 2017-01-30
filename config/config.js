@@ -40,6 +40,7 @@ var config = {
         routePath: path.join(__dirname, '/../routes/'),
         publicPath: path.join(__dirname, '/../public/'),
         appPath: path.join(__dirname, '/../app/'),
+        nodeModPath: path.join(__dirname, './../node_modules/'),
         appName: 'Metrics Library',
         customPropName: 'ManagedMasterItems',
         masterLibrarySourcePropName: 'MasterLibrarySource',
