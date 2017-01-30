@@ -8,25 +8,16 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var winston = require('winston');
 var config = require('./config/config');
 var Promise = require('bluebird');
 var doWork = require('./lib/dowork');
-var utils = require('./lib/utils');
 var qrsNotify = require('./lib/qrsNotify');
 var fs = require('fs');
 var path = require('path');
 var https = require('https');
-require('winston-daily-rotate-file');
+var socketio = require('socket.io');
+var logger = require('./lib/logger');
 
-//set up logging
-var logger = new(winston.Logger)({
-    level: config.logging.logLevel,
-    transports: [
-        new(winston.transports.Console)(),
-        new(winston.transports.DailyRotateFile)({ filename: config.logging.logFile, prepend: true })
-    ]
-});
 
 var x = {};
 
@@ -73,6 +64,7 @@ function launchServer() {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use('/masterlib/public', express.static(config.gms.publicPath));
+    app.use('/masterlib/node_modules', express.static(config.gms.nodeModPath));
 
 
     logger.info('Setting port', { module: 'server' });
@@ -110,5 +102,14 @@ function launchServer() {
     var server = https.createServer(httpsOptions, app);
     server.listen(config.gms.port, function() {
         logger.info('Governed Metrics Service version ' + config.gms.version + ' started', { module: 'server' });
+    });
+
+    var io = new socketio(server);
+
+    io.on('connection', function(socket) {
+        socket.on("gms", function(msg) {
+            console.log("gms" + "::" + msg);
+            io.emit("gms", msg);
+        });
     });
 }
