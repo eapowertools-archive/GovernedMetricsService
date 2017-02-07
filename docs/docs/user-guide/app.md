@@ -33,7 +33,7 @@ The Governed Metrics Service relies on specific field names to distribute metric
     1. A hardcoded value representing an existing master library item id.
     2. It is a modified 128 bit hash composite of the MetricSubject field and ID field.  Uses the expression `if(isnull(UID),KeepChar(Hash128(MetricSubject,ID),'$(chars)'),UID) as UID`
 
-* __MetricSubject__ - The MetricSubject MUST equal the [ManagedMasterItems](qsconfig.md#Step4) custom property value.  When the Governed Metrics Service reads the Metrics Library app tables, this field is used to identify which apps will receive the dimension or measure.
+* __MetricSubject__ - The MetricSubject MUST equal the ManagedMasterItems custom property value.  When the Governed Metrics Service reads the Metrics Library app tables, this field is used to identify which apps will receive the dimension or measure.
 <br><br>
     
 * __MetricType__ - This field identifies where in the Master Library a metric will be added.

@@ -11,7 +11,7 @@ The Governed Metrics Service installs with a sample data source that can be used
 ![Add Data](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_AttachFiles.png)
 6. "Load Data and Finish". Save and close the Metrics Library application.
 ![Add Data](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_LoadandFinish.png)
-7. Ensure a task has been created for the Metrics Library application [here](/user-guide/qsconfig.md#Step3) if you have not done so. 
+7. Ensure a task has been created for the Metrics Library application [here](/user-guide/qmc.md#task) if you have not done so. 
 9. Run the task and ensure the Metrics Library application has reloaded. 
 10. Open the Executive Dashboard application in the Hub and verify the KPI Dashboard sheet is all "Incomplete Visualations". This is basically a sheet of objects tied into governed metrics that have to be pushed out from the Governed Metrics Service. 
 ![Add Data](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_IncompleteViz.png)
