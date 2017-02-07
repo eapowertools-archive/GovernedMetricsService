@@ -1,4 +1,4 @@
-#GMS Example Walkthrough
+<h1>GMS Example Walkthrough</h1>
 
 The Governed Metrics Service installs with a sample data source that can be used with the Metrics Library application and one of the GSS example applications (Executive Dashboard.qvf). To use the sample data source and application, do the following steps:
 

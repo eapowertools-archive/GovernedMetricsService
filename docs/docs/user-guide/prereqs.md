@@ -1,10 +1,10 @@
-#GMS Prerequisites
+<h2>GMS Prerequisites</h2>
 
 
 Minimum Requirements:
 
 - The Governed Metrics Service requires Qlik Sense Server.
-- The Governed Metrics Service runs through the Qlik Sense Service Dispatcher.
+- The Governed Metrics Service runs through the Qlik EA Powertools Service Dispatcher.
 - The Governed Metrics Service uses **port 8590** by default for the rest interface.  This is configurable during installation.
 - The Governed Metrics Service uses **port 4747** to communicate with the Qlik Sense Engine Service.
 - The Governed Metrics Service uses **port 4242** to communicate with the Qlik Sense Repository Service (QRS).

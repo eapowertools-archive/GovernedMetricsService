@@ -19,7 +19,8 @@
     "request": "^2.69.0",
     "socket.io": "^1.7.2",
     "winston": "^2.2.0",
-    "winston-daily-rotate-file": "^1.3.1"
+    "winston-daily-rotate-file": "^1.3.1",
+    "winston-socket.io": "^0.1.1"
   },
   "devDependencies": {},
   "scripts": {

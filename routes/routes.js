@@ -187,6 +187,11 @@ router.route("/notifyme")
             });
     });
 
+router.route("/deletenotifyme")
+    .post(parseUrlencoded, function(request, response) {
+        logger.info("completed delete operation in the repository for: " + JSON.stringify(request.body), { module: 'routes' });
+        response.status(200).json("Metrics deleted from repository");
+    });
 
 function isEmpty(obj) {
     for (var prop in obj) {

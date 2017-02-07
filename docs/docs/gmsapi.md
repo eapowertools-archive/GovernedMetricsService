@@ -1,15 +1,33 @@
-#Governed Metrics Service (GMS) REST API Reference
+<h1>Governed Metrics Service (GMS) REST API Reference</h1>
 
-The following endpoints are available for use with the Governed Metrics Service.  All endpoints are prefaced with 
+The following endpoints are available for use with the Governed Metrics Service.  All endpoints are prefaced with masterlib.
 
 #Paths
+
+---
+##/
+> Returns the hypercube definition for the data to be returned to the Governed Metrics Service for population in master libraries across apps.
+>###GET
+>>####Request
+    https://senseHostname:gmsPort/masterlib/
+>>####Response
+>> Returns the json definition of the hypercube used to populate master library items.
+
+---
+##/testpage
+> Navigates to the test page used for running the Governed Metrics Service in push button fashion.
+>###GET
+>>####Request
+    https://senseHostname:gmsPort/masterlib/testpage
+>>####Response
+>> Rendered testpage.
 
 ---
 ##/getdocid
 > Returns the GUID ID for the metrics library app name designated in the `config.js` file.
 >###GET
 >>####Request
-    http://senseHostname:gmsPort/masterlib/getdocid
+    https://senseHostname:gmsPort/masterlib/getdocid
 >>####Response
 >> The example below shows a guid for the metrics library app.  This value may be different on your server.
 >>####
@@ -17,7 +35,7 @@ The following endpoints are available for use with the Governed Metrics Service.
 
 >###POST
 >>####Request
-    http://senseHostname:gmsPort/masterlib/getdocid
+    https://senseHostname:gmsPort/masterlib/getdocid
 >>####Headers
     Content-Type: application/json
 >>####Body
@@ -34,7 +52,7 @@ The following endpoints are available for use with the Governed Metrics Service.
 > Calls the update/all method
 >###POST
 >>####Request
-    http://senseHostname:gmsPort/masterlib/add/all
+    https://senseHostname:gmsPort/masterlib/add/all
 >>####Headers
     null
 >>####Body
@@ -46,7 +64,7 @@ The following endpoints are available for use with the Governed Metrics Service.
 > Updates applications with the ManagedMasterItems custom property applied with the master library dimensions and measures corresponding to applied values. 
 >###POST
 >>####Request
-    http://senseHostname:gmsPort/masterlib/update/all
+    https://senseHostname:gmsPort/masterlib/update/all
 >>####Headers
     null
 >>####Body
@@ -58,7 +76,7 @@ The following endpoints are available for use with the Governed Metrics Service.
 > Deletes all of the master library items applied by GMS for the supplied application name.
 >###POST
 >>####Request
-    http://senseHostname:gmsPort/masterlib/delete/fromapp
+    https://senseHostname:gmsPort/masterlib/delete/fromapp
 >>####Headers
     Content-Type: application/json
 >>####Body
@@ -72,9 +90,39 @@ The following endpoints are available for use with the Governed Metrics Service.
 > Triggers a refresh of the data contained in the Metrics Library Qlik application that stores dimension and measure metadata for use with the GMS.
 >###POST
 >>####Request
-    http://senseHostname:gmsPort/masterlib/reload
+    https://senseHostname:gmsPort/masterlib/reload
 >>####Headers
     null
 >>####Body
     null
 >>####Response
+
+---
+##/version
+> Returns the Governed Metrics Service version.
+>###GET
+>>####Request
+    https://senseHostname:gmsPort/masterlib/version
+>>####Response
+>> The example below shows version of Governed Metrics Service.
+>>####
+    "1.0.0"
+
+---
+##/getAllMDI
+> An endpoint used by the Qlik Sense REST Connector to populate master library items from an app into the Metrics Library application.
+>###GET
+>>####Request
+    https://senseHostname:gmsPort/masterlib/getAllMDI
+>>####Response
+>> The response is the definitions of dimensions and measures from apps with the MasterLibrarySource custom property applied.
+
+---
+##/notifyme
+> Receives messages from the QRS api telling the Governed Metrics Service to process ownership changes on master library items applied by the service.
+>###GET
+>>####Request
+    https://senseHostname:gmsPort/masterlib/notifyme
+>>####Response
+>> An array of objects matching the notification criteria set by the Governed Metrics Service prompting a call to the endpoint.
+

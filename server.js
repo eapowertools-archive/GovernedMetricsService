@@ -11,53 +11,36 @@ var bodyParser = require('body-parser');
 var config = require('./config/config');
 var Promise = require('bluebird');
 var doWork = require('./lib/dowork');
-var qrsNotify = require('./lib/qrsNotify');
 var fs = require('fs');
 var path = require('path');
 var https = require('https');
 var socketio = require('socket.io');
 var logger = require('./lib/logger');
-
+var notifyFactory = require('./lib/notifyFactory');
 
 var x = {};
 
 logger.info('Firing up the Governed Metrics Service ReST API', { module: 'server' });
-var handleFile = path.join(__dirname, "config/handleFile.txt");
 
-logger.info("Deleting current notification service handle for GMS based changes", { module: 'server' });
-if (fs.existsSync(handleFile)) {
-    var handle = fs.readFileSync(handleFile).toString().split('\n');
-    console.log(handle[0])
-    qrsNotify.deleteNotification(handle[0])
-        .then(function(result) {
-            if (result == 204) {
-                logger.info("notification handle removed", { module: 'server' });
-            }
-            return createNotification();
-        })
-        .catch(function(error) {
-            logger.error("Failed to delete notification handle.  Unable to start GMS.  Recommend Stopping and Starting all Qlik services.")
-            return process.exit();
-        });
-} else {
-    createNotification();
-}
-
-function createNotification() {
-    logger.info("Creating new notification handler for GMS based changes to the repository.", { module: 'server' });
-    qrsNotify.createNotification()
-        .then(function(result) {
-            logger.info("Notification Handle created with value " + result + ".  Starting GMS Server.", { module: 'server' });
-            logger.info("Creating Handle file to store handler value in case service dispatcher is restarted.")
-            fs.writeFileSync(handleFile, result);
-            return launchServer();
-        })
-        .catch(function(error) {
-            logger.error("Failed to create notification handle with error: " + error, { module: 'server' });
-            logger.error("GMS will not be started because it requires a notification handle to process new metrics.");
-            return process.exit();
-        });
-}
+notifyFactory.getUpdateHandle()
+.then(function(result)
+{
+    return notifyFactory.getDeleteHandle()
+    .then(function(result)
+    {
+        launchServer();
+    })
+    .catch(function(error)
+    {
+        logger.error(JSON.stringify(error), {module: "server"});
+        process.exit();
+    });
+})
+.catch(function(error)
+{
+    logger.error(JSON.stringify(error), {module: "server"});
+    process.exit();
+});
 
 
 function launchServer() {
