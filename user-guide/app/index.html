@@ -1,0 +1,476 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Metrics Library App - EA Powertools Governed Metrics Service</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/highlight.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Metrics Library App";
+    var mkdocs_page_input_path = "user-guide\\app.md";
+    var mkdocs_page_url = "/user-guide/app/";
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js"></script>
+  <script src="../../js/modernizr-2.8.3.min.js"></script>
+  <script type="text/javascript" src="../../js/highlight.pack.js"></script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> EA Powertools Governed Metrics Service</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../..">Home</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../intro/">Introduction</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Installation</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../prereqs/">Governed Metrics Service Prerequisites</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../install/">Installing GMS</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Configuration</span></li>
+
+        
+            
+    <li class="toctree-l1 current">
+        <a class="current" href="./">Metrics Library App</a>
+        
+            <ul>
+            
+                <li class="toctree-l3"><a href="#create-the-metrics-library-application">Create the Metrics Library application</a></li>
+                
+                    <li><a class="toctree-l4" href="#general-configuration">General Configuration</a></li>
+                
+                    <li><a class="toctree-l4" href="#loading-metrics-metadata-to-the-metrics-library">Loading Metrics Metadata to the Metrics Library</a></li>
+                
+                    <li><a class="toctree-l4" href="#loading-data-using-the-mdi-rest-endpoint">Loading Data using the MDI REST Endpoint</a></li>
+                
+            
+            </ul>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../qmc/">QMC Configuration</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>User-Guide</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../interface/">Testing Goverened Metrics Service</a>
+        
+    </li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../validation/">GMS Example</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../gmsapi/">Governed Metrics Service API</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../uninstall/">Uninstall</a>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../../about/">About</a>
+        
+    </li>
+<li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">EA Powertools Governed Metrics Service</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Configuration &raquo;</li>
+        
+      
+    
+    <li>Metrics Library App</li>
+    <li class="wy-breadcrumbs-aside">
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="create-the-metrics-library-application">Create the Metrics Library application</h1>
+<p><a name="top"></a></p>
+<p>The Metrics Library app is the repository the Governed Metrics Service uses to distribute metrics to apps in a Qlik Sense site.  <strong><u>The app requires specific named fields to work properly.</u></strong> </p>
+<p>Source data for the Metrics Library app may be loaded from any data source.  Loaded data needs to conform to the specification described in the general section below.</p>
+<ul>
+<li><a href="./#general">General Configuration</a></li>
+<li><a href="./#loadingdata">Loading Metrics Metadata to the Metrics Library</a>    <ul>
+<li><a href="./#standard">Loading Data from a folder or database Data Connection</a>    </li>
+<li><a href="./#MDI">Loading Data using the MDI ReST Endpoint</a></li>
+</ul>
+</li>
+</ul>
+<p><a name="general"></a></p>
+<h2 id="general-configuration">General Configuration</h2>
+<h3 id="the-metrics-library-app">The Metrics Library App</h3>
+<ol>
+<li>
+<p>From the Hub, create an app called "Metrics Library" and open it.
+  <img alt="createNewApp" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/createnewapp.png" /></p>
+</li>
+<li>
+<p>Click on the data load editor button to launch the Data Load Editor.</p>
+</li>
+</ol>
+<p><a name="fieldDefs"></a></p>
+<h3 id="field-definitions-and-structure">Field Definitions and Structure</h3>
+<p>The Governed Metrics Service relies on specific field names to distribute metrics.  While the source data field names do not have to match, the field names Qlik Sense will use need to be the following: </p>
+<ul>
+<li>
+<p><strong>ID</strong> - The ID field is a numeric primary key field for metrics distributed by the GMS natively.  Put another way, when importing metrics via MDI or adopting manually created Master Library items the ID field must be filled with the Qlik Sense Engine object id.  When a new metric is delivered to to apps exclusively through GMS, a numeric value is used.
+<br><br></p>
+</li>
+<li>
+<p><strong>UID</strong> - This is the field the Governed Metrics Service applies to new master library items to be created or uses to detect existing master library items to make changes.  The UID can be one of two items:</p>
+<ol>
+<li>A hardcoded value representing an existing master library item id.</li>
+<li>It is a modified 128 bit hash composite of the MetricSubject field and ID field.  Uses the expression <code>if(isnull(UID),KeepChar(Hash128(MetricSubject,ID),'$(chars)'),UID) as UID</code></li>
+</ol>
+</li>
+<li>
+<p><strong>MetricSubject</strong> - The MetricSubject MUST equal the ManagedMasterItems custom property value.  When the Governed Metrics Service reads the Metrics Library app tables, this field is used to identify which apps will receive the dimension or measure.
+<br><br></p>
+</li>
+<li>
+<p><strong>MetricType</strong> - This field identifies where in the Master Library a metric will be added.
+<br><br></p>
+</li>
+<li>
+<p><strong>MetricName</strong> - The MetricName field contains the friendly name displayed in the Master Library for the dimension or measure.
+<br><br></p>
+</li>
+<li>
+<p><strong>MetricDescription</strong> - This field contains a description for the dimension or measure.  When a user clicks on a Master Library item, the description will appear in the pop user interface.
+<br><br></p>
+</li>
+<li>
+<p><strong>MetricFormula</strong> - The MetricFormula contains the dimension field name or the expression to be used for the dimension or measure.
+<br><br></p>
+</li>
+<li>
+<p><strong>MetricOwner</strong> - This field identifies who owns the metric for informational purposes.
+<br><br></p>
+</li>
+<li>
+<p><strong>MetricTags</strong> - The MetricTags field is a semicolon delimited list of descriptive tags to be added to the dimension or measure Master Library item to aid search.
+<br><br></p>
+</li>
+<li>
+<p><strong>MetricGrouping</strong> - The MetricGrouping field identifies if dimensions are single (N), or drilldown (H).  Measures are only ever single (N).</p>
+</li>
+</ul>
+<h3 id="sample-source-data-table">Sample Source Data Table</h3>
+<p>Below is an example of the resulting table of information expected to be loaded from the data source.</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>UID</th>
+<th>MetricSubject</th>
+<th>MetricType</th>
+<th>MetricName</th>
+<th>MetricDescription</th>
+<th>MetricFormula</th>
+<th>MetricOwner</th>
+<th>MetricTags</th>
+<th>MetricGrouping</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1</td>
+<td>EDSMNFH8F</td>
+<td>Customer Service</td>
+<td>Measure</td>
+<td>% Resolved in SLA</td>
+<td>Percentage of Tickets handled within SLA</td>
+<td>Sum({&lt; [Call Ctr Days to Resolve] = {'0', '1', '2', '3', '4', '5', '6'} &gt; } [Call Ctr Call #])/sum([Call Ctr Call #])</td>
+<td>Linda Lee</td>
+<td>Key KPI;Call</td>
+<td>N</td>
+</tr>
+<tr>
+<td>2</td>
+<td>P29OSdkE</td>
+<td>Sales</td>
+<td>Dimension</td>
+<td>Country</td>
+<td>Customer Country</td>
+<td>Customer Country</td>
+<td>Chad Johnson</td>
+<td>Customer</td>
+<td>N</td>
+</tr>
+<tr>
+<td>3</td>
+<td>L2SDNCHDJEL4ritdsR</td>
+<td>Finance</td>
+<td>Measure</td>
+<td>Costs</td>
+<td>Cost Amount</td>
+<td>sum([Sales Costs])</td>
+<td>Gordon Wyse</td>
+<td>Cost</td>
+<td>N</td>
+</tr>
+<tr>
+<td>ABCD</td>
+<td>ABCD</td>
+<td>Sales</td>
+<td>Dimension</td>
+<td>TimeDrill</td>
+<td>Fiscal time drill down</td>
+<td>FiscalYear, FiscalQuarter, FiscalMonth</td>
+<td>Sales</td>
+<td>time;drill</td>
+<td>H</td>
+</tr>
+<tr>
+<td></td>
+<td>sales_5</td>
+<td>Sales</td>
+<td>Measure</td>
+<td>SumCalc</td>
+<td>A fake calculation</td>
+<td>sum(1)</td>
+<td>some person</td>
+<td>fake;metric</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<p><a name="loadingdata"></a></p>
+<h2 id="loading-metrics-metadata-to-the-metrics-library">Loading Metrics Metadata to the Metrics Library</h2>
+<p>Loading data to the Metrics Library is the same as loading data into a standard Qlik Sense app.  There are some guidelines to follow depending on the data source metrics metadata will be loaded from.  In general, metrics metadata will be loaded from a centralized location like a database, MS Excel, or CSV file.  In the 2.0.0 release of GMS, a new method of loading data using the Qlik REST Connector makes it possible to load metrics metadata from the master library items of other apps in a Qlik Sense site.</p>
+<p><a name="standard"></a></p>
+<h3 id="loading-data-from-a-folder-or-database-data-connection">Loading Data from a folder or database Data Connection</h3>
+<p>Here is an example of a load statement for loading metrics from an MS Excel file.</p>
+<pre><code>SET chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
+
+MetricsLibrary:
+    LOAD
+    ID,
+    if(isnull(UID),KeepChar(Hash128(MetricSubject,ID),'$(chars)'),UID) as UID,
+    MetricSubject,
+    MetricType,
+    MetricName,
+    MetricDescription,
+    MetricFormula,
+    MetricOwner,
+    MetricTags,
+    MetricGrouping
+    FROM [lib://AttachedFiles/MetricsLibrary.csv]
+    (txt, codepage is 1252, embedded labels, delimiter is '\t', msq);
+</code></pre>
+
+<p>When creating a data connection from a folder or database, we recommend using the above as the template script.  </p>
+<p>While all the fields are important and required, the UID field is most critical because it is the field used to identify existing metrics deployed to applications through GMS, and the value of this field will be used to generate the engine object id of new dimensions and measures added by GMS.  It may be necessary to alter this template script to identify the source field names, but it is mandatory that the destination field names reflect the values described in the <strong><a href="./#fieldDefs">field definitions</a></strong> section on this page.</p>
+<p><a name="MDI"></a></p>
+<h2 id="loading-data-using-the-mdi-rest-endpoint">Loading Data using the MDI REST Endpoint</h2>
+<p>Beginning in GMS 2.0.0, a REST endpoint is available to reach into other Qlik Sense applications and extract the master library dimension and measure definitions.  The definitions are formatted and loaded into the Metrics Library as if they were stored in the central data store for metrics metadata.  The advantages of this capability are reuse of existing metrics stored in apps and a way to categorize master items by using an app as the storage container for definitions.  This capability is useful when no central metrics data source exists.</p>
+<p>To access the MDI REST endpoint, use the Qlik REST Connector and follow the directions below to configure a connection and identify a MasterLibrarySource application.</p>
+<h3 id="creating-the-mdi-rest-connection-in-the-data-load-editor">Creating the MDI REST Connection in the Data Load Editor</h3>
+<ol>
+<li>
+<p>Click on New Connection and choose Qlik REST Connector.
+<img alt="1" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/1.png" />
+<br><br></p>
+</li>
+<li>
+<p>Enter the URL for the MDI endpoint.  The endpoint url is https://%senseServerName%:%gmsPort%/masterlib/getallMDI.
+<img alt="2" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/3.png" />
+<br><br></p>
+</li>
+<li>
+<p>For Data options make sure the auto detect checkbox is checked and the key generation strategy is sequential.
+<img alt="3" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/4.png" />
+<br><br></p>
+</li>
+<li>
+<p>In the authentication section, set windows authentication to <strong>No</strong> and leave the userid and password fields blank.
+<img alt="4" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/5.png" />
+<br><br></p>
+</li>
+<li>
+<p>Authentication to the REST api uses the certificates GMS is set up to use during installation.  In the Use certificate dropdown, choose installed to use a certificate installed on the windows server through certificate management, or choose From file to enter the paths for the certificate and private key files for authentication.
+<img alt="5" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/6.png" />
+<br><br></p>
+</li>
+<li>
+<p>In the Pagination section, set the Pagination type to None.
+<img alt="6" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/7.png" />
+<br><br></p>
+</li>
+<li>
+<p>For the getAllMDI path, there is no need for query parameters.
+<img alt="7" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/8.png" />
+<br><br></p>
+</li>
+<li>
+<p>Provide a name for the connection, test the connection and click Save.
+<img alt="8" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/9.png" />
+<br><br></p>
+</li>
+<li>
+<p>Open the data preview window.  Click the checkbox next to root.  This will show the data fields in the preview window.
+<img alt="9" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/10.png" /> </p>
+</li>
+<li>
+<p>Click the Insert script button to add the load script to the data load editor.</p>
+</li>
+</ol>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../qmc/" class="btn btn-neutral float-right" title="QMC Configuration">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../install/" class="btn btn-neutral" title="Installing GMS"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+	  
+        </div>
+      </div>
+
+    </section>
+    
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+      
+        <span><a href="../install/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../qmc/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script src="../../js/theme.js"></script>
+
+</body>
+</html>

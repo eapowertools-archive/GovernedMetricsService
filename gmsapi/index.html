@@ -7,19 +7,13 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   
-  
-  <title>Governed Metrics Service API - EA Powertools Governed Metrics Service</title>
-  
-
   <link rel="shortcut icon" href="../img/favicon.ico">
-
-  
+  <title>Governed Metrics Service API - EA Powertools Governed Metrics Service</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../css/theme.css" type="text/css" />
   <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
   <link rel="stylesheet" href="../css/highlight.css">
-
   
   <script>
     // Current page data
@@ -30,9 +24,7 @@
   
   <script src="../js/jquery-2.1.1.min.js"></script>
   <script src="../js/modernizr-2.8.3.min.js"></script>
-  <script type="text/javascript" src="../js/highlight.pack.js"></script>
-  <script src="../js/theme.js"></script> 
-
+  <script type="text/javascript" src="../js/highlight.pack.js"></script> 
   
 </head>
 
@@ -52,7 +44,7 @@
       </div>
 
       <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
-        <ul class="current">
+	<ul class="current">
           
             <li>
     <li class="toctree-l1 ">
@@ -62,15 +54,15 @@
 <li>
           
             <li>
-    <ul class="subnav">
-    <li><span>User-Guide</span></li>
-
-        
-            
     <li class="toctree-l1 ">
-        <a class="" href="../user-guide/intro/">Governed Metrics Service Introduction</a>
+        <a class="" href="../user-guide/intro/">Introduction</a>
         
     </li>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Installation</span></li>
 
         
             
@@ -82,23 +74,39 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../user-guide/qsconfig/">Qlik Sense Configuration</a>
+        <a class="" href="../user-guide/install/">Installing GMS</a>
+        
+    </li>
+
+        
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>Configuration</span></li>
+
+        
+            
+    <li class="toctree-l1 ">
+        <a class="" href="../user-guide/app/">Metrics Library App</a>
         
     </li>
 
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../user-guide/install/">Installation</a>
+        <a class="" href="../user-guide/qmc/">QMC Configuration</a>
         
     </li>
 
         
-            
-    <li class="toctree-l1 ">
-        <a class="" href="../user-guide/uninstall/">Uninstall</a>
-        
-    </li>
+    </ul>
+<li>
+          
+            <li>
+    <ul class="subnav">
+    <li><span>User-Guide</span></li>
 
         
             
@@ -124,10 +132,11 @@
         
             <ul>
             
-                <li class="toctree-l3"><a href="#governed-metrics-service-gms-rest-api-reference">Governed Metrics Service (GMS) REST API Reference</a></li>
-                
-            
                 <li class="toctree-l3"><a href="#paths">Paths</a></li>
+                
+                    <li><a class="toctree-l4" href="#_1">/</a></li>
+                
+                    <li><a class="toctree-l4" href="#testpage">/testpage</a></li>
                 
                     <li><a class="toctree-l4" href="#getdocid">/getdocid</a></li>
                 
@@ -139,8 +148,21 @@
                 
                     <li><a class="toctree-l4" href="#reload">/reload</a></li>
                 
+                    <li><a class="toctree-l4" href="#version">/version</a></li>
+                
+                    <li><a class="toctree-l4" href="#getallmdi">/getAllMDI</a></li>
+                
+                    <li><a class="toctree-l4" href="#notifyme">/notifyme</a></li>
+                
             
             </ul>
+        
+    </li>
+<li>
+          
+            <li>
+    <li class="toctree-l1 ">
+        <a class="" href="../user-guide/uninstall/">Uninstall</a>
         
     </li>
 <li>
@@ -184,28 +206,55 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="governed-metrics-service-gms-rest-api-reference">Governed Metrics Service (GMS) REST API Reference</h1>
-<p>The following endpoints are available for use with the Governed Metrics Service.  All endpoints are prefaced with </p>
+                <h1>Governed Metrics Service (GMS) REST API Reference</h1>
+
+<p>The following endpoints are available for use with the Governed Metrics Service.  All endpoints are prefaced with masterlib.</p>
 <h1 id="paths">Paths</h1>
+<hr />
+<h2 id="_1">/</h2>
+<blockquote>
+<p>Returns the hypercube definition for the data to be returned to the Governed Metrics Service for population in master libraries across apps.</p>
+<h3 id="get">GET</h3>
+<blockquote>
+<h4 id="request">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/
+</code></pre>
+<h4 id="response">Response</h4>
+<p>Returns the json definition of the hypercube used to populate master library items.</p>
+</blockquote>
+</blockquote>
+<hr />
+<h2 id="testpage">/testpage</h2>
+<blockquote>
+<p>Navigates to the test page used for running the Governed Metrics Service in push button fashion.</p>
+<h3 id="get_1">GET</h3>
+<blockquote>
+<h4 id="request_1">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/testpage
+</code></pre>
+<h4 id="response_1">Response</h4>
+<p>Rendered testpage.</p>
+</blockquote>
+</blockquote>
 <hr />
 <h2 id="getdocid">/getdocid</h2>
 <blockquote>
 <p>Returns the GUID ID for the metrics library app name designated in the <code>config.js</code> file.</p>
-<h3 id="get">GET</h3>
+<h3 id="get_2">GET</h3>
 <blockquote>
-<h4 id="request">Request</h4>
-<pre><code>http://senseHostname:gmsPort/masterlib/getdocid
+<h4 id="request_2">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/getdocid
 </code></pre>
-<h4 id="response">Response</h4>
+<h4 id="response_2">Response</h4>
 <p>The example below shows a guid for the metrics library app.  This value may be different on your server.</p>
-<h4 id="_1"></h4>
+<h4 id="_2"></h4>
 <pre><code>"4c5abffb-a2d5-4a26-a192-ac6de41746a5"
 </code></pre>
 </blockquote>
 <h3 id="post">POST</h3>
 <blockquote>
-<h4 id="request_1">Request</h4>
-<pre><code>http://senseHostname:gmsPort/masterlib/getdocid
+<h4 id="request_3">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/getdocid
 </code></pre>
 <h4 id="headers">Headers</h4>
 <pre><code>Content-Type: application/json
@@ -215,9 +264,9 @@
     "appname":"Operations Monitor"
 }
 </code></pre>
-<h4 id="response_1">Response</h4>
+<h4 id="response_3">Response</h4>
 <p>The example below shows a guid for the application name specified in the body of the POST request.</p>
-<h4 id="_2"></h4>
+<h4 id="_3"></h4>
 <pre><code>"48b436aa-64d4-4c6f-9bb9-bd4d64692ce8"
 </code></pre>
 </blockquote>
@@ -228,8 +277,8 @@
 <p>Calls the update/all method</p>
 <h3 id="post_1">POST</h3>
 <blockquote>
-<h4 id="request_2">Request</h4>
-<pre><code>http://senseHostname:gmsPort/masterlib/add/all
+<h4 id="request_4">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/add/all
 </code></pre>
 <h4 id="headers_1">Headers</h4>
 <pre><code>null
@@ -237,7 +286,7 @@
 <h4 id="body_1">Body</h4>
 <pre><code>null
 </code></pre>
-<h4 id="response_2">Response</h4>
+<h4 id="response_4">Response</h4>
 </blockquote>
 </blockquote>
 <hr />
@@ -246,8 +295,8 @@
 <p>Updates applications with the ManagedMasterItems custom property applied with the master library dimensions and measures corresponding to applied values. </p>
 <h3 id="post_2">POST</h3>
 <blockquote>
-<h4 id="request_3">Request</h4>
-<pre><code>http://senseHostname:gmsPort/masterlib/update/all
+<h4 id="request_5">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/update/all
 </code></pre>
 <h4 id="headers_2">Headers</h4>
 <pre><code>null
@@ -255,7 +304,7 @@
 <h4 id="body_2">Body</h4>
 <pre><code>null
 </code></pre>
-<h4 id="response_3">Response</h4>
+<h4 id="response_5">Response</h4>
 </blockquote>
 </blockquote>
 <hr />
@@ -264,8 +313,8 @@
 <p>Deletes all of the master library items applied by GMS for the supplied application name.</p>
 <h3 id="post_3">POST</h3>
 <blockquote>
-<h4 id="request_4">Request</h4>
-<pre><code>http://senseHostname:gmsPort/masterlib/delete/fromapp
+<h4 id="request_6">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/delete/fromapp
 </code></pre>
 <h4 id="headers_3">Headers</h4>
 <pre><code>Content-Type: application/json
@@ -275,7 +324,7 @@
     "appname":"Operations Monitor"
 }
 </code></pre>
-<h4 id="response_4">Response</h4>
+<h4 id="response_6">Response</h4>
 </blockquote>
 </blockquote>
 <hr />
@@ -284,8 +333,8 @@
 <p>Triggers a refresh of the data contained in the Metrics Library Qlik application that stores dimension and measure metadata for use with the GMS.</p>
 <h3 id="post_4">POST</h3>
 <blockquote>
-<h4 id="request_5">Request</h4>
-<pre><code>http://senseHostname:gmsPort/masterlib/reload
+<h4 id="request_7">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/reload
 </code></pre>
 <h4 id="headers_4">Headers</h4>
 <pre><code>null
@@ -293,7 +342,49 @@
 <h4 id="body_4">Body</h4>
 <pre><code>null
 </code></pre>
-<h4 id="response_5">Response</h4>
+<h4 id="response_7">Response</h4>
+</blockquote>
+</blockquote>
+<hr />
+<h2 id="version">/version</h2>
+<blockquote>
+<p>Returns the Governed Metrics Service version.</p>
+<h3 id="get_3">GET</h3>
+<blockquote>
+<h4 id="request_8">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/version
+</code></pre>
+<h4 id="response_8">Response</h4>
+<p>The example below shows version of Governed Metrics Service.</p>
+<h4 id="_4"></h4>
+<pre><code>"1.0.0"
+</code></pre>
+</blockquote>
+</blockquote>
+<hr />
+<h2 id="getallmdi">/getAllMDI</h2>
+<blockquote>
+<p>An endpoint used by the Qlik Sense REST Connector to populate master library items from an app into the Metrics Library application.</p>
+<h3 id="get_4">GET</h3>
+<blockquote>
+<h4 id="request_9">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/getAllMDI
+</code></pre>
+<h4 id="response_9">Response</h4>
+<p>The response is the definitions of dimensions and measures from apps with the MasterLibrarySource custom property applied.</p>
+</blockquote>
+</blockquote>
+<hr />
+<h2 id="notifyme">/notifyme</h2>
+<blockquote>
+<p>Receives messages from the QRS api telling the Governed Metrics Service to process ownership changes on master library items applied by the service.</p>
+<h3 id="get_5">GET</h3>
+<blockquote>
+<h4 id="request_10">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/notifyme
+</code></pre>
+<h4 id="response_10">Response</h4>
+<p>An array of objects matching the notification criteria set by the Governed Metrics Service prompting a call to the endpoint.</p>
 </blockquote>
 </blockquote>
               
@@ -303,7 +394,7 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../about/" class="btn btn-neutral float-right" title="About">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../user-guide/uninstall/" class="btn btn-neutral float-right" title="Uninstall">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../user-guide/validation/" class="btn btn-neutral" title="GMS Example"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -325,20 +416,21 @@
       </div>
 
     </section>
-
+    
   </div>
 
-<div class="rst-versions" role="note" style="cursor: pointer">
+  <div class="rst-versions" role="note" style="cursor: pointer">
     <span class="rst-current-version" data-toggle="rst-current-version">
       
       
         <span><a href="../user-guide/validation/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../about/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../user-guide/uninstall/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
+    <script src="../js/theme.js"></script>
 
 </body>
 </html>
