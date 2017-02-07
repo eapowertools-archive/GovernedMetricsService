@@ -1,12 +1,11 @@
-#Governed Metrics Service Installation
+<h1>Governed Metrics Service Installation</h1>
 
 To install the Governed Metrics Service, click on this link below.
 
-###[Download Governed Metrics Service Powertool](https://s3.amazonaws.com/eapowertools/governedmetricsservice/bin/GovernedMetricsService.exe)
+<h3><a href="https://s3.amazonaws.com/eapowertools/governedmetricsservice/bin/GovernedMetricsService.exe">Download Governed Metrics Service Latest Release</a></h3>
 
-##Installation Steps
+<h4>Installation Steps</h4>
 
-  
 ![thumb](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/thumb.png)  
 1. Double click the installation executable downloaded from github. **[Link](https://github.com/eapowertools/QSGovernedMetrics)**  
 ---
@@ -25,10 +24,11 @@ To install the Governed Metrics Service, click on this link below.
   - **Governed Metrics Service Port:** The TCP port for the Governed Metrics Service REST API.  
   - **Qlik Sense Node hostname:** The name of the Qlik Sense server node the Governed Metrics Service will run.  This can be a central node or a rim node, but needs to be the hostname supplied during Qlik Sense installation.  
   - **Metrics Library Application Name:** The name of the application that stores the metrics definitions the Governed Metrics Service will read from to create Master Library entries.  Enter the name of the application created during the configuration steps. **(Default: Metrics Library)**    
-  - **Metrics Library Custom Property Name:** The name of the custom property containing values that will be applied to applications in a Qlik Sense site that will receive metrics definitions from the Governed Metrics Service.  Enter the name of the custom property created during the configuration steps.  **(Default: ManagedMasterItems)**  
-  - **Metrics Library Data Refresh Task Name:** The Metrics Library application (name provided above) needs a refresh task so that the Governed Metrics Service may reload the Metrics Library App when updates are made to the metrics.  Enter the name of the task created during the configuration steps.  **(Reload Metrics Library)**
+  - **Metrics Library Custom Property Name:** The name of the custom property containing values that will be applied to applications in a Qlik Sense site that will receive metrics definitions from the Governed Metrics Service.  Enter the name of the custom property created during the configuration steps.  **(Default: ManagedMasterItems)**
+  - **Master Library Source Custom Property Name:** The name of the custom property containing values identifying applications acting as metric sources for the Metrics Library application. **(Default: MasterLibrarySource)**  
+  - **Metrics Library Data Refresh Task Name:** The Metrics Library application (name provided above) needs a refresh task so that the Governed Metrics Service may reload the Metrics Library App when updates are made to the metrics.  Enter the name of the task created during the configuration steps.  **(Default: Reload task of Metrics Library)**
 
-***It is highly encouraged that the Metrics Library items (app, custom property, tag, and task) are defined in the QMC before completing this installation.***
+***Please take note of the values entered in the configuration screen.  App, custom property, and task names from the installation configuration will be required during QMC configuration.***
 
 ---
 ![6](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/6.png)  
@@ -58,6 +58,6 @@ Click the Next button to proceed with the installation.
 11. Click the Finish button to complete the installation.
 ---
 
-##Next Steps - Testing Governed Metrics Service. 
+<h3>Next Steps - Configuring the Governed Metrics Service</h3> 
 
 

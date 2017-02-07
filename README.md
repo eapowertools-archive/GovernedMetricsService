@@ -1,6 +1,6 @@
 #Governed Metrics Service
 
-##Latest Release == [1.5.3](https://github.com/eapowertools/GovernedMetricsService/releases/latest)
+##Latest Release == [2.0.0](https://github.com/eapowertools/GovernedMetricsService/releases/latest)
 
 ##Documentation
 Please read the Governed Metrics Service **[documentation](http://eapowertools.github.io/GovernedMetricsService/)** before installing the Governed Metrics Service.
@@ -8,7 +8,7 @@ Please read the Governed Metrics Service **[documentation](http://eapowertools.g
 ##Minimum Requirements:
 The Governed Metrics Service uses the Qlik Sense Service Dispatcher and Nodejs to launch a REST api as a background service for updating metrics in Qlik Sense applications.  Therefore, the Governed Metrics Service requires Qlik Sense Server.
 
-The Governed Metrics Service has been tested with Qlik Sense 2.2.4 and Qlik Sense 3.0.   
+The Governed Metrics Service has been tested with Qlik Sense 3.1.x and 3.2.   
 
 For now, the Governed Metrics Service requires a licensed Qlik Sense server site running version 2.2.4 or higher.
 

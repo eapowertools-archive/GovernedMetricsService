@@ -1,191 +1,159 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" >
+<html xmlns="http://www.w3.org/1999/xhtml">
+
 <head>
-	<head lang="en">
-		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-		<meta charset="UTF-8">
-		<link rel="stylesheet" href="public/leonardo-ui.css" type="text/css"/>
-		<link rel="stylesheet" href="public/style.css" type="text/css"/>
-		<script src="public/js/jquery/1.11.3/jquery.min.js"></script>
 
-		<title>Governed Metrics Service</title>
-		<script type="text/javascript">
+    <head lang="en">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="public/leonardo-ui.css" type="text/css" />
+        <link rel="stylesheet" href="public/style.css" type="text/css" />
+        <script src="public/js/jquery/1.11.3/jquery.min.js"></script>
+        <script src="node_modules/socket.io-client/dist/socket.io.min.js"></script>
+        <title>Governed Metrics Service</title>
+        <script type="text/javascript">
+            var socket = io();
 
-		function writeToStatus(someString)
-		{
-			var textBox = document.getElementById("statusOutput");
-			textBox.readOnly = false;
-			textBox.value = textBox.value + someString;
-			textBox.readOnly = true;
-		};
+            socket.on("gms", function(msg) {
+                console.log("trying to write: " + JSON.stringify(msg));
+                var final = $('#statusOutput').val();
+                $('#statusOutput').val(final + "\n" + JSON.stringify(msg));
+            });
 
-		function testConnection()
-		{
-						writeToStatus("\n\nTesting connection...");
-			$.get("../masterlib/getdocid", function(result,strStatus,xhr)
-			{
-				if(xhr.status==200)
-				{
-					writeToStatus('\n...connection test successful.');
-				}
-				else
-				{
-					writeToStatus('\n...connection test failed.');
-				}
-			});
-		};
+            function testConnection() {
+                //writeToStatus("\n\nTesting connection...");
+                clearWindow();
+                $.get("../masterlib/getdocid", function(result, strStatus, xhr) {
+                    if (xhr.status == 200) {
+                        //writeToStatus('\n...connection test successful.');
+                    } else {
+                        //writeToStatus('\n...connection test failed.');
+                    }
+                });
+            };
 
-		function reloadMetricsLibraryApp()
-		{
-			writeToStatus('\n\nStarting metrics library reload...');
-			$.post("../masterlib/reload", function(result,strStatus,xhr)
-			{
-				if(xhr.status==200)
-				{
-					writeToStatus('\n...' + result);
-				}
-				else
-				{
-					writeToStatus('\n...reloading app failed.');
-				}
-			});
-		};
+            function reloadMetricsLibraryApp() {
+                //writeToStatus('\n\nStarting metrics library reload...');
+                $.post("../masterlib/reload", function(result, strStatus, xhr) {
+                    if (xhr.status == 200) {
+                        //writeToStatus('\n...' + result);
+                    } else {
+                        //writeToStatus('\n...reloading app failed.');
+                    }
+                });
+            };
 
-		function updateMetricsInApp()
-		{
-			writeToStatus('\n\nUpdating metrics in all the apps...');
-			$.post("../masterlib/update/all", function(result,strStatus,xhr)
-			{
-				if(xhr.status==200)
-				{
-					writeToStatus('\n...' + result);
-				}
-				else
-				{
-					writeToStatus('\n...could not update metrics in app.');
-				}
-			});
-		};
+            function updateMetricsInApp() {
+                //writeToStatus('\n\nUpdating metrics in all the apps...');
+                $.post("../masterlib/update/all", function(result, strStatus, xhr) {
+                    if (xhr.status == 200) {
+                        writeToStatus('\n...' + result);
+                    } else {
+                        writeToStatus('\n...could not update metrics in app.');
+                    }
+                });
+            };
 
-		function reloadMetricsLibraryAndUpdateApps()
-		{
-			writeToStatus("\n\nReloading metrics library and update apps started...");
+            function reloadMetricsLibraryAndUpdateApps() {
+                //writeToStatus("\n\nReloading metrics library and update apps started...");
 
-			$.post("../masterlib/reload", function(result,strStatus,xhr)
-			{
-				if(xhr.status==200)
-				{
-					if (result.startsWith("Task Completed in"))
-					{
-						writeToStatus('\n...reloading app was successful, now updating the master library...');
-						$.post("../masterlib/update/all", function(result,strStatus,xhr)
-						{
-							if(xhr.status==200)
-							{
-								writeToStatus('\n...'+result);
-							}
-							else
-							{
-								writeToStatus('\n...'+result);
-							}
-						});
-					}
-					else
-					{
-						writeToStatus('\n...reloading app failed.');
-					}
-				}
-				else
-				{
-					writeToStatus('\n...reloading app failed.');
-				}
-			});
-		};
+                $.post("../masterlib/reload", function(result, strStatus, xhr) {
+                    if (xhr.status == 200) {
+                        if (result.startsWith("Task Completed in")) {
+                            //          writeToStatus('\n...reloading app was successful, now updating the master library...');
+                            $.post("../masterlib/update/all", function(result, strStatus, xhr) {
+                                if (xhr.status == 200) {
+                                    //                writeToStatus('\n...' + result);
+                                } else {
+                                    //              writeToStatus('\n...' + result);
+                                }
+                            });
+                        } else {
+                            //       writeToStatus('\n...reloading app failed.');
+                        }
+                    } else {
+                        //  writeToStatus('\n...reloading app failed.');
+                    }
+                });
+            };
 
-		function deleteMetricsFromAnApp()
-		{
-			var appName = document.getElementById("textInput").value;
-			writeToStatus('\n\nDeleting metrics from app: ' + appName + "...");
-			var body = {
-				"appname":appName
-			};
-			$.post("../masterlib/delete/fromapp", body, function(result,strStatus,xhr)
-			{
-				if(xhr.status==200)
-				{
-					writeToStatus('\n...deleting metrics was successful.');
-				}
-				else
-				{
-					writeToStatus('\n...deleting metrics failed.');
-				}
-			});
-		};
+            function deleteMetricsFromAnApp() {
+                var appName = document.getElementById("textInput").value;
+                //                writeToStatus('\n\nDeleting metrics from app: ' + appName + "...");
+                var body = {
+                    "appname": appName
+                };
+                $.post("../masterlib/delete/fromapp", body, function(result, strStatus, xhr) {
+                    if (xhr.status == 200) {
+                        //                        writeToStatus('\n...deleting metrics was successful.');
+                    } else {
+                        //                        writeToStatus('\n...deleting metrics failed.');
+                    }
+                });
+            };
 
-		function clearWindow()
-		{
-			var textBox = document.getElementById("statusOutput");
-			textBox.readOnly = false;
-			textBox.value = "Status output:";
-			textBox.readOnly = true;
+            function clearWindow() {
+                var textBox = document.getElementById("statusOutput");
+                textBox.readOnly = false;
+                textBox.value = "Status output:";
+                //textBox.readOnly = true;
 
 
-		};
+            };
 
-		function getVersion()
-		{
-			$.get("../masterlib/version", function(result,strStatus,xhr)
-			{
-				if(xhr.status==200)
-				{
-					$("#gmsTitle").text("Governed Metrics Service " + result);  
-				}
-			})
-		};
+            function getVersion() {
+                $.get("../masterlib/version", function(result, strStatus, xhr) {
+                    if (xhr.status == 200) {
+                        $("#gmsTitle").text("Governed Metrics Service " + result);
+                    }
+                })
+            };
+        </script>
+    </head>
 
-		</script>
-	</head>
+    <body onload="getVersion()">
+        <def>
+        </def>
+        <div id="header" class="frame">
+            <div id="header-text">
+                <h1 id="gmsTitle" style="color: #FFFFFF; font-size: 23pt; font-weight: bold; font-family: Arial;">Governed Metrics Service</h1>
+            </div>
+        </div>
 
-	<body onload="getVersion()">
-		<def>
-		</def>
-		<div id="header" class="frame">
-			<div id="header-text"><h1 id="gmsTitle" style="color: #FFFFFF; font-size: 23pt; font-weight: bold; font-family: Arial;">Governed Metrics Service</h1></div>
-		</div>
+        <div id="main-body">
+            <div id="left-buttons">
+                <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="testConnection()">Test Connection</button>
+                <br/>
+                <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryApp()">Reload Metrics Library App</button>
+                <br/>
+                <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="updateMetricsInApp()">Update Metrics in Apps</button>
+                <br/>
+                <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryAndUpdateApps()">Reload Metrics Library and Update Apps</button>
+                <br/>
+                <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="deleteMetricsFromAnApp()">Delete Metrics from an App</button>
+            </div>
+            <div id=right-status>
+                <button id="clear-window-button" class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="clearWindow()">Clear Status Window</button>
+                <div class="frame  lui-bg-default">
+                    <textarea id="statusOutput" class="lui-textarea textbox-output"></textarea>
+                </div>
+                <br/>
+                <div class="frame  lui-bg-default">
+                    <label class="labels" for="textInput">Enter the Qlik Sense application name here:</label>
+                    <input class="lui-input" id="textInput">
+                </div>
+            </div>
+            <div style "clear:both"></div>
+        </div>
 
-		<div id="main-body">
-			<div id="left-buttons">
-				<button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="testConnection()">Test Connection</button>
-				<br/>
-				<button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryApp()">Reload Metrics Library App</button>
-				<br/>
-				<button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="updateMetricsInApp()">Update Metrics in Apps</button>
-				<br/>
-				<button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryAndUpdateApps()">Reload Metrics Library and Update Apps</button>
-				<br/>
-				<button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="deleteMetricsFromAnApp()">Delete Metrics from an App</button>
-			</div>
-			<div id=right-status>
-				<button id="clear-window-button" class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="clearWindow()">Clear Status Window</button>
-				<div class="frame  lui-bg-default">
-					<textarea readonly id="statusOutput" class="lui-textarea textbox-output"></textarea>
-				</div>
-				<br/>
-				<div class="frame  lui-bg-default">
-					<label class="labels" for="textInput">Enter the Qlik Sense application name here:</label>	
-					<input class="lui-input" id="textInput">
-				</div>
-			</div>
-			<div style"clear:both"></div>
-		</div>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                clearWindow();
+                document.getElementById("textInput").value = "<enter app name here>";
+            });
+        </script>
+        <script src="public/js/leonardo-ui.js"></script>
 
-<script type="text/javascript">
-$(document).ready(function(){
-clearWindow();
-document.getElementById("textInput").value = "<enter app name here>";
-});
-</script>
-<script src="public/js/leonardo-ui.js"></script>
+    </body>
 
-</body>
 </html>
