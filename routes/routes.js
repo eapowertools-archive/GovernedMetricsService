@@ -193,6 +193,34 @@ router.route("/deletenotifyme")
         response.status(200).json("Metrics deleted from repository");
     });
 
+router.route("/getapplist")
+    .get(function(request, response) {
+        logger.info("Getting app list on server", { module: 'routes' });
+        worker.getDocList()
+            .then(function(result) {
+                logger.info("App List retrieved", { module: 'routes' });
+                response.status(200).json(result);
+            })
+            .catch(function(error) {
+                logger.error("Failed to get app list: " + JSON.stringify(error), { module: 'routes' });
+                response.status(400).json(error);
+            });
+    });
+
+router.route("/getappobjects/:id")
+    .get(function(request, response) {
+        logger.info("getting the list of dimensions and measures in app: " + request.params.id, { module: "routes" });
+        worker.getObjectList(request.params.id)
+            .then(function(result) {
+                logger.info("objects retrieved for app: " + request.params.id, { module: "routes" });
+                response.status(200).json(result);
+            })
+            .catch(function(error) {
+                logger.error("Failed to get objects from app: " + request.params.id, { module: "routes" });
+                response.status(400).json(error);
+            })
+    })
+
 function isEmpty(obj) {
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {

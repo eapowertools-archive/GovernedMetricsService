@@ -8,43 +8,44 @@
 var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
-var config = require('./config/config');
+var config = require('../config/config');
 var Promise = require('bluebird');
-var doWork = require('./lib/dowork');
+var doWork = require('../lib/dowork');
 var fs = require('fs');
 var path = require('path');
 var https = require('https');
 var socketio = require('socket.io');
-var logger = require('./lib/logger');
-var notifyFactory = require('./lib/notifyFactory');
+var logger = require('../lib/logger');
+//var notifyFactory = require('../lib/notifyFactory');
 
 var x = {};
 
 logger.info('Firing up the Governed Metrics Service ReST API', { module: 'server' });
 
-notifyFactory.getUpdateHandle()
-    .then(function(result) {
-        return notifyFactory.getDeleteHandle()
-            .then(function(result) {
-                launchServer();
-            })
-            .catch(function(error) {
-                logger.error(JSON.stringify(error), { module: "server" });
-                process.exit();
-            });
-    })
-    .catch(function(error) {
-        logger.error(JSON.stringify(error), { module: "server" });
-        process.exit();
-    });
+// notifyFactory.getUpdateHandle()
+//     .then(function(result) {
+//         return notifyFactory.getDeleteHandle()
+//             .then(function(result) {
+//                 launchServer();
+//             })
+//             .catch(function(error) {
+//                 logger.error(JSON.stringify(error), { module: "server" });
+//                 process.exit();
+//             });
+//     })
+//     .catch(function(error) {
+//         logger.error(JSON.stringify(error), { module: "server" });
+//         process.exit();
+//     });
 
+launchServer();
 
 function launchServer() {
     app.use(bodyParser.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use('/masterlib/public', express.static(config.gms.publicPath));
     app.use('/masterlib/node_modules', express.static(config.gms.nodeModPath));
-    app.use('/masterlib/docs'), express.static(config.gms.docsPath);
+    app.use('/masterlib/docs', express.static(config.gms.docsPath));
 
 
     logger.info('Setting port', { module: 'server' });
@@ -53,7 +54,7 @@ function launchServer() {
 
     logger.info('Setting route', { module: 'server' });
 
-    var popmasterlib = require('./routes/routes');
+    var popmasterlib = require('../routes/routes');
 
 
     //Register routes
