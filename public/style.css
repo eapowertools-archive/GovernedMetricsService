@@ -62,6 +62,7 @@
     position: absolute;
     top: 500px;
     bottom: 10px;
+    margin-left: 10px;
 }
 
 #tableparent {
@@ -69,14 +70,12 @@
     height: 250px;
     box-sizing: border-box;
     width: 90%;
-    margin-left: 10px;
     margin-right: 10px;
     padding-top: 10px;
 }
 
 #applist {
     width: 400px;
-    margin-left: 10px;
 }
 
 #appobjectlist {
