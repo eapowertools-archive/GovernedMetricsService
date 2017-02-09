@@ -137,7 +137,7 @@
                                 html += "<th>" + k + "</th>";
                             });
 
-                            html += "</thead></tr>";
+                            html += "</tr></thead>";
                             html += "<tbody>";
                             //data
                             result.forEach(function(item) {
@@ -189,8 +189,111 @@
                     var id = $("#applist option:selected").attr("value");
                     getAppObjectList(id);
                 });
+
+                $("#advancedMode").click(function() {
+                    $("#lookup-table").toggle();
+                })
+
+                // This must be a hyperlink
+                $(".export").on('click', function(event) {
+                    // CSV
+                    var args = [$('#tableparent>table'), 'export.csv'];
+
+                    exportTableToCSV.apply(this, args);
+
+                    // If CSV, don't do event.preventDefault() or return false
+                    // We actually need this to be a typical hyperlink
+                });
+
             });
 
+            function exportTableToCSV($table, filename) {
+
+                var $headers = $table.find('tr:has(th)');
+                var $rows = $table.find('tr:has(td)'),
+
+                    // Temporary delimiter characters unlikely to be typed by keyboard
+                    // This is to avoid accidentally splitting the actual contents
+                    tmpColDelim = String.fromCharCode(11), // vertical tab character
+                    tmpRowDelim = String.fromCharCode(0), // null character
+
+                    // actual delimiter characters for CSV format
+                    colDelim = '","',
+                    rowDelim = '"\r\n"',
+
+                    header = '"' + $headers.map(function(i, row) {
+                        var $row = $(row),
+                            $cols = $row.find('th');
+
+                        return $cols.map(function(j, col) {
+                            var $col = $(col),
+                                text = $col.text();
+
+                            return text.replace(/"/g, '""'); // escape double quotes
+
+                        }).get().join(tmpColDelim);
+
+                    }).get().join(tmpRowDelim)
+                    .split(tmpRowDelim).join(rowDelim)
+                    .split(tmpColDelim).join(colDelim) + '"',
+
+                    // Grab text from table into CSV formatted string
+                    csv = '"' + $rows.map(function(i, row) {
+                        var $row = $(row),
+                            $cols = $row.find('td');
+
+                        return $cols.map(function(j, col) {
+                            var $col = $(col),
+                                text = $col.text();
+
+                            return text.replace(/"/g, '""'); // escape double quotes
+
+                        }).get().join(tmpColDelim);
+
+                    }).get().join(tmpRowDelim)
+                    .split(tmpRowDelim).join(rowDelim)
+                    .split(tmpColDelim).join(colDelim) + '"';
+
+                var final = header + "\r\n" + csv;
+
+                // Deliberate 'false', see comment below
+                if (false && window.navigator.msSaveBlob) {
+
+                    var blob = new Blob([decodeURIComponent(final)], {
+                        type: 'text/csv;charset=utf8'
+                    });
+
+                    // Crashes in IE 10, IE 11 and Microsoft Edge
+                    // See MS Edge Issue #10396033: https://goo.gl/AEiSjJ
+                    // Hence, the deliberate 'false'
+                    // This is here just for completeness
+                    // Remove the 'false' at your own risk
+                    window.navigator.msSaveBlob(blob, filename);
+
+                } else if (window.Blob && window.URL) {
+                    // HTML5 Blob        
+                    var blob = new Blob([final], {
+                        type: 'text/csv;charset=utf8'
+                    });
+                    var csvUrl = URL.createObjectURL(blob);
+
+                    $(this)
+                        .attr({
+                            'download': filename,
+                            'href': csvUrl
+                        });
+                } else {
+                    // Data URI
+                    var csvData = 'data:application/csv;charset=utf-8,' + encodeURIComponent(final);
+
+                    $(this)
+                        .attr({
+                            'download': filename,
+                            'href': csvData,
+                            'target': '_blank'
+                        });
+                }
+            }
 
             function doSetup() {
                 $("#test").hide();
@@ -238,14 +341,35 @@
 
         </div>
         <div id="metric-lookup" class="frame">
-            <h3>Have master library items you want to incorporate into GMS? Search for them here.</h3>
-            <select id="applist" class="lui-select"></select>
-            <p id="test">No master library dimensions and measures found in this app.</p>
-            <div id="tableparent" class="table-responsive">
-                <table id="appobjectlist" class="table table-bordered">
-
-                </table>
+            <div style="display:inline;float:left">
+                <div id="adv" class="lui-switch">
+                    <label class="lui-switch__label" id="advancedLabel">
+                <input id="advancedMode" type="checkbox" class="lui-switch__checkbox" aria-label="Advanced Mode">
+                <span class="lui-switch__wrap">
+                    <span class="lui-switch__inner"></span>
+                    <span class="lui-switch__switch"></span>
+                </span>
+                </label>
+                </div>
             </div>
+            <div style="display:inline;margin-left:5px">
+                <label>Toggle Master Library Search</label>
+            </div>
+            <div id="lookup-table" style="display:none;">
+                <h3>Have master library items you want to incorporate into GMS? Search for them here.</h3>
+                <div style="display:inline;">
+                    <select id="applist" class="lui-select"></select>
+                    <a href="#" class="export"><span><button class="lui-button">Export table to csv file</button></span>
+                    </a>
+                </div>
+                <p id="test">No master library dimensions and measures found in this app.</p>
+                <div id="tableparent" class="table-responsive">
+                    <table id="appobjectlist" class="table table-bordered">
+
+                    </table>
+                </div>
+            </div>
+
         </div>
         <div id="tablesection" class="frame">
 
