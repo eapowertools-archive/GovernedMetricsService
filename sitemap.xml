@@ -75,6 +75,14 @@
 
     
     <url>
+     <loc>/user-guide/troubleshoot/</loc>
+     <lastmod>2017-02-10</lastmod>
+     <changefreq>daily</changefreq>
+    </url>
+    
+
+    
+    <url>
      <loc>/user-guide/uninstall/</loc>
      <lastmod>2017-02-10</lastmod>
      <changefreq>daily</changefreq>
