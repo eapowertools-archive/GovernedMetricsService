@@ -4,15 +4,8 @@ The Governed Metrics Service installs with a sample data source that can be used
 
 1. Locate the Executive Dashboard.qvf and GMS.xlsx files that were installed with the Governed Metrics Service. Both are located in the "C:\Program Files\Qlik\Sense\EAPowerTools\GovernedMetricsService\demo" directories by default. 
 2. In the QMC, import the Executive Dashboard.qvf to the QMC and assign the Custom Property attribute "__Sales__" for the __ManagedMasterItems__ property. 
-3. Open the Metrics Library application > Data Manager 
-4. Select "Add Data" 
-![Add Data](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_AddData.png)
-5. Select "Attach files and drag and drop the GMS.xlsx spreadsheet into the window. 
-![Add Data](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_AttachFiles.png)
-6. "Load Data and Finish". Save and close the Metrics Library application.
-![Add Data](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_LoadandFinish.png)
-7. Ensure a task has been created for the Metrics Library application [here](/user-guide/qmc.md#task) if you have not done so. 
-9. Run the task and ensure the Metrics Library application has reloaded. 
+3. Ensure a task has been created for the Governed Metrics Application [here](/user-guide/qmc.md#task) if you have not done so. 
+9. Run the task and ensure the GMA application has reloaded. 
 10. Open the Executive Dashboard application in the Hub and verify the KPI Dashboard sheet is all "Incomplete Visualations". This is basically a sheet of objects tied into governed metrics that have to be pushed out from the Governed Metrics Service. 
 ![Add Data](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_IncompleteViz.png)
 11. In a new tab, navigate to the GMS test page: http://localhost:8590/masterlib/testpage
