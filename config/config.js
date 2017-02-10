@@ -42,10 +42,10 @@ var config = {
         appPath: path.join(__dirname, '/../app/'),
         nodeModPath: path.join(__dirname, './../node_modules/'),
         docsPath: path.join(__dirname, '/../docs/site/'),
-        appName: 'Metrics Library',
+        appName: 'Governed Metrics Application',
         customPropName: 'ManagedMasterItems',
         masterLibrarySourcePropName: 'MasterLibrarySource',
-        taskName: 'Reload Metrics Library',
+        taskName: 'Reload Governed Metrics Application',
         objectManagementTimeout: 60000,
         tagRestrict: false
     },

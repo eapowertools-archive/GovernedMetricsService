@@ -17,6 +17,13 @@ set /P thePassword=
 sc create QlikEAPowerToolsServiceDispatcher binPath= "%theBinPath%" DisplayName= "Qlik EAPowerTools Service Dispatcher" start= auto obj= %theUserId% password= %thePassword%
 sc description "QlikEAPowerToolsServiceDispatcher" "Service Dispatcher for running EA Powertools" 
 
+sc query "QlikSenseRepositoryService"
+
+IF %ERRORLEVEL% EQU 0 (GOTO ADDDEPEND) ELSE (GOTO END)
+
+:ADDDEPEND
+sc config QlikEAPowerToolsServiceDispatcher depend= QlikSenseRepositoryService
+
 :END
 
 

@@ -44,7 +44,7 @@ function launchServer() {
     app.use(bodyParser.json());
     app.use('/masterlib/public', express.static(config.gms.publicPath));
     app.use('/masterlib/node_modules', express.static(config.gms.nodeModPath));
-    app.use('/masterlib/docs'), express.static(config.gms.docsPath);
+    app.use('/masterlib/docs', express.static(config.gms.docsPath));
 
 
     logger.info('Setting port', { module: 'server' });
