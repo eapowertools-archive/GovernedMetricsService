@@ -126,3 +126,30 @@ The following endpoints are available for use with the Governed Metrics Service.
 >>####Response
 >> An array of objects matching the notification criteria set by the Governed Metrics Service prompting a call to the endpoint.
 
+---
+##/deletenotifyme
+> Receives messages from the QRS api telling the Governed Metrics Service that delete operations in the repository have completed for the entities listed in body.
+>###POST
+>>####Request
+    https://senseHostname:gmsPort/masterlib/deletenotifyme
+>>####Response
+>> An array of objects matching the notification criteria set by the Governed Metrics Service.
+
+---
+##/getapplist
+> Retrieves a list of apps to populate a drop down box in the test page.  Used for finding master library item ids to incorporate into GMS.
+>###GET
+>>####Request
+    https://senseHostname:gmsPort/masterlib/getapplist
+>>####Response
+>> JSON object with the id and name of each app in the Qlik Sense site GMS is installed.
+
+---
+##/getappobjects/:id
+> Retrieves a list of dimensions and measures from the app selected in the drop down list of apps on the GMS test page.
+>>####Request
+    https://senseHostname:gmsPort/masterlib/getappobjects/appGuid
+>>####Parameter
+    id = the app guid representing the app in Qlik Sense repository.
+>>####Response
+>> JSON object with the ID, UID, description, type, and gms tag (where applied) for each dimension or measure.
