@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Metrics Library App - EA Powertools Governed Metrics Service</title>
+  <title>The GMA (Governed Metrics Application) - EA Powertools Governed Metrics Service</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,7 +17,7 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Metrics Library App";
+    var mkdocs_page_name = "The GMA (Governed Metrics Application)";
     var mkdocs_page_input_path = "user-guide\\app.md";
     var mkdocs_page_url = "/user-guide/app/";
   </script>
@@ -89,17 +89,27 @@
         
             
     <li class="toctree-l1 current">
-        <a class="current" href="./">Metrics Library App</a>
+        <a class="current" href="./">The GMA (Governed Metrics Application)</a>
         
             <ul>
             
-                <li class="toctree-l3"><a href="#create-the-metrics-library-application">Create the Metrics Library application</a></li>
+                <li class="toctree-l3"><a href="#general-configuration">General Configuration</a></li>
                 
-                    <li><a class="toctree-l4" href="#general-configuration">General Configuration</a></li>
+                    <li><a class="toctree-l4" href="#import-the-governed-metrics-application">Import the Governed Metrics Application</a></li>
                 
-                    <li><a class="toctree-l4" href="#loading-metrics-metadata-to-the-metrics-library">Loading Metrics Metadata to the Metrics Library</a></li>
+                    <li><a class="toctree-l4" href="#update-the-gma-data-connection">Update the GMA Data Connection</a></li>
                 
-                    <li><a class="toctree-l4" href="#loading-data-using-the-mdi-rest-endpoint">Loading Data using the MDI REST Endpoint</a></li>
+                    <li><a class="toctree-l4" href="#field-definitions-and-structure">Field Definitions and Structure</a></li>
+                
+                    <li><a class="toctree-l4" href="#sample-source-data-table">Sample Source Data Table</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#loading-data-from-a-folder-or-database-data-connection">Loading Data from a Folder or Database Data Connection</a></li>
+                
+            
+                <li class="toctree-l3"><a href="#loading-data-using-the-mdi-rest-endpoint">Loading Data using the MDI REST Endpoint</a></li>
+                
+                    <li><a class="toctree-l4" href="#creating-the-mdi-rest-connection-in-the-data-load-editor">Creating the MDI REST Connection in the Data Load Editor</a></li>
                 
             
             </ul>
@@ -186,7 +196,7 @@
         
       
     
-    <li>Metrics Library App</li>
+    <li>The GMA (Governed Metrics Application)</li>
     <li class="wy-breadcrumbs-aside">
       
     </li>
@@ -196,28 +206,90 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="create-the-metrics-library-application">Create the Metrics Library application</h1>
-<p><a name="top"></a></p>
-<p>The Metrics Library app is the repository the Governed Metrics Service uses to distribute metrics to apps in a Qlik Sense site.  <strong><u>The app requires specific named fields to work properly.</u></strong> </p>
-<p>Source data for the Metrics Library app may be loaded from any data source.  Loaded data needs to conform to the specification described in the general section below.</p>
+                <p><a name="top"></a>
+<h1>The GMA (Governed Metrics Application)</h1></p>
+<p>The Governed Metrics App (GMA) is a compliance application for Qlik Sense providing insight into master library dimensions and measures that have been deployed through the Governed Metrics Service (GMS).</p>
+<p>Source data for the Metrics Library portion of the GMA may be loaded from any data source.  Loaded data needs to conform to the specification described in the general section below.</p>
 <ul>
-<li><a href="./#general">General Configuration</a></li>
-<li><a href="./#loadingdata">Loading Metrics Metadata to the Metrics Library</a>    <ul>
+<li><a href="./#general">General Configuration</a><ul>
+<li><a href="./#import">Import the Governed Metrics Application</a></li>
+</ul>
+</li>
+<li><a href="./#loadingdata">Loading Metrics Metadata to the GMA</a><ul>
+<li><a href="./#dataConn">Update the GMA Data Connection</a></li>
+<li><a href="./#fieldDefs">Field Definitions and Structure</a></li>
+<li><a href="./#sample">Sample Source Data Table</a>    </li>
 <li><a href="./#standard">Loading Data from a folder or database Data Connection</a>    </li>
 <li><a href="./#MDI">Loading Data using the MDI ReST Endpoint</a></li>
+<li><a href="./#mdicreate">Creating the MDI REST Connection in the Data Load Editor</a></li>
 </ul>
 </li>
 </ul>
 <p><a name="general"></a></p>
 <h2 id="general-configuration">General Configuration</h2>
-<h3 id="the-metrics-library-app">The Metrics Library App</h3>
+<p><a name="import"></a></p>
+<h3 id="import-the-governed-metrics-application">Import the Governed Metrics Application</h3>
+<p>The Governed Metrics Application is part of the GMS installation.  From the installation directory, navigate to the gma folder and observe the Governed Metrics App.qvf file.</p>
+<p>To import the GMA app to a Qlik Sense server:</p>
 <ol>
+<li>Launch a web browser and navigate to the QMC for the Qlik Sense site.
+<br><br></li>
 <li>
-<p>From the Hub, create an app called "Metrics Library" and open it.
-  <img alt="createNewApp" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/createnewapp.png" /></p>
+<p>Click on the Apps menu item on the left side of the screen.
+<br>
+<img alt="2" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/import1.png" />
+<br><br></p>
 </li>
 <li>
-<p>Click on the data load editor button to launch the Data Load Editor.</p>
+<p>Click the import button at the bottom of the screen.
+<br>
+<img alt="3" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/import2.png" />
+<br><br></p>
+</li>
+<li>
+<p>Click the Choose File button and navigate to the gma folder inside the folder Governed Metrics Service is installed.
+<br>
+<img alt="4" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/import3.png" />
+<br><br></p>
+</li>
+<li>
+<p>Select the Governed Metrics App.qvf file and click the Import Button.
+<br>
+<img alt="5" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/import4.png" />
+<br><br></p>
+</li>
+</ol>
+<p><a name="loadingdata"></a>
+<h2>Loading Metrics Metadata to the GMA</h2></p>
+<p>Loading data to the Metrics Library is the same as loading data into a standard Qlik Sense app.  There are some guidelines to follow depending on the data source metrics metadata will be loaded from.  In general, metrics metadata will be loaded from a centralized location like a database, MS Excel, or CSV file.  In the 2.0.0 release of GMS, a new method of loading data using the Qlik REST Connector makes it possible to load metrics metadata from the master library items of other apps in a Qlik Sense site.</p>
+<p><a name="dataConn"></a></p>
+<h3 id="update-the-gma-data-connection">Update the GMA Data Connection</h3>
+<p>After importing the GMA application, it may be necessary to update the lib references in the script to point to the appropriate data connection.  Follow these steps to update data connections in an app. </p>
+<ol>
+<li>
+<p>Open a new browser tab and navigate to the Qlik Sense Hub.  <br />
+<br></p>
+</li>
+<li>
+<p>Open the Governed Metrics Application and proceed to the data load editor.  <br />
+<img alt="gma1" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/gma1.png" />
+<img alt="gma2" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/gma2.png" />
+<br></p>
+</li>
+<li>
+<p>Click on the Metrics Library section of the load script.  <br />
+<img alt="gma3" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/gma3.png" />
+<br></p>
+</li>
+<li>
+<p>Review the MetricsLibrary table load in the script.  Observe the entry for the data source location.  <br />
+<code>FROM [lib://EAPowerToolsGMS/GMS.xlsx]
+    (ooxml, embedded labels, table is Sheet1);</code>  <br />
+<br></p>
+</li>
+<li>
+<p>Now review the available data connections from the list on the right.  If there is a match for EAPowerToolsGMS then there is no update required.  If a data connection with a different name appears in the list that points to the source of Metrics Library metadata, replace the EAPowerToolsGMS in the script with the name of the connection where the source data resides.  If no connection to source data exists, proceed to create one and update the script with the new data connection name.
+<br><br></p>
 </li>
 </ol>
 <p><a name="fieldDefs"></a></p>
@@ -225,26 +297,32 @@
 <p>The Governed Metrics Service relies on specific field names to distribute metrics.  While the source data field names do not have to match, the field names Qlik Sense will use need to be the following: </p>
 <ul>
 <li>
-<p><strong>ID</strong> - The ID field is a numeric primary key field for metrics distributed by the GMS natively.  Put another way, when importing metrics via MDI or adopting manually created Master Library items the ID field must be filled with the Qlik Sense Engine object id.  When a new metric is delivered to to apps exclusively through GMS, a numeric value is used.
+<p><strong>ID</strong> - <strong>(REQUIRED)</strong> The ID field is a numeric primary key field for metrics distributed by the GMS natively.</p>
+<blockquote>
+<p><strong>Usage:</strong>  <br />
+<strong><em>A.</em></strong> The ID field must be filled with the Qlik Sense Engine object id when importing metrics via MDI or adopting manually created Master Library items into GMS.    </p>
+<p><strong><em>B.</em></strong> Use a unique numeric value when a new metric is delivered to apps exclusively through GMS.
+<br></p>
+</blockquote>
+</li>
+<li>
+<p><strong>UID</strong> - <strong>(REQUIRED)</strong> The UID is the field the Governed Metrics Service applies to new master library items to be created or uses to detect existing master library items to make changes.  The UID can be one of two items:</p>
+<blockquote>
+<p><strong>Usage:</strong>  <br />
+<strong><em>1.</em></strong> A hardcoded value representing an existing master library item id.  For MDI and adopted master library items, this value is the same as the ID.    </p>
+<p><strong><em>2.</em></strong> If the UID is left blank at the source, GMS will create a UID with a modified 128 bit hash composite of the MetricSubject field and ID field.  The hash has non-alphanumeric characters stripped out for support as object ids in Qlik Sense objects.  Uses the expression <code>if(isnull(UID),KeepChar(Hash128(MetricSubject,ID),'$(chars)'),UID) as UID</code>.</p>
+</blockquote>
+</li>
+<li>
+<p><strong>MetricSubject</strong> - <strong>(REQUIRED)</strong> The MetricSubject MUST equal the ManagedMasterItems custom property value.  When the Governed Metrics Service reads the Metrics Library app tables, this field is used to identify which apps will receive the dimension or measure.
 <br><br></p>
 </li>
 <li>
-<p><strong>UID</strong> - This is the field the Governed Metrics Service applies to new master library items to be created or uses to detect existing master library items to make changes.  The UID can be one of two items:</p>
-<ol>
-<li>A hardcoded value representing an existing master library item id.</li>
-<li>It is a modified 128 bit hash composite of the MetricSubject field and ID field.  Uses the expression <code>if(isnull(UID),KeepChar(Hash128(MetricSubject,ID),'$(chars)'),UID) as UID</code></li>
-</ol>
-</li>
-<li>
-<p><strong>MetricSubject</strong> - The MetricSubject MUST equal the ManagedMasterItems custom property value.  When the Governed Metrics Service reads the Metrics Library app tables, this field is used to identify which apps will receive the dimension or measure.
+<p><strong>MetricType</strong> - <strong>(REQUIRED)</strong> This field identifies if the metric is a dimension or measure.
 <br><br></p>
 </li>
 <li>
-<p><strong>MetricType</strong> - This field identifies where in the Master Library a metric will be added.
-<br><br></p>
-</li>
-<li>
-<p><strong>MetricName</strong> - The MetricName field contains the friendly name displayed in the Master Library for the dimension or measure.
+<p><strong>MetricName</strong> - <strong>(REQUIRED)</strong> The MetricName field contains the friendly name displayed in the Master Library for the dimension or measure.
 <br><br></p>
 </li>
 <li>
@@ -252,8 +330,15 @@
 <br><br></p>
 </li>
 <li>
-<p><strong>MetricFormula</strong> - The MetricFormula contains the dimension field name or the expression to be used for the dimension or measure.
-<br><br></p>
+<p><strong>MetricFormula</strong> - <strong>(REQUIRED)</strong> The MetricFormula contains the dimension field name(s) or the expression to be used for the dimension or measure.</p>
+<blockquote>
+<p><strong>Usage:</strong>  <br />
+<strong><em>A.</em></strong> For measures, the field is a string literal of the expression without the initial equal sign.    </p>
+<p><strong><em>B.</em></strong> For single dimensions, enter the field name the dimension will reference.  Do not square bracket field names with multiple words and spaces.    </p>
+<p><strong><em>C.</em></strong> For calculated dimensions, the field is a string literal <strong>including</strong> the initial equal sign.  If using Excel as the data source, add an apostrophe before the equal sign so that Excel will treat the expression as a string literal.    </p>
+<p><strong><em>D.</em></strong> For drilldown dimensions, enter the field names to group together as comma separated values.  Do not include square brackets surrounding field names. 
+<br></p>
+</blockquote>
 </li>
 <li>
 <p><strong>MetricOwner</strong> - This field identifies who owns the metric for informational purposes.
@@ -264,9 +349,13 @@
 <br><br></p>
 </li>
 <li>
-<p><strong>MetricGrouping</strong> - The MetricGrouping field identifies if dimensions are single (N), or drilldown (H).  Measures are only ever single (N).</p>
+<p><strong>MetricGrouping</strong> - <strong>(REQUIRED)</strong> The MetricGrouping field identifies if dimensions are single (N), or drilldown (H).  Measures are only ever single (N).</p>
+</li>
+<li>
+<p><strong>MetricColor</strong> - <strong>Available in Qlik Sense 3.2 and higher</strong>, the MetricColor is applicable only to measure master items.  A hex color code value (e.g. #ffffff) may be supplied in this field to set a color for a measure.  If no hex value is supplied, no color will be set.</p>
 </li>
 </ul>
+<p><a name="sample"></a></p>
 <h3 id="sample-source-data-table">Sample Source Data Table</h3>
 <p>Below is an example of the resulting table of information expected to be loaded from the data source.</p>
 <table>
@@ -282,6 +371,8 @@
 <th>MetricOwner</th>
 <th>MetricTags</th>
 <th>MetricGrouping</th>
+<th>MetricColor</th>
+<th></th>
 </tr>
 </thead>
 <tbody>
@@ -296,6 +387,8 @@
 <td>Linda Lee</td>
 <td>Key KPI;Call</td>
 <td>N</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td>2</td>
@@ -308,6 +401,8 @@
 <td>Chad Johnson</td>
 <td>Customer</td>
 <td>N</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td>3</td>
@@ -320,6 +415,8 @@
 <td>Gordon Wyse</td>
 <td>Cost</td>
 <td>N</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td>ABCD</td>
@@ -332,6 +429,8 @@
 <td>Sales</td>
 <td>time;drill</td>
 <td>H</td>
+<td></td>
+<td></td>
 </tr>
 <tr>
 <td></td>
@@ -344,14 +443,13 @@
 <td>some person</td>
 <td>fake;metric</td>
 <td>N</td>
+<td>#46c646</td>
+<td></td>
 </tr>
 </tbody>
 </table>
-<p><a name="loadingdata"></a></p>
-<h2 id="loading-metrics-metadata-to-the-metrics-library">Loading Metrics Metadata to the Metrics Library</h2>
-<p>Loading data to the Metrics Library is the same as loading data into a standard Qlik Sense app.  There are some guidelines to follow depending on the data source metrics metadata will be loaded from.  In general, metrics metadata will be loaded from a centralized location like a database, MS Excel, or CSV file.  In the 2.0.0 release of GMS, a new method of loading data using the Qlik REST Connector makes it possible to load metrics metadata from the master library items of other apps in a Qlik Sense site.</p>
 <p><a name="standard"></a></p>
-<h3 id="loading-data-from-a-folder-or-database-data-connection">Loading Data from a folder or database Data Connection</h3>
+<h2 id="loading-data-from-a-folder-or-database-data-connection">Loading Data from a Folder or Database Data Connection</h2>
 <p>Here is an example of a load statement for loading metrics from an MS Excel file.</p>
 <pre><code>SET chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789abcdefghijklmnopqrstuvwxyz';
 
@@ -366,17 +464,20 @@ MetricsLibrary:
     MetricFormula,
     MetricOwner,
     MetricTags,
-    MetricGrouping
-    FROM [lib://AttachedFiles/MetricsLibrary.csv]
-    (txt, codepage is 1252, embedded labels, delimiter is '\t', msq);
+    MetricGrouping,
+    MetricColor
+    FROM [lib://EAPowerToolsGMS/GMS.xlsx]
+    (ooxml, embedded labels, table is Sheet1);
 </code></pre>
 
-<p>When creating a data connection from a folder or database, we recommend using the above as the template script.  </p>
 <p>While all the fields are important and required, the UID field is most critical because it is the field used to identify existing metrics deployed to applications through GMS, and the value of this field will be used to generate the engine object id of new dimensions and measures added by GMS.  It may be necessary to alter this template script to identify the source field names, but it is mandatory that the destination field names reflect the values described in the <strong><a href="./#fieldDefs">field definitions</a></strong> section on this page.</p>
 <p><a name="MDI"></a></p>
 <h2 id="loading-data-using-the-mdi-rest-endpoint">Loading Data using the MDI REST Endpoint</h2>
 <p>Beginning in GMS 2.0.0, a REST endpoint is available to reach into other Qlik Sense applications and extract the master library dimension and measure definitions.  The definitions are formatted and loaded into the Metrics Library as if they were stored in the central data store for metrics metadata.  The advantages of this capability are reuse of existing metrics stored in apps and a way to categorize master items by using an app as the storage container for definitions.  This capability is useful when no central metrics data source exists.</p>
+<p><strong style="color:red"><i>This is a completely optional section of the guide.  If Qlik Sense apps with master library dimensions and measures will be used as a source of metric metadata, please follow the steps below to set up a connection.</i></strong></p>
+<p><strong style="background:gold;">In order for the MDI capability to work, the Governed Metrics Service must be running.</strong></p>
 <p>To access the MDI REST endpoint, use the Qlik REST Connector and follow the directions below to configure a connection and identify a MasterLibrarySource application.</p>
+<p><a name="mdicreate"></a></p>
 <h3 id="creating-the-mdi-rest-connection-in-the-data-load-editor">Creating the MDI REST Connection in the Data Load Editor</h3>
 <ol>
 <li>

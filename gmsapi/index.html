@@ -89,7 +89,7 @@
         
             
     <li class="toctree-l1 ">
-        <a class="" href="../user-guide/app/">Metrics Library App</a>
+        <a class="" href="../user-guide/app/">The GMA (Governed Metrics Application)</a>
         
     </li>
 
@@ -153,6 +153,12 @@
                     <li><a class="toctree-l4" href="#getallmdi">/getAllMDI</a></li>
                 
                     <li><a class="toctree-l4" href="#notifyme">/notifyme</a></li>
+                
+                    <li><a class="toctree-l4" href="#deletenotifyme">/deletenotifyme</a></li>
+                
+                    <li><a class="toctree-l4" href="#getapplist">/getapplist</a></li>
+                
+                    <li><a class="toctree-l4" href="#getappobjectsid">/getappobjects/:id</a></li>
                 
             
             </ul>
@@ -385,6 +391,47 @@
 </code></pre>
 <h4 id="response_10">Response</h4>
 <p>An array of objects matching the notification criteria set by the Governed Metrics Service prompting a call to the endpoint.</p>
+</blockquote>
+</blockquote>
+<hr />
+<h2 id="deletenotifyme">/deletenotifyme</h2>
+<blockquote>
+<p>Receives messages from the QRS api telling the Governed Metrics Service that delete operations in the repository have completed for the entities listed in body.</p>
+<h3 id="post_5">POST</h3>
+<blockquote>
+<h4 id="request_11">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/deletenotifyme
+</code></pre>
+<h4 id="response_11">Response</h4>
+<p>An array of objects matching the notification criteria set by the Governed Metrics Service.</p>
+</blockquote>
+</blockquote>
+<hr />
+<h2 id="getapplist">/getapplist</h2>
+<blockquote>
+<p>Retrieves a list of apps to populate a drop down box in the test page.  Used for finding master library item ids to incorporate into GMS.</p>
+<h3 id="get_6">GET</h3>
+<blockquote>
+<h4 id="request_12">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/getapplist
+</code></pre>
+<h4 id="response_12">Response</h4>
+<p>JSON object with the id and name of each app in the Qlik Sense site GMS is installed.</p>
+</blockquote>
+</blockquote>
+<hr />
+<h2 id="getappobjectsid">/getappobjects/:id</h2>
+<blockquote>
+<p>Retrieves a list of dimensions and measures from the app selected in the drop down list of apps on the GMS test page.</p>
+<blockquote>
+<h4 id="request_13">Request</h4>
+<pre><code>https://senseHostname:gmsPort/masterlib/getappobjects/appGuid
+</code></pre>
+<h4 id="parameter">Parameter</h4>
+<pre><code>id = the app guid representing the app in Qlik Sense repository.
+</code></pre>
+<h4 id="response_13">Response</h4>
+<p>JSON object with the ID, UID, description, type, and gms tag (where applied) for each dimension or measure.</p>
 </blockquote>
 </blockquote>
               
