@@ -12,6 +12,7 @@ pages:
     - 'Testing Goverened Metrics Service' : 'user-guide/interface.md'
     - 'GMS Example' : 'user-guide/validation.md'
 - Governed Metrics Service API: 'gmsapi.md'
+- Troubleshooting: 'user-guide/troubleshoot.md'
 - Uninstall: 'user-guide/uninstall.md'
 - About: 'about.md'
 theme: readthedocs
