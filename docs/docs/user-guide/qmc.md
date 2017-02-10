@@ -92,6 +92,8 @@ To add a custom property value to an app:
 <a name="masterlibrarysource"></a>
 ## Add and Configure the MasterLibrarySource Custom Property
 
+<strong style="color:red"><i>This is a completely optional section of the guide.  It is only necessary to setup the MasterLibrarySource custom property if Qlik Sense apps with master library dimensions and measures will be used to populate other apps through the GMS.</i></strong>
+
 During the Metrics Library app configuration, the MDI capability was described and included how to connect to apps to acquire master library items.  The MasterLibrarySource custom property needs to be applied to the apps that will supply the Metrics Library with metrics through MDI.
 
 To create the MasterLibrarySource custom property:

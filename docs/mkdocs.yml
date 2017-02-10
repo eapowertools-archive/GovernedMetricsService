@@ -6,7 +6,7 @@ pages:
     - 'Governed Metrics Service Prerequisites' : 'user-guide/prereqs.md'
     - 'Installing GMS' : 'user-guide/install.md'
 - Configuration:
-    - 'Metrics Library App' : 'user-guide/app.md'
+    - 'The GMA (Governed Metrics Application)' : 'user-guide/app.md'
     - 'QMC Configuration' : 'user-guide/qmc.md'
 - User-Guide: 
     - 'Testing Goverened Metrics Service' : 'user-guide/interface.md'
