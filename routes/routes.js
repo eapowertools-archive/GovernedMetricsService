@@ -101,6 +101,7 @@ router.route('/update/all')
         worker.updateAll()
             .then(function(result) {
                 logger.info('POST update/all success::' + result.result, { module: 'routes' });
+                logger.info("UPDATE COMPLETE!!!", { module: 'routes' });
                 response.status(200).json(result.result + '\n');
             })
             .catch(function(error) {
@@ -178,7 +179,7 @@ router.route("/notifyme")
     .post(parseUrlencoded, function(request, response) {
         notifiedByRepo.updateRepo(request.body)
             .then(function(result) {
-                logger.info(result, { module: 'routes' })
+                logger.info("GMS has been notified of a change.", { module: 'routes' })
                 response.status(200).json(result);
             })
             .catch(function(error) {
@@ -189,7 +190,7 @@ router.route("/notifyme")
 
 router.route("/deletenotifyme")
     .post(parseUrlencoded, function(request, response) {
-        logger.info("completed delete operation in the repository for: " + JSON.stringify(request.body), { module: 'routes' });
+        logger.info("completed delete operation in the repository.  Master Items REMOVED!!!", { module: 'routes' });
         response.status(200).json("Metrics deleted from repository");
     });
 
