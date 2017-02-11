@@ -16,9 +16,9 @@
             var socket = io();
 
             socket.on("gms", function(msg) {
-                console.log("trying to write: " + JSON.stringify(msg));
                 var final = $('#statusOutput').val();
                 $('#statusOutput').val(final + "\n" + JSON.stringify(msg));
+                $('#statusOutput').scrollTop($('#statusOutput')[0].scrollHeight);
             });
 
             function testConnection() {
@@ -48,9 +48,9 @@
                 //writeToStatus('\n\nUpdating metrics in all the apps...');
                 $.post("../masterlib/update/all", function(result, strStatus, xhr) {
                     if (xhr.status == 200) {
-                        writeToStatus('\n...' + result);
+                        // writeToStatus('\n...' + result);
                     } else {
-                        writeToStatus('\n...could not update metrics in app.');
+                        //writeToStatus('\n...could not update metrics in app.');
                     }
                 });
             };
