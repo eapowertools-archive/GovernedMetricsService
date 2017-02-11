@@ -46,6 +46,8 @@ The Qlik Governed Metrics Service (GMS) Power Tool builds upon this capability b
 The Governed Metrics Service is part of the EA Team Governed Self-Service Reference Deployment.  To learn more about governed self-service and how to centrally manage master library dimensions and measures in your Qlik Sense site, visit the **[Governed Self-Service](https://community.qlik.com/community/qlik-sense/qlik-sense-governed-self-service)** space on **[Qlik Community](community.qlik.com)**.  
 
 ##License
-EA Power Tools are a collection of software programs and methodologies for Qlik products.  EA Power Tools and Governed Metrics Service are provided free of charge and are not supported by Qlik.  EA Power Tools  and Governed Metrics Service use Qlik APIs, but are open source solutions provided without warranty.  If you experience an issue, do not contact Qlik Support.  Please open an issue here: **[Issues](https://github.com/eapowertools/GovernedMetricsService/issues)**
+**[MIT](https://github.com/eapowertools/GovernedMetricsService/blob/master/license)**
+
+If you experience an issue, do not contact Qlik Support.  Please open an issue here: **[Issues](https://github.com/eapowertools/GovernedMetricsService/issues)**
 
 For more information, please visit the [EAPowertools](https://community.qlik.com/community/qlik-sense/ea-powertools) space on Qlik Community.
