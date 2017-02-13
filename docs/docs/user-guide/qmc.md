@@ -22,9 +22,9 @@ The reload task refreshes the Metrics Library application with the latest versio
   ![ReloadButton](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reloadtaskbutton.png)
 <br><br>
 
-  3. Name the task with the value entered during the installation of the Governed Metrics Service. "Reload task of Metrics Library" is the default.    
-  ![Task Creation Dialog](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reloadtask.png)
-  ![5](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/5.png)    
+  3. Name the task with the value entered during the installation of the Governed Metrics Service. "Reload task of Governed Metrics Application" is the default.    
+  ![Task Creation Dialog](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reload2.png)
+  ![5](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/5a.png)    
 <br><br>
 
   4. Save the task and return to the QMC main page.
