@@ -1,6 +1,6 @@
 #Governed Metrics Service
 
-##Latest Release == [2.0.0](https://github.com/eapowertools/GovernedMetricsService/releases/latest)
+##Latest Release == [2.0.1](https://github.com/eapowertools/GovernedMetricsService/releases/latest)
 
 ##Documentation
 Please read the Governed Metrics Service **[documentation](http://eapowertools.github.io/GovernedMetricsService/)** before installing the Governed Metrics Service.
