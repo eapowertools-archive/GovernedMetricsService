@@ -34,7 +34,7 @@ var config = {
         root: path.resolve(certPath, 'root.pem')
     },
     gms: {
-        version: '2.0.3.0',
+        version: '2.0.4.0',
         port: 8590,
         hostname: friendlyHostname !== undefined ? friendlyHostname : globalHostname,
         routePath: path.join(__dirname, '/../routes/'),
@@ -52,7 +52,7 @@ var config = {
     engine: {
         enginePort: 4747,
         hostname: qrsHostname !== undefined ? qrsHostname : globalHostname,
-        repoAccount: 'UserDirectory=Internal;UserId=sa_api'
+        repoAccount: 'UserDirectory=Internal;UserId=sa_repository'
     },
     logging: {
         logPath: logPath,
@@ -63,7 +63,7 @@ var config = {
         localCertPath: certPath,
         hostname: qrsHostname !== undefined ? qrsHostname : globalHostname,
         repoAccountUserDirectory: 'INTERNAL',
-        repoAccountUserId: 'sa_api',
+        repoAccountUserId: 'sa_repository',
         changeInterval: 15
     }
 };
