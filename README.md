@@ -1,11 +1,12 @@
-#Governed Metrics Service
 
-##Latest Release == [2.0.5](https://github.com/eapowertools/GovernedMetricsService/releases/latest)
+# Governed Metrics Service
 
-##Documentation
+## Latest Release == [2.0.5](https://github.com/eapowertools/GovernedMetricsService/releases/latest)
+
+## Documentation
 Please read the Governed Metrics Service **[documentation](http://eapowertools.github.io/GovernedMetricsService/)** before installing the Governed Metrics Service.
 
-##Minimum Requirements:
+## Minimum Requirements:
 The Governed Metrics Service uses the Qlik Sense Service Dispatcher and Nodejs to launch a REST api as a background service for updating metrics in Qlik Sense applications.  Therefore, the Governed Metrics Service requires Qlik Sense Server.
 
 The Governed Metrics Service has been tested with Qlik Sense 3.1.x and 3.2.   
@@ -16,10 +17,12 @@ Please do not install for use with Qlik Sense desktop.  The Governed Metrics Ser
 
 Before installing the Governed Metrics Service, **we highly recommend** going through the Qlik Sense server QMC configuration instructions in the documentation.  Application, custom property, and task names will be requested during the install and it's easier on your memory if you have created them in advance.  [Direct Link to QMC configuration section in docs](http://eapowertools.github.io/GovernedMetricsService/user-guide/qsconfig/) 
 
-##Install
+
+## Install
 To install the Governed Metrics Service, use the **[installer](https://s3.amazonaws.com/eapowertools/governedmetricsservice/bin/GovernedMetricsService.exe)**.
 
-##Description
+## Description
+
 Qlik Sense enables self-service visualization with a balance of control and agility that gives IT confidence that the visualizations that users are empowered to create are correct.  One way this is enabled is through the use of ![masteritems.png](https://github.com/eapowertools/GovernedMetricsService/blob/master/img/masteritems.png) Master Items.  A Master Item is a dimension or measure that is defined by a central IT or BI team or line of business analyst and deployed to users in conjunction with a Qlik Sense application.
  
 This capability enables users to create visualizations with trusted dimensions and measures without having to author or understand the underlying business logic.  This is an important requirement of modern self-service analytics platforms.
@@ -42,10 +45,11 @@ The Qlik Governed Metrics Service (GMS) Power Tool builds upon this capability b
 </table>
 </div>
 
-##Promotion
+
+## Promotion
 The Governed Metrics Service is part of the EA Team Governed Self-Service Reference Deployment.  To learn more about governed self-service and how to centrally manage master library dimensions and measures in your Qlik Sense site, visit the **[Governed Self-Service](https://community.qlik.com/community/qlik-sense/qlik-sense-governed-self-service)** space on **[Qlik Community](community.qlik.com)**.  
 
-##License
+## License
 **[MIT](https://github.com/eapowertools/GovernedMetricsService/blob/master/license)**
 
 If you experience an issue, do not contact Qlik Support.  Please open an issue here: **[Issues](https://github.com/eapowertools/GovernedMetricsService/issues)**
