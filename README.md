@@ -1,3 +1,4 @@
+
 # Governed Metrics Service
 
 ## Latest Release == [2.0.5](https://github.com/eapowertools/GovernedMetricsService/releases/latest)
@@ -16,10 +17,12 @@ Please do not install for use with Qlik Sense desktop.  The Governed Metrics Ser
 
 Before installing the Governed Metrics Service, **we highly recommend** going through the Qlik Sense server QMC configuration instructions in the documentation.  Application, custom property, and task names will be requested during the install and it's easier on your memory if you have created them in advance.  [Direct Link to QMC configuration section in docs](http://eapowertools.github.io/GovernedMetricsService/user-guide/qsconfig/) 
 
+
 ## Install
 To install the Governed Metrics Service, use the **[installer](https://s3.amazonaws.com/eapowertools/governedmetricsservice/bin/GovernedMetricsService.exe)**.
 
 ## Description
+
 Qlik Sense enables self-service visualization with a balance of control and agility that gives IT confidence that the visualizations that users are empowered to create are correct.  One way this is enabled is through the use of ![masteritems.png](https://github.com/eapowertools/GovernedMetricsService/blob/master/img/masteritems.png) Master Items.  A Master Item is a dimension or measure that is defined by a central IT or BI team or line of business analyst and deployed to users in conjunction with a Qlik Sense application.
  
 This capability enables users to create visualizations with trusted dimensions and measures without having to author or understand the underlying business logic.  This is an important requirement of modern self-service analytics platforms.
@@ -41,6 +44,7 @@ The Qlik Governed Metrics Service (GMS) Power Tool builds upon this capability b
 </td>
 </table>
 </div>
+
 
 ## Promotion
 The Governed Metrics Service is part of the EA Team Governed Self-Service Reference Deployment.  To learn more about governed self-service and how to centrally manage master library dimensions and measures in your Qlik Sense site, visit the **[Governed Self-Service](https://community.qlik.com/community/qlik-sense/qlik-sense-governed-self-service)** space on **[Qlik Community](community.qlik.com)**.  
