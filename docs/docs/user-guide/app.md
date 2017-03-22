@@ -17,10 +17,10 @@ Source data for the Metrics Library portion of the GMA may be loaded from any da
 
 
 <a name="general"></a>
-## General Configuration 
+## General Configuration
 
 <a name="import"></a>
-###Import the Governed Metrics Application 
+###Import the Governed Metrics Application
 
 The Governed Metrics Application is part of the GMS installation.  From the installation directory, navigate to the gma folder and observe the Governed Metrics App.qvf file.
 
@@ -38,7 +38,11 @@ To import the GMA app to a Qlik Sense server:
 ![3](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/import2.png)
 <br><br>
 
-4. Click the Choose File button and navigate to the gma folder inside the folder Governed Metrics Service is installed.
+4. Click the Choose File button and navigate to the gma folder inside the folder Governed Metrics Service is installed. Default path:
+  ```
+  %programfiles%\Qlik\Sense\EAPowerTools\GovernedMetricsService\gma
+  ```    
+  
 <br>
 ![4](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/import3.png)
 <br><br>
@@ -56,7 +60,7 @@ Loading data to the Metrics Library is the same as loading data into a standard 
 <a name="dataConn"></a>
 ###Update the GMA Data Connection
 
-After importing the GMA application, it may be necessary to update the lib references in the script to point to the appropriate data connection.  Follow these steps to update data connections in an app. 
+After importing the GMA application, it may be necessary to update the lib references in the script to point to the appropriate data connection.  Follow these steps to update data connections in an app.
 
 1. Open a new browser tab and navigate to the Qlik Sense Hub.    
 <br>
@@ -83,7 +87,7 @@ After importing the GMA application, it may be necessary to update the lib refer
 <a name="fieldDefs"></a>
 ###Field Definitions and Structure
 
-The Governed Metrics Service relies on specific field names to distribute metrics.  While the source data field names do not have to match, the field names Qlik Sense will use need to be the following: 
+The Governed Metrics Service relies on specific field names to distribute metrics.  While the source data field names do not have to match, the field names Qlik Sense will use need to be the following:
 
 * __ID__ - **(REQUIRED)** The ID field is a numeric primary key field for metrics distributed by the GMS natively.
 > __Usage:__    
@@ -100,7 +104,7 @@ The Governed Metrics Service relies on specific field names to distribute metric
 
 * __MetricSubject__ - **(REQUIRED)** The MetricSubject MUST equal the ManagedMasterItems custom property value.  When the Governed Metrics Service reads the Metrics Library app tables, this field is used to identify which apps will receive the dimension or measure.
 <br><br>
-    
+
 * __MetricType__ - **(REQUIRED)** This field identifies if the metric is a dimension or measure.
 <br><br>
 
@@ -118,7 +122,7 @@ The Governed Metrics Service relies on specific field names to distribute metric
 >
 > ___C.___ For calculated dimensions, the field is a string literal **including** the initial equal sign.  If using Excel as the data source, add an apostrophe before the equal sign so that Excel will treat the expression as a string literal.    
 >
-> ___D.___ For drilldown dimensions, enter the field names to group together as comma separated values.  Do not include square brackets surrounding field names. 
+> ___D.___ For drilldown dimensions, enter the field names to group together as comma separated values.  Do not include square brackets surrounding field names.
 <br>
 
 * __MetricOwner__ - This field identifies who owns the metric for informational purposes.
@@ -136,7 +140,7 @@ The Governed Metrics Service relies on specific field names to distribute metric
 
 Below is an example of the resulting table of information expected to be loaded from the data source.
 
-| ID | UID | MetricSubject | MetricType | MetricName | MetricDescription | MetricFormula | MetricOwner | MetricTags | MetricGrouping | MetricColor | 
+| ID | UID | MetricSubject | MetricType | MetricName | MetricDescription | MetricFormula | MetricOwner | MetricTags | MetricGrouping | MetricColor |
 | ------------- | ------------- | ---------- | ---------- | ----------------- | -------------- | ----------- | ---------- | ---------- | ---------- | | ---------- |
 | 1 | EDSMNFH8F | Customer Service | Measure | % Resolved in SLA | Percentage of Tickets handled within SLA | Sum({< [Call Ctr Days to Resolve] = {'0', '1', '2', '3', '4', '5', '6'} > } [Call Ctr Call #])/sum([Call Ctr Call #]) | Linda Lee | Key KPI;Call | N |
 | 2 | P29OSdkE | Sales | Dimension | Country | Customer Country | Customer Country | Chad Johnson | Customer | N |
@@ -219,6 +223,6 @@ To access the MDI REST endpoint, use the Qlik REST Connector and follow the dire
 <br><br>
 
 9. Open the data preview window.  Click the checkbox next to root.  This will show the data fields in the preview window.
-![9](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/10.png) 
+![9](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/10.png)
 
 10. Click the Insert script button to add the load script to the data load editor.
