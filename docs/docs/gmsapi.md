@@ -2,6 +2,13 @@
 
 The following endpoints are available for use with the Governed Metrics Service.  All endpoints are prefaced with masterlib.
 
+To test and explore the API, you can use the free tool [Postman](https://www.getpostman.com/)
+You can import a collection and environment from the folder where Governed Metrics Service is installed.
+The default location is: %Program Files%\Qlik\Sense\EAPowerTools\GovernedMetricsService\postman
+To learn more about Postman collections look [here](https://www.getpostman.com/docs/collections)
+To learn more about Postman environment look [here](http://blog.getpostman.com/2014/02/20/using-variables-inside-postman-and-collection-runner/)
+
+
 #Paths
 
 ---
@@ -61,7 +68,7 @@ The following endpoints are available for use with the Governed Metrics Service.
 
 ---
 ##/update/all
-> Updates applications with the ManagedMasterItems custom property applied with the master library dimensions and measures corresponding to applied values. 
+> Updates applications with the ManagedMasterItems custom property applied with the master library dimensions and measures corresponding to applied values.
 >###POST
 >>####Request
     https://senseHostname:gmsPort/masterlib/update/all

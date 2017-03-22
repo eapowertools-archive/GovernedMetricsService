@@ -1,0 +1,200 @@
+{
+	"variables": [],
+	"info": {
+		"name": "Governed Metric Service",
+		"_postman_id": "e85a5f2d-d258-8d38-2b11-72ee3404f6b5",
+		"description": "",
+		"schema": "https://schema.getpostman.com/json/collection/v2.0.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "/",
+			"request": {
+				"url": "{{url}}/masterlib/",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns the json definition of the hypercube used to populate master library items."
+			},
+			"response": []
+		},
+		{
+			"name": "/testpage",
+			"request": {
+				"url": "{{url}}/masterlib/testpage",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Navigates to the test page used for running the Governed Metrics Service in push button fashion.\n\nResponse\n\nRendered testpage."
+			},
+			"response": []
+		},
+		{
+			"name": "/getdocid",
+			"request": {
+				"url": "{{url}}/masterlib/getdocid",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "Returns the GUID ID for the metrics library app name designated in the config.js file.\n\nResponse\n\nThe example below shows a guid for the metrics library app. This value may be different on your server."
+			},
+			"response": []
+		},
+		{
+			"name": "/add/all",
+			"request": {
+				"url": "{{url}}/masterlib/add/all",
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Calls the update/all method"
+			},
+			"response": []
+		},
+		{
+			"name": "/update/all",
+			"request": {
+				"url": "{{url}}/masterlib/update/all",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appname\":\"Operations Monitor\"\r\n}"
+				},
+				"description": "Updates applications with the ManagedMasterItems custom property applied with the master library dimensions and measures corresponding to applied values."
+			},
+			"response": []
+		},
+		{
+			"name": "/delete/fromapp",
+			"request": {
+				"url": "{{url}}/masterlib/delete/fromapp",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"appname\": \"MDI - Økonomi Simpel\"\r\n}"
+				},
+				"description": "Deletes all of the master library items applied by GMS for the supplied application name."
+			},
+			"response": []
+		},
+		{
+			"name": "/reload",
+			"request": {
+				"url": "{{url}}/masterlib/reload",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Triggers a refresh of the data contained in the Metrics Library Qlik application that stores dimension and measure metadata for use with the GMS."
+			},
+			"response": []
+		},
+		{
+			"name": "/version",
+			"request": {
+				"url": "{{url}}/masterlib/version",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": ""
+			},
+			"response": []
+		},
+		{
+			"name": "/getAllMDI",
+			"request": {
+				"url": "{{url}}/masterlib/getAllMDI",
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"description": "An endpoint used by the Qlik Sense REST Connector to populate master library items from an app into the Metrics Library application.\n\nThe response is the definitions of dimensions and measures from apps with the MasterLibrarySource custom property applied."
+			},
+			"response": []
+		},
+		{
+			"name": "/deletenotifyme",
+			"request": {
+				"url": "{{url}}/masterlib/deletenotifyme",
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Receives messages from the QRS api telling the Governed Metrics Service that delete operations in the repository have completed for the entities listed in body.\r\n\r\nResponse\r\n\r\nAn array of objects matching the notification criteria set by the Governed Metrics Service."
+			},
+			"response": []
+		},
+		{
+			"name": "/getapplist",
+			"request": {
+				"url": "{{url}}/masterlib/getapplist",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Retrieves a list of apps to populate a drop down box in the test page. Used for finding master library item ids to incorporate into GMS.\n\nResponse\n\nJSON object with the id and name of each app in the Qlik Sense site GMS is installed."
+			},
+			"response": []
+		},
+		{
+			"name": "/getappobjects/:id",
+			"request": {
+				"url": "{{url}}/masterlib/getappobjects/{{appGuid}}",
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"description": ""
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"description": "Retrieves a list of dimensions and measures from the app selected in the drop down list of apps on the GMS test page\r\n\r\nResponse\r\n\r\nJSON object with the ID, UID, description, type, and gms tag (where applied) for each dimension or measure."
+			},
+			"response": []
+		}
+	]
+}
