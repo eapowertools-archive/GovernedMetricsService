@@ -12,17 +12,17 @@ After creating the Metrics Library application, open the QMC to complete the Gov
 <a name="task"></a>
 ## Configure the Metrics Library Reload Task
 
-The reload task refreshes the Metrics Library application with the latest version of metrics stored in data sources. 
+The reload task refreshes the Metrics Library application with the latest version of metrics stored in data sources.
 
   1. Navigate to the Metrics Library app in QMC and click "More actions"    
-  ![AppList](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/applist.png) 
+  ![AppList](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/applist.png)
 <br><br>
 
   2. Select the "Create new reload task option"    
   ![ReloadButton](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reloadtaskbutton.png)
 <br><br>
 
-  3. Name the task with the value entered during the installation of the Governed Metrics Service. "Reload task of Governed Metrics Application" is the default.    
+  3. Name the task with the value entered during the installation of the Governed Metrics Service i.e. "Reload Governed Metrics Application":    
   ![Task Creation Dialog](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/reload/reload2.png)
   ![5](https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/install/5a.png)    
 <br><br>
