@@ -254,24 +254,25 @@
 <br><br></p>
 </li>
 <li>
-<p>Click the Choose File button and navigate to the gma folder inside the folder Governed Metrics Service is installed.
-<br>
+<p>Click the Choose File button and navigate to the gma folder inside the folder Governed Metrics Service is installed. Default path:
+  <code>%programfiles%\Qlik\Sense\EAPowerTools\GovernedMetricsService\gma</code>    </p>
+</li>
+</ol>
+<p><br>
 <img alt="4" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/import3.png" />
 <br><br></p>
-</li>
-<li>
-<p>Select the Governed Metrics App.qvf file and click the Import Button.
+<ol>
+<li>Select the Governed Metrics App.qvf file and click the Import Button.
 <br>
 <img alt="5" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/app/import4.png" />
-<br><br></p>
-</li>
+<br><br></li>
 </ol>
 <p><a name="loadingdata"></a>
 <h2>Loading Metrics Metadata to the GMA</h2></p>
 <p>Loading data to the Metrics Library is the same as loading data into a standard Qlik Sense app.  There are some guidelines to follow depending on the data source metrics metadata will be loaded from.  In general, metrics metadata will be loaded from a centralized location like a database, MS Excel, or CSV file.  In the 2.0.0 release of GMS, a new method of loading data using the Qlik REST Connector makes it possible to load metrics metadata from the master library items of other apps in a Qlik Sense site.</p>
 <p><a name="dataConn"></a></p>
 <h3 id="update-the-gma-data-connection">Update the GMA Data Connection</h3>
-<p>After importing the GMA application, it may be necessary to update the lib references in the script to point to the appropriate data connection.  Follow these steps to update data connections in an app. </p>
+<p>After importing the GMA application, it may be necessary to update the lib references in the script to point to the appropriate data connection.  Follow these steps to update data connections in an app.</p>
 <ol>
 <li>
 <p>Open a new browser tab and navigate to the Qlik Sense Hub.  <br />
@@ -301,7 +302,7 @@
 </ol>
 <p><a name="fieldDefs"></a></p>
 <h3 id="field-definitions-and-structure">Field Definitions and Structure</h3>
-<p>The Governed Metrics Service relies on specific field names to distribute metrics.  While the source data field names do not have to match, the field names Qlik Sense will use need to be the following: </p>
+<p>The Governed Metrics Service relies on specific field names to distribute metrics.  While the source data field names do not have to match, the field names Qlik Sense will use need to be the following:</p>
 <ul>
 <li>
 <p><strong>ID</strong> - <strong>(REQUIRED)</strong> The ID field is a numeric primary key field for metrics distributed by the GMS natively.</p>
@@ -343,7 +344,7 @@
 <strong><em>A.</em></strong> For measures, the field is a string literal of the expression without the initial equal sign.    </p>
 <p><strong><em>B.</em></strong> For single dimensions, enter the field name the dimension will reference.  Do not square bracket field names with multiple words and spaces.    </p>
 <p><strong><em>C.</em></strong> For calculated dimensions, the field is a string literal <strong>including</strong> the initial equal sign.  If using Excel as the data source, add an apostrophe before the equal sign so that Excel will treat the expression as a string literal.    </p>
-<p><strong><em>D.</em></strong> For drilldown dimensions, enter the field names to group together as comma separated values.  Do not include square brackets surrounding field names. 
+<p><strong><em>D.</em></strong> For drilldown dimensions, enter the field names to group together as comma separated values.  Do not include square brackets surrounding field names.
 <br></p>
 </blockquote>
 </li>
@@ -529,7 +530,7 @@ MetricsLibrary:
 </li>
 <li>
 <p>Open the data preview window.  Click the checkbox next to root.  This will show the data fields in the preview window.
-<img alt="9" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/10.png" /> </p>
+<img alt="9" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/mdi/10.png" /></p>
 </li>
 <li>
 <p>Click the Insert script button to add the load script to the data load editor.</p>

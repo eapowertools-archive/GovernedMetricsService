@@ -198,16 +198,16 @@
 
 <p>The Governed Metrics Service installs with a sample data source that can be used with the Metrics Library application and one of the GSS example applications (Executive Dashboard.qvf). To use the sample data source and application, do the following steps:</p>
 <ol>
-<li>Locate the Executive Dashboard.qvf and GMS.xlsx files that were installed with the Governed Metrics Service. Both are located in the "C:\Program Files\Qlik\Sense\EAPowerTools\GovernedMetricsService\demo" directories by default. </li>
-<li>In the QMC, import the Executive Dashboard.qvf to the QMC and assign the Custom Property attribute "<strong>Sales</strong>" for the <strong>ManagedMasterItems</strong> property. </li>
-<li>Ensure a task has been created for the Governed Metrics Application <a href="../qmc/#task">here</a> if you have not done so. </li>
-<li>Run the task and ensure the GMA application has reloaded. </li>
-<li>Open the Executive Dashboard application in the Hub and verify the KPI Dashboard sheet is all "Incomplete Visualations". This is basically a sheet of objects tied into governed metrics that have to be pushed out from the Governed Metrics Service. 
+<li>Locate the Executive Dashboard.qvf and GMS.xlsx files that were installed with the Governed Metrics Service. Both are located in the "C:\Program Files\Qlik\Sense\EAPowerTools\GovernedMetricsService\demo" directories by default.</li>
+<li>In the QMC, import the Executive Dashboard.qvf to the QMC and assign the Custom Property attribute "<strong>Sales</strong>" for the <strong>ManagedMasterItems</strong> property.</li>
+<li>Ensure a task has been created for the Governed Metrics Application <a href="../qmc/#task">here</a> if you have not done so.</li>
+<li>Run the task and ensure the GMA application has reloaded.</li>
+<li>Open the Executive Dashboard application in the Hub and verify the KPI Dashboard sheet is all "Incomplete Visualations". This is basically a sheet of objects tied into governed metrics that have to be pushed out from the Governed Metrics Service.
 <img alt="Add Data" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_IncompleteViz.png" /></li>
-<li>In a new tab, navigate to the GMS test page: http://localhost:8590/masterlib/testpage</li>
-<li>Test the connection. If successful hit the "Reload Metrics Library and Update Apps" button. 
+<li>In a new tab, navigate to the GMS test page: https://localhost:8590/masterlib/testpage</li>
+<li>Test the connection. If successful hit the "Reload Metrics Library and Update Apps" button.
 <img alt="Add Data" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_ReloadandUpdate.png" /></li>
-<li>It may take a few seconds to run, but after confirmation navigate back over to the Executive Dashboard &gt; KPI Dashboard sheet. Refresh the page and you should see all objects now rendered utilizing governed metrics that were updated into the master items list by the GMS. 
+<li>It may take a few seconds to run, but after confirmation navigate back over to the Executive Dashboard &gt; KPI Dashboard sheet. Refresh the page and you should see all objects now rendered utilizing governed metrics that were updated into the master items list by the GMS.
 <img alt="Add Data" src="https://s3.amazonaws.com/eapowertools/governedmetricsservice/img/test/GMS_FinalResult.png" /></li>
 </ol>
 <p>***Please note that it may take up to 15 seconds for new items to show up in an app.</p>
