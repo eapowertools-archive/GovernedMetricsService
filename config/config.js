@@ -57,7 +57,7 @@ var config = {
     logging: {
         logPath: logPath,
         logFile: logFile,
-        logLevel: 'debug'
+        logLevel: 'info'
     },
     qrs: {
         localCertPath: certPath,
