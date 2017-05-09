@@ -47,7 +47,8 @@ var config = {
         masterLibrarySourcePropName: 'MasterLibrarySource',
         taskName: 'Reload Governed Metrics Application',
         objectManagementTimeout: 60000,
-        tagRestrict: false
+        tagRestrict: false,
+        fieldCheck: true
     },
     engine: {
         port: 4747,
