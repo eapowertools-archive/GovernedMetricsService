@@ -128,12 +128,13 @@ The Governed Metrics Service relies on specific field names to distribute metric
 * __MetricOwner__ - This field identifies who owns the metric for informational purposes.
 <br><br>
 
-* __MetricTags__ - The MetricTags field is a semicolon delimited list of descriptive tags to be added to the dimension or measure Master Library item to aid search.
+* __MetricTags__ - **(REQUIRED)** The MetricTags field is a semicolon delimited list of descriptive tags to be added to the dimension or measure Master Library item to aid search.  _The field must be present, but does not require any data._
 <br><br>
 
 * __MetricGrouping__ - **(REQUIRED)** The MetricGrouping field identifies if dimensions are single (N), or drilldown (H).  Measures are only ever single (N).
+<br><br>
 
-* __MetricColor__ - **Available in Qlik Sense 3.2 and higher**, the MetricColor is applicable only to measure master items.  A hex color code value (e.g. #ffffff) may be supplied in this field to set a color for a measure.  If no hex value is supplied, no color will be set.
+* __MetricColor__ - **(REQUIRED)** **Available in Qlik Sense 3.2 and higher**, the MetricColor is applicable only to measure master items.  A hex color code value (e.g. #ffffff) may be supplied in this field to set a color for a measure.  If no hex value is supplied, no color will be set.  _The field must be present, but does not require any data_.
 
 <a name="sample"></a>
 ###Sample Source Data Table
