@@ -22,18 +22,18 @@ var x = {};
 
 logger.info('Firing up the Governed Metrics Service ReST API', { module: 'server' });
 
-notifyFactory.getUpdateHandle()
+
+notifyFactory.checkQRSConnection()
     .then(function(result) {
-        return notifyFactory.getDeleteHandle()
-            .then(function(result) {
-                launchServer();
-            })
-            .catch(function(error) {
-                logger.error(JSON.stringify(error), { module: "server" });
-                process.exit();
-            });
+        if (result === "SUCCESS") {
+            return launchServer();
+        } else {
+            logger.error(JSON.stringify(result), { module: "server" });
+            process.exit();
+        }
     })
     .catch(function(error) {
+        logger.error("Shutting down GMS.  Can't Start Up");
         logger.error(JSON.stringify(error), { module: "server" });
         process.exit();
     });
