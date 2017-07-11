@@ -50,8 +50,10 @@ var config = {
         tagRestrict: false
     },
     engine: {
-        enginePort: 4747,
+        port: 4747,
         hostname: qrsHostname !== undefined ? qrsHostname : globalHostname,
+        userDirectory: 'Internal',
+        userId: 'sa_repository',
         repoAccount: 'UserDirectory=Internal;UserId=sa_repository'
     },
     logging: {

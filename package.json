@@ -1,54 +1,55 @@
 {
-    "name": "governed-metrics-service",
-    "version": "1.0.0",
-    "description": "a ReST api for updating dimensions and measures in the master library of apps with specific custom property values.",
-    "main": "server.js",
-    "directories": {
-        "example": "examples"
-    },
-    "dependencies": {
-        "bluebird": "^3.1.5",
-        "body-parser": "^1.14.2",
-        "bootstrap": "^3.3.7",
-        "express": "^4.13.4",
-        "extend": "^3.0.0",
-        "fs": "^0.0.2",
-        "https": "^1.0.0",
-        "leonardo-ui": "^1.0.2",
-        "path": "^0.12.7",
-        "qrs-interact": "^2.5.0",
-        "qsocks": "^3.2.0",
-        "request": "^2.69.0",
-        "socket.io": "^1.7.2",
-        "winston": "^2.2.0",
-        "winston-daily-rotate-file": "^1.3.1",
-        "winston-socket.io": "^0.1.1"
-    },
-    "devDependencies": {},
-    "scripts": {
-        "test": "echo \"Error: no test specified\" && exit 1",
-        "start": "node server.js"
-    },
-    "repository": {
-        "type": "git",
-        "url": "git+https://github.com/eapowertools/GovernedMetricsService.git"
-    },
-    "keywords": [
-        "governed",
-        "metrics",
-        "library",
-        "master",
-        "dimension",
-        "measure",
-        "dimensions",
-        "measures",
-        "qlik",
-        "sense"
-    ],
-    "author": "Jeffrey P Goldberg",
-    "license": "ISC",
-    "bugs": {
-        "url": "https://github.com/eapowertools/GovernedMetricsService/issues"
-    },
-    "homepage": "https://github.com/eapowertools/GovernedMetricsService#readme"
+  "name": "governed-metrics-service",
+  "version": "1.0.0",
+  "description": "a ReST api for updating dimensions and measures in the master library of apps with specific custom property values.",
+  "main": "server.js",
+  "directories": {
+    "example": "examples"
+  },
+  "dependencies": {
+    "bluebird": "^3.1.5",
+    "body-parser": "^1.14.2",
+    "bootstrap": "^3.3.7",
+    "enigma.js": "^2.0.0-0",
+    "express": "^4.13.4",
+    "extend": "^3.0.0",
+    "fs": "^0.0.2",
+    "https": "^1.0.0",
+    "leonardo-ui": "^1.0.2",
+    "path": "^0.12.7",
+    "qrs-interact": "^2.5.0",
+    "request": "^2.69.0",
+    "socket.io": "^1.7.2",
+    "winston": "^2.2.0",
+    "winston-daily-rotate-file": "^1.3.1",
+    "winston-socket.io": "^0.1.1",
+    "ws": "^3.0.0"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/eapowertools/GovernedMetricsService.git"
+  },
+  "keywords": [
+    "governed",
+    "metrics",
+    "library",
+    "master",
+    "dimension",
+    "measure",
+    "dimensions",
+    "measures",
+    "qlik",
+    "sense"
+  ],
+  "author": "Jeffrey P Goldberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/eapowertools/GovernedMetricsService/issues"
+  },
+  "homepage": "https://github.com/eapowertools/GovernedMetricsService#readme"
 }
