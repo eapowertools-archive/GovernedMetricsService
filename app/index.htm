@@ -16,7 +16,7 @@
         <script type="text/javascript">
             var socket = io();
 
-            socket.on("gms", function(msg) {
+            socket.on("gms", function (msg) {
                 var final = $('#statusOutput').val();
                 $('#statusOutput').val(final + "\n" + JSON.stringify(msg));
                 $('#statusOutput').scrollTop($('#statusOutput')[0].scrollHeight);
@@ -25,7 +25,7 @@
             function testConnection() {
                 //writeToStatus("\n\nTesting connection...");
                 clearWindow();
-                $.get("../masterlib/getdocid", function(result, strStatus, xhr) {
+                $.get("../masterlib/getdocid", function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
                         //writeToStatus('\n...connection test successful.');
                     } else {
@@ -36,7 +36,7 @@
 
             function reloadMetricsLibraryApp() {
                 //writeToStatus('\n\nStarting metrics library reload...');
-                $.post("../masterlib/reload", function(result, strStatus, xhr) {
+                $.post("../masterlib/reload", function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
                         //writeToStatus('\n...' + result);
                     } else {
@@ -45,9 +45,9 @@
                 });
             };
 
-            function updateMetricsInApp() {
+            function updateMetricsInAllApps() {
                 //writeToStatus('\n\nUpdating metrics in all the apps...');
-                $.post("../masterlib/update/all", function(result, strStatus, xhr) {
+                $.post("../masterlib/update/all", function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
                         // writeToStatus('\n...' + result);
                     } else {
@@ -56,14 +56,37 @@
                 });
             };
 
+            function updateMetrics() {
+                var pattern = /^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i;
+                var appName = document.getElementById("textInput").value;
+                var body = {
+                    "mode": "SINGLE"
+                };
+
+                if (pattern.test(appName)) {
+                    body.appId = appName;
+                } else {
+                    body.appName = appName;
+                }
+
+                $.post("../masterlib/update", body, function (result, strStatus, xhr) {
+                    if (xhr.status == 200) {
+                        //                writeToStatus('\n...' + result);
+                    } else {
+                        //              writeToStatus('\n...' + result);
+                    }
+                })
+            }
+
+
             function reloadMetricsLibraryAndUpdateApps() {
                 //writeToStatus("\n\nReloading metrics library and update apps started...");
 
-                $.post("../masterlib/reload", function(result, strStatus, xhr) {
+                $.post("../masterlib/reload", function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
                         if (result.startsWith("Task Completed in")) {
                             //          writeToStatus('\n...reloading app was successful, now updating the master library...');
-                            $.post("../masterlib/update/all", function(result, strStatus, xhr) {
+                            $.post("../masterlib/update/all", function (result, strStatus, xhr) {
                                 if (xhr.status == 200) {
                                     //                writeToStatus('\n...' + result);
                                 } else {
@@ -85,7 +108,7 @@
                 var body = {
                     "appname": appName
                 };
-                $.post("../masterlib/delete/fromapp", body, function(result, strStatus, xhr) {
+                $.post("../masterlib/delete/fromapp", body, function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
                         //                        writeToStatus('\n...deleting metrics was successful.');
                     } else {
@@ -104,7 +127,7 @@
             };
 
             function getVersion() {
-                $.get("../masterlib/version", function(result, strStatus, xhr) {
+                $.get("../masterlib/version", function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
                         $("#gmsTitle").text("Governed Metrics Service " + result);
                     }
@@ -112,10 +135,11 @@
             };
 
             function getAppList() {
-                $.get("../masterlib/getapplist", function(result, strStatus, xhr) {
+                $.get("../masterlib/getapplist", function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
-                        $.each(result, function(key, value) {
-                            $("#applist").append("<option value=" + value.id + ">" + value.name + "</option>");
+                        $.each(result, function (key, value) {
+                            $("#applist").append("<option value=" + value.id + ">" + value.name +
+                                "</option>");
                         })
                     }
                 })
@@ -125,7 +149,7 @@
                 $("#appobjectlist thead tr").remove();
                 $("#appobjectlist tbody tr").remove();
                 var html = "";
-                $.get("../masterlib/getappobjects/" + id, function(result, strStatus, xhr) {
+                $.get("../masterlib/getappobjects/" + id, function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
                         //lets build our table
                         //console.log(Object.keys(result[0]));
@@ -134,14 +158,14 @@
                         } else {
                             //headers
                             html += "<thead><tr>";
-                            Object.keys(result[0]).forEach(function(k) {
+                            Object.keys(result[0]).forEach(function (k) {
                                 html += "<th>" + k + "</th>";
                             });
 
                             html += "</tr></thead>";
                             html += "<tbody>";
                             //data
-                            result.forEach(function(item) {
+                            result.forEach(function (item) {
                                 html += "<tr>"
                                 for (var key in item) {
                                     if (item.hasOwnProperty(key)) {
@@ -150,7 +174,7 @@
                                                 html += "<td></td>";
 
                                             } else {
-                                                item[key].forEach(function(item) {
+                                                item[key].forEach(function (item) {
                                                     if (item.name == "gms") {
                                                         html += "<td>" + item.name + "</td>";
                                                     }
@@ -184,19 +208,19 @@
                 })
             }
 
-            $(document).ready(function() {
-                $("#applist").on("change", function() {
+            $(document).ready(function () {
+                $("#applist").on("change", function () {
                     $("#test").hide();
                     var id = $("#applist option:selected").attr("value");
                     getAppObjectList(id);
                 });
 
-                $("#advancedMode").click(function() {
+                $("#advancedMode").click(function () {
                     $("#lookup-table").toggle();
                 })
 
                 // This must be a hyperlink
-                $(".export").on('click', function(event) {
+                $(".export").on('click', function (event) {
                     // CSV
                     var args = [$('#tableparent>table'), 'export.csv'];
 
@@ -222,11 +246,11 @@
                     colDelim = '","',
                     rowDelim = '"\r\n"',
 
-                    header = '"' + $headers.map(function(i, row) {
+                    header = '"' + $headers.map(function (i, row) {
                         var $row = $(row),
                             $cols = $row.find('th');
 
-                        return $cols.map(function(j, col) {
+                        return $cols.map(function (j, col) {
                             var $col = $(col),
                                 text = $col.text();
 
@@ -239,11 +263,11 @@
                     .split(tmpColDelim).join(colDelim) + '"',
 
                     // Grab text from table into CSV formatted string
-                    csv = '"' + $rows.map(function(i, row) {
+                    csv = '"' + $rows.map(function (i, row) {
                         var $row = $(row),
                             $cols = $row.find('td');
 
-                        return $cols.map(function(j, col) {
+                        return $cols.map(function (j, col) {
                             var $col = $(col),
                                 text = $col.text();
 
@@ -314,17 +338,18 @@
         </div>
 
         <div id="main-body">
-            <div id="importantMessage" class="lui-bg-info labels"><strong><p>GMS 2.0 introduced new fields required for proper operation.  Please review the documentation here: <span><a href="docs/user-guide/app/#general" style="color:greenyellow">General Configuration</a></span></p></strong></div>
+            <div id="importantMessage" class="lui-bg-info labels"><strong><p>GMS 3.0 introduced new fields required for proper operation.  Please review the documentation here: <span><a href="docs/user-guide/app/#general" style="color:greenyellow">General Configuration</a></span></p></strong></div>
             <div>
                 <div id="left-buttons">
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="testConnection()">Test Connection</button>
                     <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryApp()">Reload Metrics Library App</button>
                     <br/>
-                    <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="updateMetricsInApp()">Update Metrics in Apps</button>
+                    <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="updateMetricsInAllApps()">Update Metrics in All Apps</button>
                     <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryAndUpdateApps()">Reload Metrics Library and Update Apps</button>
                     <br/>
+                    <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="updateMetrics()">Update Metrics in an App.</button>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="deleteMetricsFromAnApp()">Delete Metrics from an App</button>
                 </div>
                 <div id=right-status>
@@ -334,7 +359,7 @@
                     </div>
                     <br/>
                     <div class="lui-bg-default">
-                        <label class="labels" for="textInput">Enter the Qlik Sense application name here:</label>
+                        <label class="labels" for="textInput">Enter the Qlik Sense application name here for updating or deleting a specific app:</label>
                         <input class="lui-input" id="textInput">
                     </div>
                 </div>
@@ -377,7 +402,7 @@
         </div>
 
         <script type="text/javascript">
-            $(document).ready(function() {
+            $(document).ready(function () {
                 clearWindow();
                 document.getElementById("textInput").value = "<enter app name here>";
             });
