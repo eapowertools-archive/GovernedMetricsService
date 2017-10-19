@@ -5,7 +5,7 @@ var installConfig;
 
 var configPath = path.join(__dirname, '/../config/');
 var dir = fs.readdirSync(configPath);
-dir.forEach(function(file) {
+dir.forEach(function (file) {
     if (file === 'installConfig.js') {
         installConfig = require('./installConfig');
     }
@@ -34,7 +34,7 @@ var config = {
         root: path.resolve(certPath, 'root.pem')
     },
     gms: {
-        version: '2.0.5.0',
+        version: '3.0.0.0_Alpha',
         port: 8590,
         hostname: friendlyHostname !== undefined ? friendlyHostname : globalHostname,
         routePath: path.join(__dirname, '/../routes/'),

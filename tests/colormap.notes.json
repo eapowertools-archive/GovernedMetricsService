@@ -1,0 +1,229 @@
+jsonrpc
+    :
+    "2.0"
+method
+    :
+    "CreateObject"
+params
+    : [{
+        qInfo: {
+            qType: "ColorMap",
+            qId: "ColorMapModel_EA80E2E8C6QT"
+        },
+        colorMap: {}
+    }]
+0
+    : {
+        qInfo: {
+            qType: "ColorMap",
+            qId: "ColorMapModel_EA80E2E8C6QT"
+        },
+        colorMap: {}
+    }
+colorMap
+    : {}
+qInfo
+    : {
+        qType: "ColorMap",
+        qId: "ColorMapModel_EA80E2E8C6QT"
+    }
+qId
+    :
+    "ColorMapModel_EA80E2E8C6QT"
+qType
+    :
+    "ColorMap"
+
+    ===
+    === === === === === === === === === === === === === === === === === === ===
+
+    {
+        method: "SetProperties",
+        handle: 14,
+        …
+    }
+delta
+    :
+    false
+handle
+    :
+    14
+id
+    :
+    60
+jsonrpc
+    :
+    "2.0"
+method
+    :
+    "SetProperties"
+params
+    : [{
+        qInfo: {
+            qId: "ColorMapModel_EA80E2E8C6QT",
+            qType: "ColorMap"
+        },
+        qMetaDef: {},
+        …
+    }]
+0
+    : {
+        qInfo: {
+            qId: "ColorMapModel_EA80E2E8C6QT",
+            qType: "ColorMap"
+        },
+        qMetaDef: {},
+        …
+    }
+colorMap
+    : {
+        colors: [{
+            value: "Audit Fees",
+            baseColor: {
+                color: "#2442aa",
+                index: -1
+            }
+        }, …],
+        nul: null,
+        oth: null,
+        …
+    }
+autoFill
+    :
+    false
+colors
+    : [{
+        value: "Audit Fees",
+        baseColor: {
+            color: "#2442aa",
+            index: -1
+        }
+    }, …]
+0
+    : {
+        value: "Audit Fees",
+        baseColor: {
+            color: "#2442aa",
+            index: -1
+        }
+    }
+1
+    : {
+        value: "Bad Debts",
+        baseColor: {
+            color: "#882215",
+            index: -1
+        }
+    }
+nul
+    :
+    null
+oth
+    :
+    null
+pal
+    :
+    null
+single
+    : {
+        color: "#4477aa",
+        index: 6
+    }
+usePal
+    :
+    true
+qInfo
+    : {
+        qId: "ColorMapModel_EA80E2E8C6QT",
+        qType: "ColorMap"
+    }
+qId
+    :
+    "ColorMapModel_EA80E2E8C6QT"
+qType
+    :
+    "ColorMap"
+qMetaDef
+    : {}
+
+
+    ===
+    === === === === === === === === === === === === === =
+
+    {
+        method: "SetProperties",
+        handle: 12,
+        params: [{
+            qInfo: {
+                qId: "EA80E2E8C6QT",
+                qType: "dimension"
+            },
+            …
+        }],
+        …
+    }
+delta
+    :
+    false
+handle
+    :
+    12
+id
+    :
+    63
+jsonrpc
+    :
+    "2.0"
+method
+    :
+    "SetProperties"
+params
+    : [{
+        qInfo: {
+            qId: "EA80E2E8C6QT",
+            qType: "dimension"
+        },
+        …
+    }]
+0
+    : {
+        qInfo: {
+            qId: "EA80E2E8C6QT",
+            qType: "dimension"
+        },
+        …
+    }
+qDim
+    : {
+        qGrouping: "N",
+        qFieldDefs: ["AccountDesc"],
+        qFieldLabels: ["Account"],
+        title: "Account",
+        …
+    }
+coloring
+    : {
+        colorMapRef: "EA80E2E8C6QT",
+        changeHash: "0.3100991441065113"
+    }
+qFieldDefs
+    : ["AccountDesc"]
+qFieldLabels
+    : ["Account"]
+qGrouping
+    :
+    "N"
+title
+    :
+    "Account"
+qInfo
+    : {
+        qId: "EA80E2E8C6QT",
+        qType: "dimension"
+    }
+qMetaDef
+    : {
+        title: "Account",
+        description: "Account description",
+        tags: ["MasterItem", "Accounting", "Sales"]
+    }
