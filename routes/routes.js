@@ -137,12 +137,12 @@ router.route("/update")
                 response.status(200).json(result.result + '\n');
             })
             .catch(function (error) {
-                logger.error('POST update/all failure::' + JSON.stringify(error), {
+                logger.error('POST update failure::' + JSON.stringify(error), {
                     module: 'routes'
                 });
 
                 var foo = {
-                    result: 'POST update/all failure::' + JSON.stringify(error)
+                    result: 'POST update failure::' + JSON.stringify(error)
                 };
 
                 response.status(200).json(foo.result);
