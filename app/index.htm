@@ -15,6 +15,7 @@
         <title>Governed Metrics Service</title>
         <script type="text/javascript">
             var socket = io();
+            var selectedGMAApp = "";
 
             socket.on("gms", function (msg) {
                 var final = $('#statusOutput').val();
@@ -143,6 +144,23 @@
                 })
             }
 
+            function getGMAAppList() {
+
+                $.get("../masterlib/getgmaapps", function (result, strstatus, xhr) {
+                    if (xhr.status == 200) {
+                        $.each(result, function (key, value) {
+
+                            $("#gma-app-list").append("<option value=" + value.id + ">" + value.name +
+                                (value.default == "true" ? " * " : "") +
+                                "</option>");
+                            $('#gma-app-list').prop('selectedIndex', 0);
+                        })
+                    } else {
+
+                    }
+                });
+            }
+
             function getAppObjectList(id) {
                 $("#appobjectlist thead tr").remove();
                 $("#appobjectlist tbody tr").remove();
@@ -212,6 +230,12 @@
                     var id = $("#applist option:selected").attr("value");
                     getAppObjectList(id);
                 });
+
+                $("#gma-app-list").on("change", function () {
+                    selectedGMAApp = $("#gma-app-list option:selected").attr("value");
+                })
+
+
 
                 $("#advancedMode").click(function () {
                     $("#lookup-table").toggle();
@@ -322,6 +346,7 @@
                 $("#test").hide();
                 getVersion();
                 getAppList();
+                getGMAAppList();
             }
         </script>
     </head>
@@ -336,9 +361,19 @@
         </div>
 
         <div id="main-body">
-            <div id="importantMessage" class="lui-bg-info labels"><strong><p>GMS 3.0 introduced new fields required for proper operation.  Please review the documentation here: <span><a href="docs/user-guide/app/#general" style="color:greenyellow">General Configuration</a></span></p></strong></div>
+            <div id="importantMessage" class="lui-bg-info labels">
+                <strong>
+                    <p>GMS 3.0 introduced new fields required for proper operation. Please review the documentation here:
+                        <span>
+                            <a href="docs/user-guide/app/#general" style="color:greenyellow">General Configuration</a>
+                        </span>
+                    </p>
+                </strong>
+            </div>
             <div>
                 <div id="left-buttons">
+                    <select id="gma-app-list" class="lui-select"></select>
+                    <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="testConnection()">Test Connection</button>
                     <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryApp()">Reload Metrics Library App</button>
@@ -368,12 +403,12 @@
             <div style="display:inline;float:left">
                 <div id="adv" class="lui-switch">
                     <label class="lui-switch__label" id="advancedLabel">
-                <input id="advancedMode" type="checkbox" class="lui-switch__checkbox" aria-label="Advanced Mode">
-                <span class="lui-switch__wrap">
-                    <span class="lui-switch__inner"></span>
-                    <span class="lui-switch__switch"></span>
-                </span>
-                </label>
+                        <input id="advancedMode" type="checkbox" class="lui-switch__checkbox" aria-label="Advanced Mode">
+                        <span class="lui-switch__wrap">
+                            <span class="lui-switch__inner"></span>
+                            <span class="lui-switch__switch"></span>
+                        </span>
+                    </label>
                 </div>
             </div>
             <div style="display:inline;margin-left:5px">
@@ -383,7 +418,10 @@
                 <h3>Have master library items you want to incorporate into GMS? Search for them here.</h3>
                 <div style="display:inline;">
                     <select id="applist" class="lui-select"></select>
-                    <a href="#" class="export"><span><button class="lui-button">Export table to csv file</button></span>
+                    <a href="#" class="export">
+                        <span>
+                            <button class="lui-button">Export table to csv file</button>
+                        </span>
                     </a>
                 </div>
                 <p id="test">No master library dimensions and measures found in this app.</p>

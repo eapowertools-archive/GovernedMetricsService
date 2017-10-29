@@ -100,6 +100,23 @@ router.route('/getdocid')
             });
     });
 
+router.route("/getgmaapps")
+    .get(function (request, response) {
+        logger.info("GET getgmaapps.  Obtaining list of all apps with GMA tag", {
+            module: "routes"
+        })
+        worker.getGMAApps()
+            .then(function (result) {
+                response.status(200).json(result);
+            })
+            .catch(function (error) {
+                logger.error("GET getgmaapps failure:: " + JSON.stringify(error), {
+                    module: "routes"
+                })
+                response.status(400).json(error);
+            })
+    })
+
 router.route('/add/all')
     .post(function (request, response) {
         logger.info('POST add/all', {
