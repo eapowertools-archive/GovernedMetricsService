@@ -48,7 +48,8 @@ var config = {
         taskName: 'Reload Governed Metrics Application',
         objectManagementTimeout: 60000,
         tagRestrict: false,
-        fieldCheck: true
+        fieldCheck: true,
+        multiGma: false
     },
     engine: {
         port: 4747,

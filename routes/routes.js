@@ -21,29 +21,7 @@ router.use(function (req, res, next) {
 
 router.route('/')
     .get(function (request, response) {
-        logger.info('default route called', {
-            module: 'routes'
-        });
-        var cube = hypercube.setCubeDefault();
-        worker.doWork(cube, function (error, result) {
-            if (error) {
-                logger.error('default route failure::' + error, {
-                    module: 'routes'
-                });
-                response.status(400).json("Bad Request");
-            } else {
-                //for my reference so I can see how to send responses.
-                //response.status(200).json(result.connection.ws.url);
-                logger.info('default route success', {
-                    module: 'routes'
-                });
-                response.status(200).json(result);
-            }
-        });
-    })
-    .post(parseUrlencoded, function (request, response) {
-        var result = worker.doWork(hypercube.setCubeDims(request.body));
-        response.status(200).json(result);
+        response.status(200).json("This is the default route for the Governed Metrics Service.  Nothing happens here.");
     });
 
 router.route('/testpage')
@@ -81,10 +59,10 @@ router.route('/getdocid')
             });
     })
     .post(function (request, response) {
-        logger.info('POST getdocid for ' + request.body.appname, {
+        logger.info('POST getdocid for ' + request.body.appName, {
             module: 'routes'
         });
-        worker.getDoc(request.body.appname)
+        worker.getDoc(request.body.appName)
             .then(function (result) {
                 logger.info('POST getdocid success:: ' + result, {
                     module: 'routes'
@@ -143,27 +121,36 @@ router.route("/update")
         logger.info("POST update", {
             module: 'routes'
         });
-        worker.update(request.body)
-            .then(function (result) {
-                logger.info('POST update success::' + result.result, {
-                    module: 'routes'
-                });
-                logger.info("UPDATE COMPLETE!!!", {
-                    module: 'routes'
-                });
-                response.status(200).json(result.result + '\n');
-            })
-            .catch(function (error) {
-                logger.error('POST update failure::' + JSON.stringify(error), {
-                    module: 'routes'
-                });
+        if (request.body.hasOwnProperty("appId") && request.body.hasOwnProperty("appName")) {
+            response.status(400).json("Supply either the appId or the appName for the app to be updated by GMS")
+        }
 
-                var foo = {
-                    result: 'POST update failure::' + JSON.stringify(error)
-                };
+        if (request.body.hasOwnProperty("appId") || request.body.hasOwnProperty("appName")) {
+            worker.update(request.body)
+                .then(function (result) {
+                    logger.info('POST update success::' + result.result, {
+                        module: 'routes'
+                    });
+                    logger.info("UPDATE COMPLETE!!!", {
+                        module: 'routes'
+                    });
+                    response.status(200).json(result.result + '\n');
+                })
+                .catch(function (error) {
+                    logger.error('POST update failure::' + JSON.stringify(error), {
+                        module: 'routes'
+                    });
 
-                response.status(200).json(foo.result);
-            });
+                    var foo = {
+                        result: 'POST update failure::' + JSON.stringify(error)
+                    };
+
+                    response.status(400).json(foo.result);
+                });
+        } else {
+            response.status(400).json("appId or appName missing from request body.")
+        }
+
     });
 
 router.route('/update/all')
