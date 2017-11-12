@@ -117,7 +117,7 @@ router.route('/add/all')
     });
 
 router.route("/update")
-    .post(function (parseUrlencoded, request, response) {
+    .post(parseUrlencoded, function (request, response) {
         logger.info("POST update", {
             module: 'routes'
         });
