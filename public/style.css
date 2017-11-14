@@ -15,7 +15,6 @@
 }
 
 .button-spacing {
-    margin-bottom: 50px;
     width: 100%;
 }
 
@@ -43,7 +42,9 @@
 }
 
 #left-buttons {
-    float: left;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
     padding-top: 50px;
     width: 25%;
     padding-left: 5%;
@@ -54,6 +55,7 @@
     flex-direction: column;
     width: 60%;
     padding-top: 50px;
+    padding-left: 25px;
     padding-right: 5%;
 }
 
@@ -61,7 +63,7 @@
     width: 100%;
     height: 250px;
     position: absolute;
-    top: 500px;
+    top: 550px;
     bottom: 10px;
     margin-left: 10px;
 }

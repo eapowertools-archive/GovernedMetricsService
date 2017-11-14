@@ -63,10 +63,12 @@
                 var body = {};
 
                 if (pattern.test(appName)) {
-                    body.appId = appName;
+                    body["appId"] = appName;
                 } else {
-                    body.appName = appName;
+                    body["appName"] = appName;
                 }
+
+                console.log(body);
 
                 $.post("../masterlib/update", body, function (result, strStatus, xhr) {
                     if (xhr.status == 200) {
@@ -370,18 +372,13 @@
                     </p>
                 </strong>
             </div>
-            <div>
+            <div style="display:flex;">
                 <div id="left-buttons">
                     <select id="gma-app-list" class="lui-select"></select>
-                    <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="testConnection()">Test Connection</button>
-                    <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryApp()">Reload Metrics Library App</button>
-                    <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="updateMetricsInAllApps()">Update Metrics in All Apps</button>
-                    <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="reloadMetricsLibraryAndUpdateApps()">Reload Metrics Library and Update Apps</button>
-                    <br/>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="updateMetrics()">Update Metrics in an App.</button>
                     <button class="lui-button  lui-button--toolbar-inverse button-spacing" onclick="deleteMetricsFromAnApp()">Delete Metrics from an App</button>
                 </div>
@@ -400,7 +397,7 @@
 
         </div>
         <div id="metric-lookup" class="frame">
-            <div style="display:inline;float:left">
+            <div>
                 <div id="adv" class="lui-switch">
                     <label class="lui-switch__label" id="advancedLabel">
                         <input id="advancedMode" type="checkbox" class="lui-switch__checkbox" aria-label="Advanced Mode">
