@@ -14,11 +14,13 @@ var fs = require('fs');
 var path = require('path');
 var https = require('https');
 var socketio = require('socket.io');
+var winston = require("winston");
 var logger = require('./lib/logger');
 var notifyFactory = require('./lib/notifyFactory');
 
 var x = {};
-
+let logInfo = setLogFile();
+logger.add(winston.transports.file, logInfo)
 logger.info('Firing up the Governed Metrics Service REST API', {
     module: 'server'
 });
@@ -95,6 +97,7 @@ function launchServer() {
         logger.info('Governed Metrics Service version ' + config.gms.version + ' started', {
             module: 'server'
         });
+        logger.remove("serverLog");
     });
 
     var io = new socketio(server);
@@ -105,4 +108,17 @@ function launchServer() {
             io.emit("gms", msg);
         });
     });
+}
+
+function setLogFile() {
+    let logId = "serverLog";
+    let d = new Date();
+    let dateToUse = d.getMonth() + "_" + d.getDay() + "_" + d.getFullYear() + "_" + d.getUTCHours() + "_" + d.getUTCMinutes();
+    let filePath = path.join(config.logging.logPath, config.logging.logName + "_" + dateToUse + "_" + logId + ".log");
+
+    return {
+        name: logId,
+        filename: filePath,
+        level: config.logging.logLevel
+    }
 }

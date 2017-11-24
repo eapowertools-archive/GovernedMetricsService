@@ -10,7 +10,9 @@ var getdoc = require('../lib/getdocid');
 var gethypercube = require('../lib/getmetricshypercube');
 var notifiedByRepo = require('../lib/notifiedByRepo');
 var config = require('../config/config');
+var winston = require("winston");
 var logger = require('../lib/logger');
+var socketHelper = require("../lib/socketHelper");
 
 
 router.use(function (req, res, next) {
@@ -40,57 +42,38 @@ router.route('/testpage')
 //for testing getDocId method
 router.route('/getdocid')
     .get(function (request, response) {
-        logger.info('GET getdocid for ' + config.gms.appName, {
-            module: 'routes'
-        });
+        //        socketHelper.sendMessage("gms", "Retrieving doc id for " + config.gms.appName);
         worker.getDoc(config.gms.appName)
             .then(function (result) {
-                logger.info('GET getdocid success::' + result, {
-                    module: 'routes'
-                });
+                socketHelper.sendMessage("gms", "Retrieving doc id for " + config.gms.appName + ": " + JSON.stringify(result));
                 response.status(200).json(result);
-
             })
             .catch(function (error) {
-                logger.error('GET getdocid route failure::' + error, {
-                    module: 'routes'
-                });
+                socketHelper.sendMessage("gms", "Request failed: " + JSON.stringify(error));
                 response.status(400).json(error);
             });
     })
     .post(function (request, response) {
-        logger.info('POST getdocid for ' + request.body.appName, {
-            module: 'routes'
-        });
+        //        socketHelper.sendMessage("gms", "Retrieving doc id for " + request.body.appName);
         worker.getDoc(request.body.appName)
             .then(function (result) {
-                logger.info('POST getdocid success:: ' + result, {
-                    module: 'routes'
-                });
+                socketHelper.sendMessage("gms", "Retrieving doc id for " + request.body.appName + ": " + JSON.stringify(result));
                 response.status(200).json(result);
-
             })
             .catch(function (error) {
-                logger.error('POST getdocid failure:: ' + error, {
-                    module: 'routes'
-                });
+                socketHelper.sendMessage("gms", "Request failed: " + JSON.stringify(error));
                 response.status(400).json(error);
             });
     });
 
 router.route("/getgmaapps")
     .get(function (request, response) {
-        logger.info("GET getgmaapps.  Obtaining list of all apps with GMA tag", {
-            module: "routes"
-        })
         worker.getGMAApps()
             .then(function (result) {
                 response.status(200).json(result);
             })
             .catch(function (error) {
-                logger.error("GET getgmaapps failure:: " + JSON.stringify(error), {
-                    module: "routes"
-                })
+                socketHelper.sendMessage("gms", "Request failed: " + JSON.stringify(error));
                 response.status(400).json(error);
             })
     })
@@ -108,9 +91,7 @@ router.route('/add/all')
                 response.status(200).json(result.result);
             })
             .catch(function (error) {
-                logger.error('POST add/all failure::' + error, {
-                    module: 'routes'
-                });
+                socketHelper.sendMessage("gms", "Request failed: " + JSON.stringify(error));
                 response.status(400).json(error);
             });
 
@@ -118,36 +99,35 @@ router.route('/add/all')
 
 router.route("/update")
     .post(parseUrlencoded, function (request, response) {
-        logger.info("POST update", {
-            module: 'routes'
-        });
+        let logInfo = setLogFile();
+        logger.add(winston.transports.File, logInfo);
+        socketHelper.logMessage("info", "gms", "Update method called", __filename);
         if (request.body.hasOwnProperty("appId") && request.body.hasOwnProperty("appName")) {
-            response.status(400).json("Supply either the appId or the appName for the app to be updated by GMS")
+            socketHelper.logMessage("error", "gms", "Supply either the appId or the appName for the app to be updated by GMS", __filename);
+            logger.remove(logInfo.name);
+            response.status(400).json("Supply either the appId or the appName for the app to be updated by GMS");
         }
 
         if (request.body.hasOwnProperty("appId") || request.body.hasOwnProperty("appName")) {
+            socketHelper.logMessage("info", "gms", "Updating " + (request.body.hasOwnProperty("appId") ? request.body.appId : request.body.appName), __filename);
+
             worker.update(request.body)
                 .then(function (result) {
-                    logger.info('POST update success::' + result.result, {
-                        module: 'routes'
-                    });
-                    logger.info("UPDATE COMPLETE!!!", {
-                        module: 'routes'
-                    });
+                    socketHelper.logMessage("info", "gms", "Update complete with result " + result.result, __filename);
+                    logger.remove(logInfo.name);
                     response.status(200).json(result.result + '\n');
                 })
                 .catch(function (error) {
-                    logger.error('POST update failure::' + JSON.stringify(error), {
-                        module: 'routes'
-                    });
-
+                    socketHelper.logMessage("error", "gms", "Update failed with error " + JSON.stringify(error), __filename);
+                    logger.remove(logInfo.name);
                     var foo = {
                         result: 'POST update failure::' + JSON.stringify(error)
                     };
-
                     response.status(400).json(foo.result);
                 });
         } else {
+            socketHelper.logMessage("error", "gms", "appId or appName missing from request body.", __filename);
+            logger.remove(logInfo.name);
             response.status(400).json("appId or appName missing from request body.")
         }
 
@@ -155,23 +135,18 @@ router.route("/update")
 
 router.route('/update/all')
     .post(function (request, response) {
-        logger.info('POST update/all', {
-            module: 'routes'
-        });
+        let logInfo = setLogFile();
+        logger.add(winston.transports.File, logInfo);
+        socketHelper.logMessage("info", "gms", "Update All method called.  All applications with subscriptions will be updated.", __filename);
         worker.updateAll()
             .then(function (result) {
-                logger.info('POST update/all success::' + result.result, {
-                    module: 'routes'
-                });
-                logger.info("UPDATE COMPLETE!!!", {
-                    module: 'routes'
-                });
+                socketHelper.logMessage("info", "gms", "Update All complete with result " + result.result, __filename);
+                logger.remove(logInfo.name);
                 response.status(200).json(result.result + '\n');
             })
             .catch(function (error) {
-                logger.error('POST update/all failure::' + error, {
-                    module: 'routes'
-                });
+                socketHelper.logMessage("error", "gms", "Update All failed with error " + JSON.stringify(error), __filename);
+                logger.remove(logInfo.name);
 
                 var foo = {
                     result: 'POST update/all failure::' + error
@@ -184,43 +159,44 @@ router.route('/update/all')
 
 router.route('/delete/fromapp')
     .post(parseUrlencoded, function (request, response) {
-        logger.info('POST delete/fromapp for ' + request.body.appname, {
-            module: 'routes'
-        });
-        worker.deleteFromApp(request.body)
-            .then(function (result) {
-                logger.info('POST delete/all success::' + result.result, {
-                    module: 'routes'
+        let logInfo = setLogFile();
+        logger.add(winston.transports.File, logInfo);
+        if (request.body.hasOwnProperty("appname")) {
+            socketHelper.logMessage("info", "gms", "Deleting governed master library items from " + request.body.appname + ".", __filename);
+            worker.deleteFromApp(request.body)
+                .then(function (result) {
+                    socketHelper.logMessage("info", "gms", "Delete complete with result " + result.result, __filename);
+                    logger.remove(logInfo.name);
+                    response.status(200).json(result.result + '\n');
                 });
-                response.status(200).json(result.result + '\n');
-            });
+        } else {
+            socketHelper.logMessage("error", "gms", "appname missing from request body for delete operation.", __filename);
+            logger.remove(logInfo.name);
+            response.status(400).json("appname missing from request body for delete operation.")
+        }
     });
 
 router.route('/reload')
     .post(function (request, response) {
-        logger.info('POST reload', {
-            module: 'routes'
-        });
+        let logInfo = setLogFile();
+        logger.add(winston.transports.File, logInfo);
+        socketHelper.logMessage("info", "gms", "Reloading the selected Governed Metrics Application.", __filename);
         worker.reloadMetricsApp()
             .then(function (result) {
-                logger.info('POST reload success::' + result.result, {
-                    module: 'routes'
-                });
+                socketHelper.logMessage("info", "gms", "Reload complete with result " + result.result, __filename);
+                logger.remove(logInfo.name);
                 response.status(200).json(result.result);
             })
             .catch(function (error) {
-                logger.error('POST reload failure::' + error, {
-                    module: 'routes'
-                });
+                socketHelper.logMessage("error", "gms", "Error reloading Governed Metrics App " + JSON.stringify(error), __filename);
+                logger.remove(logInfo.name);
                 response.status(400).json(error);
             });
     });
 
 router.route('/changeOwner')
     .post(parseUrlencoded, function (request, response) {
-        logger.info('POST changeOwner', {
-            module: 'routes'
-        });
+        socketHelper.logMessage("debug", "gms", "A change ownership request has been made on governed metrics", __filename)
         worker.changeOwner(request.body)
             .then(function (result) {
                 response.status(200).json(result);
@@ -263,37 +239,25 @@ router.route("/notifyme")
     .post(parseUrlencoded, function (request, response) {
         notifiedByRepo.updateRepo(request.body)
             .then(function (result) {
-                logger.info("GMS has been notified of a change.", {
-                    module: 'routes'
-                })
+                socketHelper.logMessage("debug", "gms", "The Qlik Sense repository has been updated by GMS.", __filename)
                 response.status(200).json(result);
             })
             .catch(function (error) {
-                logger.error("updating repo failed " + JSON.stringify(error), {
-                    module: 'routes'
-                });
+                socketHelper.logMessage("error", "gms", "The Qlik Sense repository has not been updated by GMS.  Here is the error: " + JSON.stringify(error), __filename)
                 response.status(400).json(error);
             });
     });
 
 router.route("/deletenotifyme")
     .post(parseUrlencoded, function (request, response) {
-        logger.info("completed delete operation in the repository.  Master Items REMOVED!!!", {
-            module: 'routes'
-        });
+        socketHelper.logMessage("info", "gms", "Completed delete operation in the repository.  Master Library items have been removed.", __filename)
         response.status(200).json("Metrics deleted from repository");
     });
 
 router.route("/getapplist")
     .get(function (request, response) {
-        logger.info("Getting app list on server", {
-            module: 'routes'
-        });
         worker.getDocList()
             .then(function (result) {
-                logger.info("App List retrieved", {
-                    module: 'routes'
-                });
                 response.status(200).json(result);
             })
             .catch(function (error) {
@@ -306,14 +270,8 @@ router.route("/getapplist")
 
 router.route("/getappobjects/:id")
     .get(function (request, response) {
-        logger.info("getting the list of dimensions and measures in app: " + request.params.id, {
-            module: "routes"
-        });
         worker.getObjectList(request.params.id)
             .then(function (result) {
-                logger.info("objects retrieved for app: " + request.params.id, {
-                    module: "routes"
-                });
                 response.status(200).json(result);
             })
             .catch(function (error) {
@@ -324,6 +282,18 @@ router.route("/getappobjects/:id")
             })
     })
 
+module.exports = router;
+
+function generateUUID() {
+    var d = new Date().getTime();
+    var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function (c) {
+        var r = (d + Math.random() * 16) % 16 | 0;
+        d = Math.floor(d / 16);
+        return (c == 'x' ? r : (r & 0x3 | 0x8)).toString(16);
+    });
+    return uuid;
+};
+
 function isEmpty(obj) {
     for (var prop in obj) {
         if (obj.hasOwnProperty(prop)) {
@@ -333,4 +303,15 @@ function isEmpty(obj) {
     return true;
 };
 
-module.exports = router;
+function setLogFile() {
+    let logId = generateUUID();
+    let d = new Date();
+    let dateToUse = d.getMonth() + "_" + d.getDay() + "_" + d.getFullYear() + "_" + d.getUTCHours() + "_" + d.getUTCMinutes();
+    let filePath = path.join(config.logging.logPath, config.logging.logName + "_" + dateToUse + "_" + logId + ".log");
+
+    return {
+        name: logId,
+        filename: filePath,
+        level: config.logging.logLevel
+    }
+}
