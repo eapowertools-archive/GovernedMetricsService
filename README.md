@@ -19,7 +19,7 @@ Before installing the Governed Metrics Service, **we highly recommend** going th
 
 
 ## Install
-To install the Governed Metrics Service, use the **[installer](https://s3.amazonaws.com/eapowertools/governedmetricsservice/bin/GovernedMetricsService.exe)**.
+To install the Governed Metrics Service, use the **[installer](https://github.com/eapowertools/GovernedMetricsService/releases/download/2.0.5/GovernedMetricsService.exe)**.
 
 ## Description
 
